@@ -51,8 +51,9 @@ function getRandomKeyword() {
 
 
 // ***********************************
-// insturctions:
-// call below codes to get the image url
+// * insturctions:
+// * call below codes to get the image url
+// ***********************************
 // var g_image_search = require('./server/g_image_search');
 
 // g_image_search.init().then(function (image_url)
