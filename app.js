@@ -1,5 +1,6 @@
 var express = require('express');
 var urls = require('./server/urls');
+var matchmaker = require('./server/matchmaker');
 var app = express();
 
 var listener = app.listen(process.env.PORT || 5555, function() {
@@ -13,3 +14,4 @@ var listener = app.listen(process.env.PORT || 5555, function() {
 });
 
 urls.init(app);
+matchmaker.init();
