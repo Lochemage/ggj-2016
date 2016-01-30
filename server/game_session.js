@@ -23,6 +23,8 @@ GameSession.prototype = {
     }
 };
 
+module.exports.game_session = new GameSession();
+
 module.exports.init = function() {
     // todo
 };
