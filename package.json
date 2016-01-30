@@ -1,0 +1,14 @@
+{
+  "name": "Outward-Demo",
+  "author": "Outward",
+  "version": "1.0.0",
+  "description": "Product Demonstration Site",
+  "main": "app.js",
+  "dependencies": {
+    "consolidate": "^0.14.0",
+    "express": "^4.11.2",
+    "fs-extra": "^0.26.0",
+    "handlebars": "^4.0.5",
+    "serve-favicon": "^2.2.0"
+  }
+}

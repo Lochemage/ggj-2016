@@ -1,0 +1,21 @@
+{
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				"*.sublime*",
+				"*.min.*",
+				"3dviewer.js",
+				"jquery.js"
+			],
+			"folder_exclude_patterns":
+			[
+				"node_modules",
+				"docs"
+			],
+			"follow_symlinks": true,
+			"path": "."
+		}
+	]
+}
