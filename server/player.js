@@ -5,12 +5,12 @@ The state of a player playing the game.
 
 //********************************************************************/
 
-function Player(name) {
-    this.name = name
+function Player() {
+    this.name = "<TBD>";
 };
 
 Player.prototype = {
     // todo: add functions
 };
 
-module.exports.player = Player;
+module.exports = Player;
