@@ -24,11 +24,16 @@ GameSession.prototype = {
         //}
         //return -1;
     },
+    player_is_in_slot: function(player, slot_idx) {
+        return this.slots[slot_idx] !== undefined && this.slots[slot_idx].player == player;
+    },
     assign_player_to_slot: function(player, slot_idx) {
-        this.slots[slot_idx] = { player: player };
-        // remove available_slot at idx
-        this.available_slots.splice(this.available_slots.indexOf(slot_idx), 1);
-        return 0;
+        if (slot_idx in this.slots && slot_idx in this.get_available_slots()) {
+            this.slots[slot_idx] = { player: player };
+            // remove available_slot at idx
+            this.available_slots.splice(this.available_slots.indexOf(slot_idx), 1);
+        }
+        return this.player_is_in_slot(player, slot_idx);
     },
     expand: function(num_new_slots) {
         for (var i = 0; i < num_new_slots; i++) {
