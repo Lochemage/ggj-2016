@@ -1,8 +1,10 @@
 var express = require('express');
 var urls = require('./server/urls');
+var connect = require('./server/connect');
 var app = express();
+var http = require('http').Server(app);
 
-var listener = app.listen(process.env.PORT || 5555, function() {
+var listener = http.listen(process.env.PORT || 5555, function() {
   var host = listener.address().address;
   var port = listener.address().port;
 
@@ -13,3 +15,4 @@ var listener = app.listen(process.env.PORT || 5555, function() {
 });
 
 urls.init(app);
+connect.init(http);
