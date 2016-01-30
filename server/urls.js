@@ -20,4 +20,8 @@ module.exports.init = function(app) {
   app.get('/', function(req, res) {
     res.render('index');
   });
+
+  app.get('/drawer', function(req, res) {
+    res.render('drawer');
+  });
 }
