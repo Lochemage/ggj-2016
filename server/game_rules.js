@@ -20,6 +20,7 @@ util.inherits(DrawPhase, GamePhase);
 
 ///////////////////////////////////////////////////////////////////////
 
+// jlu is working on this
 function JudgePhase() {
     JudgePhase.call(this);
 };
