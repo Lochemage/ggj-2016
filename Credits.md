@@ -1,14 +1,14 @@
 Programmers:
 ---
 
-#### Jeff Houde ####
-### Jingjing Lu ####
-#### Danny McCue ####
+*Jeff Houde*  
+*Jingjing Lu*  
+*Danny McCue*  
 
 Special Thanks:
 ---
 
-#### William Malone ####
+*William Malone*  
 * http://www.williammalone.com/articles/create-html5-canvas-javascript-drawing-app/
 * Drawing tool
 
