@@ -9,7 +9,9 @@
     "express": "^4.11.2",
     "fs-extra": "^0.26.0",
     "handlebars": "^4.0.5",
+    "mocha": "^2.4.5",
     "serve-favicon": "^2.2.0",
-    "socket.io": "^1.4.5"
+    "socket.io": "^1.4.5",
+    "zombie": "^4.2.1"
   }
 }
