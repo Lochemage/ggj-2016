@@ -14,6 +14,9 @@ Anyone who is watching it can play along! - Design
 This game must have zero violence in its game play. Conflicts must have resolutions based on logic  - Design, Theme
 - Drawing game. No violence here.
 
+## No retreat, no surrender ##
+The protagonist is unable to go anywhere but forward, in every situation  - Art, Content, Design, Theme
+- You have a time limit to draw, you can not cancel or go back to an earlier game session.
 
 Diversifiers we may consider:
 ------------------------------------
@@ -26,3 +29,11 @@ Create a game that can be played with only one hand. On mobile just one hand hol
 ## Infinite ##
 Your world is procedurally generated  - Code, Content
 - A single draw session may branch out forever
+
+## Comic book colours ##
+Your game uses only 4 colours, with an emphasis on contrast  - Accessibility, Art, Design, Pervasive
+- Maybe, do black and white count as two colors already?
+
+## LEGO Got It Right ##
+There are no spoken or written words in this game. This is even true in the instructions  - Pervasive, Accessibility
+- Instructions are really simple, "Draw this image", "Choose the one that looks the most like yours", "Choose the one you think was the original". It may be possible to portray these instructions without words?
