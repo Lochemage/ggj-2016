@@ -1,0 +1,28 @@
+Diversifiers we are using:
+------------------------------------
+
+## Where in the world is… ##
+Gameplay or art changes depending on the player's geographical location (GPS, IP location, etc). The game experience is therefore significantly different for players all around the globe - Art, Content, Design, Pervasive
+- Uses google image search for finding source images, which can change based on your location.
+- Related? http://www.qdigitalstudio.com/library/reasons-your-google-search-results-are-different-than-mine
+
+## Crowd sourced ##
+Anyone who is watching it can play along! - Design
+- Open your browser and point to the server, you are now an instant player grouped with everyone else.
+
+## Gandhi’s Game ##
+This game must have zero violence in its game play. Conflicts must have resolutions based on logic  - Design, Theme
+- Drawing game. No violence here.
+
+
+Diversifiers we may consider:
+------------------------------------
+
+## One hand tied behind my back ##
+Create a game that can be played with only one hand. On mobile just one hand holding and playing at the same time i.e. just play with your thumb. Desktop, mouse only or keyboard only  - Accessibility, Design, Serious
+- Only need a mouse with a single button.
+- We'll have to do something about the 'type your name' field, perhaps a random button.
+
+## Infinite ##
+Your world is procedurally generated  - Code, Content
+- A single draw session may branch out forever
