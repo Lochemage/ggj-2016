@@ -28,8 +28,28 @@ DrawState.prototype = {
         gsm.call_handler('start game', this.player, {image: parent_image_path});
         callback(game_session);
     },
-    on_finish: function(/*eventData*/) {
-        //
+    on_finish: function(eventData) {
+        var player = this.player;
+        var image_path = eventData.image_path;
+        game_session = player.curr_session;
+        var player_index = game_session.get_player_slot_index(player);
+        game_session.save_image_to_slot(player_index, image_path);
+
+        if (game_session.is_finished()) {
+            for (var slotIdx = 3; slotIdx < 7; ++slotIdx) {
+                game_session.slots[slotIdx].player.event_queue.push({
+                    event_type: 'judge grandparent',
+                    game_session: game_session,
+                    judge_index: slotIdx
+                });
+            }
+            game_session.slots[0].player.event_queue.push({
+                event_type: 'judge grandchildren',
+                game_session: game_session,
+                judge_index: slotIdx
+            });
+        }
+        player.curr_session = null;
     }
 };
 
