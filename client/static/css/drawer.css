@@ -1,10 +1,9 @@
 #drawSpace {
   position: absolute;
-  top: 50%;
+  top: 20px;
   left: 50%;
   margin-left: -245px;
-  margin-top: -110px;
-  width: 490px;
+  width: 540px;
   height: 220px;
-  text-align: center;
+  text-align: left;
 }
