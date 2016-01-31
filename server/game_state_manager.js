@@ -29,20 +29,22 @@ GameStateManager.prototype = {
             console.log('calling start judge handler');
             this.call_handler('start judge', player, data);
             callback(available_judge_session[0]);
+            return;
         }
         var game_session = this.matchmaker.match_a_player_with_sessions(this.game_sessions, player);
         if (!game_session) {
             var self = this;
-            var game_session = this.start_new_game_session(function(game_session){
+            console.log('creating a new game session');
+            this.start_new_game_session(function(game_session) {
                 var matched = self.matchmaker.match_a_player_with_a_session(game_session, player);
-                console.log('matched: ' + matched)
+                console.log('matched: ' + matched);
                 assert(matched);
                 player.curr_session = game_session;
                 console.log('calling start game handler for new game session');
                 self.call_handler('start game', player, {image: game_session.original_images[0]});
                 callback(game_session);
             });
-           
+            return;
         }
         else{
             console.log('calling start game handler for existing game session');
@@ -68,6 +70,8 @@ GameStateManager.prototype = {
             var game_session = new GameSession(image_urls);
             self.game_sessions.push(game_session);
             callback(game_session);
+        }).catch(function(err) {
+            console.log(err);
         });
         
     },
