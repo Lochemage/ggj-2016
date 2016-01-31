@@ -52,8 +52,11 @@ if (testing) {
 
   connect.on('start game', function(user, name) {
     // TODO: Interface with the game state machine to generate a player and assign them to a session.
-    var player = game_state_manager.create_new_player(user);
     console.log('game started! Welcome', name);
+    var player = game_state_manager.create_new_player(user);
+    game_state_manager.assign_player_to_game(player, function(game_session) {
+      console.log('assigned player to game');
+    });
 
     // game_state_manager();
 

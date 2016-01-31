@@ -8,6 +8,7 @@ function GameStateManager() {
     this.game_sessions = [];
     this.players = [];
     this.matchmaker = new Matchmaker();
+    this.handlers = {};
 };
 
 GameStateManager.prototype = {
@@ -21,6 +22,8 @@ GameStateManager.prototype = {
         var available_judge_session = this.matchmaker.find_available_judge_session(player);
         if(available_judge_session != []) {
             this.matchmaker.assign_player_to_judge(player, available_judge_session[0], available_judge_session[1]);
+            var data = {}
+            self.call_handler('start judge', data)
             callback(available_judge_session[0]);
         }
         var game_session = this.matchmaker.match_a_player_with_sessions(this.game_sessions, player);
@@ -29,11 +32,13 @@ GameStateManager.prototype = {
             var game_session = this.start_new_game_session(function(game_session){
                 var matched = self.matchmaker.match_a_player_with_a_session(game_session, player);
                 assert(matched);
+                self.call_handler('start game', {image: game_session.original_images[0]});
                 callback(game_session);
             });
            
         }
         else{
+            self.call_handler('start game', {});//{image: game_session.slots[0]})
             callback(game_session);
         }
     },
@@ -63,6 +68,23 @@ GameStateManager.prototype = {
             grandparent_player = game_session.slots[grand_index].player;
             grandparent_player.event_queue.push({event_type: 'judge', game_session: game_session, judge_index: grand_index});
         }
+        if(player_index != 0) {
+            player.event_queue.splice(0, 0, {});
+        }
+    },
+    add_handler: function(type, callback) {
+        if (!this.handlers.hasOwnProperty(type)) {
+            this.handlers[type] = [];
+        }
+
+        this.handlers[type].push(callback);
+    },
+    call_handler: function(type, data) {
+        if(this.handlers.hasOwnProperty(type)) {
+            for (var i = 0; i < this.handlers[type].length; ++i) {
+                this.handlers[type][i](data);
+            }
+        }
     },
 };
 // // entry point
@@ -71,3 +93,4 @@ GameStateManager.prototype = {
 // };
 // module.exports.game_state_manager = new GameStateManager();
 module.exports = GameStateManager;
+
