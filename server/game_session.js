@@ -37,14 +37,19 @@ GameSession.prototype = {
         }
         return this.player_is_in_slot(player, slot_idx);
     },
-    expand: function(num_new_slots) {
-        for (var i = 0; i < num_new_slots; i++) {
-            this.available_slots.push(this.slots.length + i);
-        }
-        this.slots.length += num_new_slots;
-    },
-    expand_row: function() {
-        this.expand(this.slots.length);
+    // expand: function(num_new_slots) {
+    //     for (var i = 0; i < num_new_slots; i++) {
+    //         this.available_slots.push(this.slots.length + i);
+    //     }
+    //     this.slots.length += num_new_slots;
+    // },
+    // expand_row: function() {
+    //     this.expand(this.slots.length);
+    // },
+    expand_children: function(slotIdx) {
+        var first_child_index = this.get_index_of_first_child(slotIdx);
+        this.available_slots.push(first_child_index);
+        this.available_slots.push(first_child_index + 1);
     },
     get_index_of_parent: function(slotIdx) {
         return Math.ceil(slotIdx/2) - 1;
@@ -78,6 +83,7 @@ GameSession.prototype = {
     },
     save_image_to_slot: function(slot_idx, image_path) {
         this.slots[slot_idx].image_path = image_path;
+        this.expand_children(slot_idx);
     }
 };
 
