@@ -231,7 +231,13 @@ function addClick(x, y, dragging)
 */
 function clearCanvas()
 {
-	context.clearRect(0, 0, canvasWidth, canvasHeight);
+	clickX = [];
+	clickY = [];
+	clickColor = [];
+	clickTool = [];
+	clickSize = [];
+	clickDrag = [];
+	redraw();
 }
 
 /**
@@ -242,7 +248,7 @@ function redraw()
 	// Make sure required resources are loaded before redrawing
 	if(curLoadResNum < totalLoadResources){ return; }
 	
-	clearCanvas();
+	context.clearRect(0, 0, canvasWidth, canvasHeight);
 	
 	var locX;
 	var locY;
