@@ -5,8 +5,9 @@ The state of a player playing the game.
 
 //********************************************************************/
 
-function Player() {
-    this.name = "<TBD>";
+function Player(name) {
+    this.name = name;
+    this.user = null;
     this.event_queue = [];
 };
 
