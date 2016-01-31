@@ -22,8 +22,8 @@ GameStateManager.prototype = {
         var available_judge_session = this.matchmaker.find_available_judge_session(player);
         if(available_judge_session != []) {
             this.matchmaker.assign_player_to_judge(player, available_judge_session[0], available_judge_session[1]);
-            var data = {}
-            self.call_handler('start judge', data)
+            var data = {};
+            self.call_handler('start judge', data);
             callback(available_judge_session[0]);
         }
         var game_session = this.matchmaker.match_a_player_with_sessions(this.game_sessions, player);
