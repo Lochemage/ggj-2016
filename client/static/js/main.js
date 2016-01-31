@@ -1,9 +1,12 @@
 $(document).ready(function() {
   var socket = io();
 
+  prepareCanvas();
+
   function __hideWindows() {
     $('#startPrompt').addClass('not_shown');
     $('#drawSpace').addClass('not_shown');
+    $('#continuePrompt').addClass('not_shown');
   };
 
   function __startTimer($timer, done) {
@@ -62,7 +65,7 @@ $(document).ready(function() {
 
     $('#drawSpace').removeClass('not_shown');
     $('#drawSpace > .previewContainer > img.preview').attr('src', data.image);
-    prepareCanvas();
+    clearCanvas();
     __startTimer($('#drawSpace > .timer'), function() {
       var imgData = retrieveCanvasImage();
       console.log('time over!');
