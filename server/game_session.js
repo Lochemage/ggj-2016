@@ -114,6 +114,14 @@ GameSession.prototype = {
             ? ''
             : this.slots[slotIdx].image_path;
     },
+    find_slot_with_image: function(image_path) {
+        for (var slotIdx = 0; slotIdx < this.slots.length; ++slotIdx) {
+            if (this.slots[slotIdx].image_path == image_path) {
+                return slotIdx;
+            }
+        }
+        return -1;
+    },
     is_finished: function() {
         // check that all slots on the third row of this game session are done
         for (var slotIdx = 0; slotIdx < 7; ++slotIdx) {
