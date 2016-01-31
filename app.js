@@ -34,6 +34,9 @@ if (testing) {
     console.log('Passed!');
     process.exit();
   }).catch(function(count) {
+    if (typeof count === 'object') {
+      count = count.stack;
+    }
     console.log(count.toString(), 'Failed!');
     process.exit(1);
   });
@@ -43,11 +46,11 @@ if (testing) {
   game_state_manager.init();
 
   // Temporary, implemented chat system with the new connect register system.
-  connect.on('chat message', function(player, data) {
+  connect.on('chat message', function(user, data) {
     connect.emit('chat message', data);
   });
 
-  connect.on('disconnect', function(player, data) {
-    console.log('Player disconnected');
+  connect.on('disconnect', function(user, data) {
+    console.log('User disconnected');
   });
 }
