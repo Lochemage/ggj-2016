@@ -44,7 +44,11 @@ GameStateManager.prototype = {
         }
         else{
             console.log('calling start game handler for existing game session');
-            this.call_handler('start game', player, {});//{image: game_session.slots[0]})
+            var player_index = game_session.get_player_slot_index(player);
+            var parent_index = game_session.get_index_of_parent(player_index);
+            var parent_image_path = game_session.slots[parent_index].image_path;
+            assert(parent_image_path != '');
+            this.call_handler('start game', player, {image: parent_image_path});
             callback(game_session);
         }
     },
