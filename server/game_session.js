@@ -50,6 +50,14 @@ GameSession.prototype = {
     get_index_of_first_child: function(slotIdx) {
         return slotIdx*2 + 1;
     },
+    get_index_of_grandparent: function(slotIdx) {
+        parent_index = this.get_index_of_parent(slotIdx);
+        return this.get_index_of_parent(parent_index);
+    },
+    get_index_of_first_grandchild: function(slotIdx) {
+        child_index = this.get_index_of_first_child(slotIdx);
+        return this.get_index_of_first_child(child_index);
+    },
     has_player_in_slot: function(player) {
         for (var slotIdx = 0; slotIdx < this.slots.length; ++slotIdx) {
             if (this.slots[slotIdx] && this.slots[slotIdx].player == player) {
