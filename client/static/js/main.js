@@ -34,7 +34,7 @@ $(document).ready(function() {
         opacity = 0;
         ropacity = 1;
       }
-      
+
       $timer.children('.filler').css('opacity', opacity);
       $timer.children('.mask').css('opacity', ropacity);
       lastTime = time;
@@ -50,6 +50,12 @@ $(document).ready(function() {
     }
   });
 
+  // User submits to play another round.
+  $('form.interim').submit(function() {
+    socket.emit('play again');
+    return false;
+  });
+
   // User is now starting a game session.
   socket.on('start game', function(data) {
     __hideWindows();
@@ -61,6 +67,9 @@ $(document).ready(function() {
       var imgData = retrieveCanvasImage();
       console.log('time over!');
       socket.emit('submit drawing', imgData);
+
+      __hideWindows();
+      $('#continuePrompt').removeClass('not_shown');
     });
   });
 });
