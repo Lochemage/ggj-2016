@@ -17,6 +17,17 @@ body {
                                   not supported by any browser */
 }
 
+#welcomeSpace {
+  text-align: left;
+}
+
+#definition {
+  position: absolute;
+  top: 230px;
+  left: 0px;
+  font-size: 30px;
+}
+
 .wrapper {
   position: absolute;
   top: 0px;
