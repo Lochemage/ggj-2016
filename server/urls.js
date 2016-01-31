@@ -28,4 +28,12 @@ module.exports.init = function(app) {
   app.get('/judge', function(req, res) {
     res.render('judging');
   });
+
+  app.get('/start', function(req, res) {
+    res.render('start');
+  });
+
+  app.get('/interim', function(req, res) {
+    res.render('interim');
+  });
 }
