@@ -15,7 +15,7 @@ $(document).ready(function() {
 
   // User submits to play another round.
   $('form.interim').submit(function() {
-    socket.emit('play again');
+    socket.emit('game event', {name: 'play again'});
     return false;
   });
 
@@ -51,7 +51,7 @@ $(document).ready(function() {
     __startTimer($('#drawSpace > .timer'), function() {
       var imgData = retrieveCanvasImage();
       console.log('time over!');
-      socket.emit('submit drawing', imgData);
+      socket.emit('game event', {name: 'submit drawing', image_path: imgData});
 
       __hideSpaces();
       $('#continueSpace').removeClass('not_shown');

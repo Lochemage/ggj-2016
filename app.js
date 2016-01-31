@@ -66,22 +66,6 @@ if (testing) {
     user.player.state.on_event(game_state_manager, event);
   });
 
-  connect.on('submit drawing', function(user, imgData) {
-    user.player.state.on_event(game_state_manager, {name: 'submit drawing', image_path: imgData});
-    /*
-    game_state_manager.player_submit_image(user.player, imgData);
-    /*/
-    // game_state_manager.processPlayerEvent(user.player, {
-    //     phase: 'FINISH',
-    //     image_path: imgData
-    // });
-    //*/
-  });
-
-  connect.on('play again', function(user) {
-    game_state_manager.update_player_state(user.player);
-  });
-
   /////////////////////////////////////////////////////////////////////
 
   // function processPlayerEvent(player, eventData) {

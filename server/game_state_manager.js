@@ -3,8 +3,12 @@ var GameSession = require('./game_session');
 var Player = require('./player');
 const assert = require('assert');
 var g_image_search = require('./g_image_search');
-var DrawState = require('./states/draw_state');
-var DefaultState = require('./states/default_state');
+
+// var DefaultState = require('./states/default_state');
+var States = {
+    DrawState: require('./states/draw_state'),
+    IdleState: require('./states/idle_state')
+};
 
 function GameStateManager() {
     this.game_sessions = [];
@@ -92,23 +96,19 @@ GameStateManager.prototype = {
             return;
         }
 
-        this.set_player_state(player, DrawState);
+        this.set_player_state(player, 'DrawState');
     },
 
     set_player_state: function(player, StateClass) {
+        assert(States.hasOwnProperty(StateClass));
+
         if (player.state) {
             player.state.on_finish(this);
         }
 
-        player.state = new StateClass(player);
+        player.state = new States[StateClass](player);
         player.state.on_start(this);
     },
-    
-    ///////////////////////////////////////////////////////////////////
-
-    // processPlayerEvent: function (player, eventData) {
-    //     player.state[DefaultState.eventDataPhaseToStateMethod[eventData.phase]](eventData);
-    // }
 };
 
 module.exports = GameStateManager;

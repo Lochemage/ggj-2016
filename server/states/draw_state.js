@@ -35,9 +35,9 @@ DrawState.prototype = {
                     // TODO: Find some way to queue an outside player to for judging.
                 }
                 this.player.curr_session = null;
-
+                gsm.set_player_state(this.player, 'IdleState');
                 break;
-               
+
             default:
                 break;
         }

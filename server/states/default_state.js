@@ -15,7 +15,3 @@ DefaultState.prototype = {
 ///////////////////////////////////////////////////////////////////////
 
 module.exports.DefaultState = DefaultState;
-module.exports.eventDataPhaseToStateMethod = {
-    START: 'on_start',
-    FINISH: 'on_finish'
-};
