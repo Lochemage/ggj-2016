@@ -49,13 +49,13 @@ GameSession.prototype = {
     expand_children: function(slotIdx) {
         var first_child_index = this.get_index_of_first_child(slotIdx);
         this.available_slots.push(first_child_index);
-        console.log('this.sloats: ' + this.sloats)
-        // console.log('this.sloats[first_child_index]: ' + this.sloats[first_child_index])
-        this.sloats[first_child_index] = {};
-        this.sloats[first_child_index] = null;
+        console.log('this.slots: ' + this.slots)
+        // console.log('this.slots[first_child_index]: ' + this.slots[first_child_index])
+        this.slots[first_child_index] = {};
+        this.slots[first_child_index] = null;
         this.available_slots.push(first_child_index + 1);
-        this.sloats[first_child_index + 1] = {};
-        this.sloats[first_child_index + 1] = null;
+        this.slots[first_child_index + 1] = {};
+        this.slots[first_child_index + 1] = null;
     },
     get_index_of_parent: function(slotIdx) {
         return Math.ceil(slotIdx/2) - 1;
