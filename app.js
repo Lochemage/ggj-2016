@@ -45,15 +45,15 @@ if (testing) {
   connect.init(http);
   var game_state_manager = new GameStateManager();
 
-
-  // game_state_manager.on('start game', function(player, data) {
-  //   player.user.socket.emit('start game', data);
-  // });
+  game_state_manager.add_handler('start game', function(player, data) {
+    console.log('game starting');
+    player.user.socket.emit('start game', data);
+  });
 
   connect.on('start game', function(user, name) {
     // TODO: Interface with the game state machine to generate a player and assign them to a session.
     console.log('game started! Welcome', name);
-    var player = game_state_manager.create_new_player(user);
+    var player = game_state_manager.create_new_player({name: name, user: user});
     game_state_manager.assign_player_to_game(player, function(game_session) {
       console.log('assigned player to game');
     });
@@ -61,6 +61,6 @@ if (testing) {
     // game_state_manager();
 
     // TEMP: Start a game immediately.
-    user.socket.emit('start game');
+    // user.socket.emit('start game');
   });
 }
