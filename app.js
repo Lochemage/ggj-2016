@@ -66,7 +66,7 @@ if (testing) {
   });
 
   game_state_manager.add_handler('start summary', function(player, data) {
-    console.log('summary');
+    console.log('summary for', player.name);
     player.user.socket.emit('start summary', data);
   });
 
@@ -81,8 +81,10 @@ if (testing) {
   });
 
   connect.on('game event', function(user, event) {
-    console.log('game event', event.name);
-    user.player.state.on_event(game_state_manager, event);
+    if (user && user.player && user.player.state) {
+      console.log('game event', event.name);
+      user.player.state.on_event(game_state_manager, event);
+    }
   });
 
   connect.on('disconnect', function(user, event) {

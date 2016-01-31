@@ -20,10 +20,6 @@ $(document).ready(function() {
     socket.emit('game event', {name: 'play again'});
     return false;
   });
-  $('form.interim').submit(function() {
-    socket.emit('game event', {name: 'play again'});
-    return false;
-  });
 
   $('#judgeSpace > img.choice').hover(function() {
     var classes = this.className.replace('choice', 'choiceLarge').replace('not_shown', '').replace(/ /g, '.');
@@ -104,10 +100,14 @@ $(document).ready(function() {
     __hideSpaces();
 
     $('#summarySpace').removeClass('not_shown');
+    $('#summarySpace > img').removeClass('selected');
 
     for (var i = 0; i < data.length; ++i) {
       $('#summarySpace > img.order' + i).attr('src', data[i].image);
       $('#summarySpace > label.nametag.order' + i).text(data[i].player);
+      if (data[i].selected) {
+        $('#summarySpace > img.order' + i).addClass('selected');
+      }
     }
   });
 

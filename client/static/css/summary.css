@@ -125,6 +125,10 @@
   left: 432px;
 }
 
+#summarySpace > img.selected {
+  outline: 3px solid red;
+}
+
 #summarySpace > label.nametag {
   position: absolute;
   font-size: 30px;

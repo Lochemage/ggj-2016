@@ -24,10 +24,11 @@ SummaryState.prototype = {
     on_start: function(gsm, event_data) {
         var game_session = event_data.game_session;
         var summary_data = []
-        summary_data.push({player: 'original', image: game_session.original_images[0]})
+        summary_data.push({player: 'original', image: game_session.original_images[0], selected: true})
         for(var i = 0; i < game_session.slots.length; ++i) {
             curr_slot_data = game_session.slots[i];
-            summary_data.push({player: curr_slot_data.player.name, image: curr_slot_data.image_path});
+            var selected = event_data.selected.indexOf(i) > -1;
+            summary_data.push({player: curr_slot_data.player.name, image: curr_slot_data.image_path, selected: selected});
         }
         gsm.call_handler('start summary', this.player, summary_data);
     },

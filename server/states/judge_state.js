@@ -85,11 +85,14 @@ function onJudgment(gsm, player, gameSession, source, pickedURL) {
         // we're judging grandchild against the four source images
         // we need to decide if we chose the correct one -- if so, award points to the grandchild and ancestors
         var correctChoice = (srcIdx == 0);
+        var grandchildIdx = gameSession.find_slot_with_image(source);
+        var parentIdx = gameSession.get_index_of_parent(grandchildIdx);
+        var rootIdx = gameSession.get_index_of_parent(parentIdx);
+
         if (correctChoice) {
-            var grandchildIdx = gameSession.find_slot_with_image(source);
-            var parentIdx = gameSession.get_index_of_parent(grandchildIdx);
             gsm.add_points_to_player(1, gameSession.slots[grandchildIdx].player);
             gsm.add_points_to_player(1, gameSession.slots[parentIdx].player);
+            gsm.add_points_to_player(1, gameSession.slots[rootIdx].player);
             // also give point(s) to the judge if they get it right
             gsm.add_points_to_player(1, player);
         }
@@ -100,14 +103,15 @@ function onJudgment(gsm, player, gameSession, source, pickedURL) {
                     name: 'SummaryState',
                     data: {
                         game_session: gameSession,
-                        slot_idx: slotIdx
+                        slot_idx: slotIdx,
+                        selected: [grandchildIdx, parentIdx, rootIdx]
                     }
                 },
                 player: gameSession.slots[slotIdx].player
             });
         }
         // add to front of queue for judge, back of queue for others
-        gsm.set_player_state(player, 'SummaryState', {game_session: gameSession, slot_idx: -1});
+        gsm.set_player_state(player, 'SummaryState', {game_session: gameSession, slot_idx: -1, selected: [grandchildIdx, parentIdx, rootIdx]});
         // queue.push({
         //     state: {
         //         name: 'SummaryState',
@@ -145,30 +149,10 @@ JudgeState.prototype = {
                     }
                 }
                 break;
-            // case 'submit drawing':
-            //     var game_session = this.player.curr_session;
-            //     var player_index = game_session.get_player_slot_index(this.player);
-            //     game_session.save_image_to_slot(player_index, event.image_path);
 
-            //     if (game_session.is_finished()) {
-            //         // for (var slotIdx = 3; slotIdx < 7; ++slotIdx) {
-            //         //     game_session.slots[slotIdx].player.state_queue.push({
-            //         //         event_type: 'judge grandparent',
-            //         //         game_session: game_session,
-            //         //         judge_index: slotIdx
-            //         //     });
-            //         // }
-            //         game_session.slots[0].player.state_queue.push({
-            //             name: 'JudgeState',
-            //             data: {
-            //                 game_session: game_session
-            //             }
-            //         });
-            //         // TODO: Find some way to queue an outside player to for judging.
-            //     }
-            //     this.player.curr_session = null;
-            //     gsm.set_player_state(this.player, 'IdleState');
-            //     break;
+            case 'disconnect':
+                gsm.queue_external_judge(this.game_session, this.game_session.get_player_slot_index(this.player));
+                break;
 
             default:
                 break;

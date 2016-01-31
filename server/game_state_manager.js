@@ -108,7 +108,7 @@ GameStateManager.prototype = {
         // Check if someone needs an external judge.
         for (var i = 0; i < this.externalJudgesNeeded.length; ++i) {
             var game_session = this.externalJudgesNeeded[i].game_session;
-            if (!game_session.player_is_in_slot(player)) {
+            if (!game_session.has_player_in_slot(player)) {
                 var slot_idx = this.externalJudgesNeeded[i].slot_idx;
                 this.externalJudgesNeeded.splice(i, 1);
                 this.addJudgeState(player, game_session, slot_idx);
