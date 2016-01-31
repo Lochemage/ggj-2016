@@ -43,7 +43,12 @@ JudgeState.prototype = {
                 break;
         }
     },
-    on_start: function(gsm) {
+    on_start: function(gsm, data) {
+        var game_session = data.game_session;
+        var slot_idx = data.slot_idx;
+        
+
+        gsm.call_handler('start judging', this.player, {image: parent_image_path});
     },
     on_finish: function(gsm) {
     }

@@ -16,6 +16,7 @@ function GameStateManager() {
     this.players = [];
     this.matchmaker = new Matchmaker();
     this.handlers = {};
+    this.externalJudgesNeeded = [];
 };
 
 GameStateManager.prototype = {
@@ -103,10 +104,21 @@ GameStateManager.prototype = {
             return;
         }
 
+        // Check if someone needs an external judge.
+        for (var i = 0; i < this.externalJudgesNeeded.length; ++i) {
+            var game_session = this.externalJudgesNeeded[i].game_session;
+            if (!game_session.player_is_in_slot(player)) {
+                var slot_idx = this.externalJudgesNeeded[i].slot_idx;
+                this.externalJudgesNeeded.splice(i, 1);
+                this.set_player_state(player, 'JudgeState', {game_session: game_session, slot_idx: slot_idx});
+                return;
+            }
+        }
+
         this.set_player_state(player, 'DrawState');
     },
 
-    set_player_state: function(player, StateClass) {
+    set_player_state: function(player, StateClass, data) {
         assert(States.hasOwnProperty(StateClass));
 
         if (player.state) {
@@ -114,8 +126,12 @@ GameStateManager.prototype = {
         }
 
         player.state = new States[StateClass](player);
-        player.state.on_start(this);
+        player.state.on_start(this, data);
     },
+
+    queue_external_judge: function(game_session, slot_idx) {
+        this.externalJudgesNeeded.push({game_session: game_session, slot_idx: slot_idx});
+    }
 };
 
 module.exports = GameStateManager;

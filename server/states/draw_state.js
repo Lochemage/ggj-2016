@@ -27,13 +27,17 @@ DrawState.prototype = {
                     //         judge_index: slotIdx
                     //     });
                     // }
+
+                    // The original player should now make their judgement.
                     game_session.slots[0].player.state_queue.push({
                         name: 'JudgeState',
                         data: {
-                            game_session: game_session
+                            game_session: game_session,
+                            slot_idx: 0
                         }
                     });
                     // TODO: Find some way to queue an outside player to for judging.
+                    // gsm.queue_external_judge(game_session);
                 }
                 this.player.curr_session = null;
                 gsm.set_player_state(this.player, 'IdleState');
