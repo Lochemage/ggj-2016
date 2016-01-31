@@ -11,11 +11,14 @@ sessions.
 // everything blocks, but anything that might take time exits
 //   immediately but takes a callback to call when done
 
+var assert = require('assert');
+
 function Matchmaker() {}
 
 Matchmaker.prototype = {
     can_assign_player: function(player, game_session, slotIdx) {
-        return !game_session.has_player_in_slot(player);
+        return game_session.can_place_player_in_slot(player, slotIdx);
+        //return !game_session.has_player_in_slot(player);
     },
     match_players: function(game_session, assignable_players) {
         // naive implementation -- put all assignable players into the game session
@@ -55,17 +58,16 @@ Matchmaker.prototype = {
         //    game_session.assign_player_to_slot(assignable_players[players_to_match], i);
         //}
         //
-        var available_slots = game_session.get_available_slots();
-        //
-        var stillAssignablePlayers = [];
+        //var stillAssignablePlayers = [];
         // forPlayers:
         // for (var playerIdx = 0; playerIdx < assignable_players.length; ++playerIdx) {
         // var player = assignable_players[playerIdx];
         var available_slots = game_session.get_available_slots();
         for (var slotIdx = 0; slotIdx < available_slots.length; ++slotIdx) {
-            ava_sloat = available_slots[slotIdx];
-            if (this.can_assign_player(assignable_player, game_session, ava_sloat)) {
-                game_session.assign_player_to_slot(assignable_player, ava_sloat);
+            ava_slot = available_slots[slotIdx];
+            if (this.can_assign_player(assignable_player, game_session, ava_slot)) {
+                var success = game_session.assign_player_to_slot(assignable_player, ava_slot);
+                assert(success);
                 return true;
                 // continue forPlayers;
             }

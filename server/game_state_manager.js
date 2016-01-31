@@ -23,7 +23,7 @@ GameStateManager.prototype = {
     assign_player_to_game: function(player, callback) {
         var available_judge_session = this.matchmaker.find_available_judge_session(player);
         // console.log('available_judge_session: ' + available_judge_session);
-        if(available_judge_session.length > 0) {
+        if (available_judge_session.length > 0) {
             // console.log('available_judge_session != []')
             this.matchmaker.assign_player_to_judge(player, available_judge_session[0], available_judge_session[1]);
             player.curr_session = available_judge_session[0];
@@ -48,7 +48,7 @@ GameStateManager.prototype = {
             });
             return;
         }
-        else{
+        else {
             console.log('calling start game handler for existing game session');
             var player_index = game_session.get_player_slot_index(player);
             console.log('player_index: ', player_index)
@@ -101,6 +101,11 @@ GameStateManager.prototype = {
         }
 
         this.handlers[type].push(callback);
+    },
+    clear_handlers: function(type) {
+        if (this.handlers.hasOwnProperty(type)) {
+            this.handlers[type] = [];
+        }
     },
     call_handler: function(type, player, data) {
         if(this.handlers.hasOwnProperty(type)) {

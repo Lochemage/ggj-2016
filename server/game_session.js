@@ -26,16 +26,18 @@ GameSession.prototype = {
         //}
         //return -1;
     },
-    player_is_in_slot: function(player, slot_idx) {
-        return !!(this.slots[slot_idx] && this.slots[slot_idx].player == player);
+    player_is_in_slot: function(player, slotIdx) {
+        return !!(this.slots[slotIdx] && this.slots[slotIdx].player == player);
     },
-    assign_player_to_slot: function(player, slot_idx) {
-        if (slot_idx in this.slots && slot_idx in this.get_available_slots()) {
-            this.slots[slot_idx] = { player: player };
+    assign_player_to_slot: function(player, slotIdx) {
+        //if (slotIdx in this.slots && slotIdx in this.get_available_slots()) {
+        if (this.can_place_player_in_slot(player, slotIdx)) {
+        //if (this.slots.length > slotIdx && slotIdx >= 0 && this.get_available_slots().indexOf(slotIdx) > -1) {
+            this.slots[slotIdx] = { player: player };
             // remove available_slot at idx
-            this.available_slots.splice(this.available_slots.indexOf(slot_idx), 1);
+            this.available_slots.splice(this.available_slots.indexOf(slotIdx), 1);
         }
-        return this.player_is_in_slot(player, slot_idx);
+        return this.player_is_in_slot(player, slotIdx);
     },
     // expand: function(num_new_slots) {
     //     for (var i = 0; i < num_new_slots; i++) {
@@ -79,6 +81,11 @@ GameSession.prototype = {
         }
         return false;
     },
+    can_place_player_in_slot: function(player, slotIdx) {
+        //return !this.has_player_in_slot(player) && (slotIdx in this.get_available_slots());
+        //return !this.has_player_in_slot(player) && this.get_available_slots().indexOf(slotIdx) > -1;
+        return !this.has_player_in_slot(player) && this.get_available_slots().indexOf(slotIdx) > -1;
+    },
     get_player_slot_index: function(player) {
         for (var slotIdx = 0; slotIdx < this.slots.length; ++slotIdx) {
             if (this.slots[slotIdx] && this.slots[slotIdx].player == player) {
@@ -87,10 +94,10 @@ GameSession.prototype = {
         }
         return -1;
     },
-    save_image_to_slot: function(slot_idx, image_path) {
-        this.slots[slot_idx].image_path = image_path;
+    save_image_to_slot: function(slotIdx, image_path) {
+        this.slots[slotIdx].image_path = image_path;
         // console.log('this.slots', this.slots);
-        this.expand_children(slot_idx);
+        this.expand_children(slotIdx);
     }
 };
 
