@@ -118,7 +118,7 @@ function JudgeState(player) {
 JudgeState.prototype = {
     on_event: function(gsm, event) {
         switch (event.name) {
-            case 'decided':
+            case 'judgement made':
                 switch (event.slot_idx) {
                     //
                 }
@@ -156,8 +156,7 @@ JudgeState.prototype = {
         var game_session = data.game_session;
         var slot_idx = data.slot_idx;
         
-
-        gsm.call_handler('start judging', this.player, {image: parent_image_path});
+        gsm.call_handler('start judging', this.player, getJudgeImageSet(game_session, slot_idx));
     },
     on_finish: function(gsm) {
     }

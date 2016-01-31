@@ -50,12 +50,19 @@ if (testing) {
     player.user.socket.emit('start game', data);
   });
 
-  game_state_manager.add_handler('start judge', function(player, data) {
+  game_state_manager.add_handler('start judging', function(player, data) {
     console.log('judging');
-    player.user.socket.emit('start judge', data);
+    player.user.socket.emit('start judging', data);
+  });
+
+  game_state_manager.add_handler('start summary', function(player, data) {
+    
   });
 
   connect.on('start game', function(user, name) {
+    // user.socket.emit('start judging', {source: 'url', choices: ['1', '2', '3', '4']});
+    // return;
+
     console.log('Welcome', name);
     var player = game_state_manager.create_new_player({name: name, user: user});
     user.player = player;
@@ -63,9 +70,10 @@ if (testing) {
   });
 
   connect.on('game event', function(user, event) {
+    console.log('game event', event.name);
     user.player.state.on_event(game_state_manager, event);
   });
-  
+
   connect.on('disconnect', function(user, event) {
       user.disconnect(game_state_manager);
       //user.player.state.on_event(game_state_manager, {name: 'disconnect'});

@@ -20,7 +20,7 @@ Player.prototype = {
         return this.state_queue.length > 0;
     },
     get_queued_state: function() {
-        return this.state_queue.unshift();
+        return this.state_queue.shift();
     },
     // find_available_judge_session: function() {
     //     for (var event_index = 0; event_index < this.state_queue.length; ++event_index) {

@@ -123,6 +123,7 @@ GameStateManager.prototype = {
     },
 
     set_player_state: function(player, StateClass, data) {
+        console.log('StateClass', StateClass);
         assert(States.hasOwnProperty(StateClass));
 
         if (player.state) {
