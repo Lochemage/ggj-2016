@@ -20,24 +20,14 @@ DrawState.prototype = {
                 game_session.save_image_to_slot(player_index, event.image_path);
 
                 if (game_session.is_finished()) {
-                    // for (var slotIdx = 3; slotIdx < 7; ++slotIdx) {
-                    //     game_session.slots[slotIdx].player.state_queue.push({
-                    //         event_type: 'judge grandparent',
-                    //         game_session: game_session,
-                    //         judge_index: slotIdx
-                    //     });
-                    // }
-
                     // The original player should now make their judgement.
-                    game_session.slots[0].player.state_queue.push({
+                    game_session.slots[0].player.queue_state({
                         name: 'JudgeState',
                         data: {
                             game_session: game_session,
                             slot_idx: 0
                         }
                     });
-                    // TODO: Find some way to queue an outside player to for judging.
-                    // gsm.queue_external_judge(game_session);
                 }
                 this.player.curr_session = null;
                 gsm.set_player_state(this.player, 'IdleState');

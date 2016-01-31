@@ -111,7 +111,7 @@ GameStateManager.prototype = {
             if (!game_session.player_is_in_slot(player)) {
                 var slot_idx = this.externalJudgesNeeded[i].slot_idx;
                 this.externalJudgesNeeded.splice(i, 1);
-                this.addJudgeState(game_session, slot_idx);
+                this.addJudgeState(player, game_session, slot_idx);
                 return;
             }
         }

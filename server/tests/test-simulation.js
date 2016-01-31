@@ -148,7 +148,7 @@ describe('GameSimulation', function() {
         assert.equal(game_state_manager.game_sessions.length, 2);
         assert.equal(game_state_manager.game_sessions[0].slots.length, 7);
         assert.equal(game_state_manager.game_sessions[1].slots.length, 3);
-        assert.equal(players[3].state_queue.length, 0);
+        assert(!players[3].has_queued_state());
     });
     it('players 7 and 8 join', function(done) {
         var player = __add_player();

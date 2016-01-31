@@ -67,8 +67,12 @@ $(document).ready(function() {
       socket.emit('game event', {name: 'submit drawing', image_path: imgData});
 
       __hideSpaces();
-      $('#continueSpace').removeClass('not_shown');
     });
+  });
+
+  socket.on('start idle', function(data) {
+    __hideSpaces();
+    $('#continueSpace').removeClass('not_shown');
   });
 
   socket.on('start judging', function(data) {
@@ -84,6 +88,16 @@ $(document).ready(function() {
     makingJudgement = true;
   });
 
+  socket.on('start summary', function(data) {
+    __hideSpaces();
+
+    $('#summarySpace').removeClass('not_shown');
+
+    for (var i = 0; i < data.length; ++i) {
+      $('#summarySpace > img.order' + i).attr('src', data[i].image);
+    }
+  });
+
   function __hideSpaces() {
     $('#welcomeSpace').addClass('not_shown');
     $('#drawSpace').addClass('not_shown');
@@ -93,7 +107,7 @@ $(document).ready(function() {
   };
 
   function __startTimer($timer, done) {
-    var seconds = 10;
+    var seconds = 40;
 
     var startTime = new Date().getTime();
     var lastTime = startTime;

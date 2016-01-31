@@ -17,6 +17,12 @@
   height: 200px;
 }
 
+#summarySpace > form {
+  position: absolute;
+  top: 20px;
+  left: 500px;
+}
+
 #summarySpace > img.original {
   top: 20px;
   left: 289px;

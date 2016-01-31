@@ -23,6 +23,7 @@ DrawState.prototype = {
         }
     },
     on_start: function(gsm) {
+        gsm.call_handler('start idle', this.player);
     },
     on_finish: function(gsm) {
     }

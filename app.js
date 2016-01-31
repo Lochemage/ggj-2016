@@ -50,13 +50,19 @@ if (testing) {
     player.user.socket.emit('start game', data);
   });
 
+  game_state_manager.add_handler('start idle', function(player) {
+    console.log('idling...');
+    player.user.socket.emit('start idle');
+  });
+
   game_state_manager.add_handler('start judging', function(player, data) {
     console.log('judging');
     player.user.socket.emit('start judging', data);
   });
 
   game_state_manager.add_handler('start summary', function(player, data) {
-    
+    console.log('summary');
+    player.user.socket.emit('start summary', data);
   });
 
   connect.on('start game', function(user, name) {
@@ -76,6 +82,7 @@ if (testing) {
 
   connect.on('disconnect', function(user, event) {
       user.disconnect(game_state_manager);
+      console.log('user disconnected');
       //user.player.state.on_event(game_state_manager, {name: 'disconnect'});
   });
 
