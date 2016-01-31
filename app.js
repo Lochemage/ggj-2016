@@ -54,6 +54,7 @@ if (testing) {
     // TODO: Interface with the game state machine to generate a player and assign them to a session.
     console.log('Welcome', name);
     var player = game_state_manager.create_new_player({name: name, user: user});
+    user.player = player;
     game_state_manager.assign_player_to_game(player, function(game_session) {
       console.log('assigned player to game');
     });
@@ -62,5 +63,9 @@ if (testing) {
 
     // TEMP: Start a game immediately.
     // user.socket.emit('start game');
+  });
+
+  connect.on('submit drawing', function(user, imgData) {
+    game_state_manager.player_submit_image(user.player, imgData);
   });
 }

@@ -7,7 +7,7 @@ $(document).ready(function() {
   };
 
   function __startTimer($timer, done) {
-    var seconds = 30;
+    var seconds = 60;
 
     var startTime = new Date().getTime();
     var lastTime = startTime;
@@ -57,7 +57,9 @@ $(document).ready(function() {
     $('#drawSpace > .previewContainer > img.preview').attr('src', data.image);
     prepareCanvas();
     __startTimer($('#drawSpace > .timer'), function() {
+      var imgData = retrieveCanvasImage();
       console.log('time over!');
+      socket.emit('submit drawing', imgData);
     });
   });
 });
