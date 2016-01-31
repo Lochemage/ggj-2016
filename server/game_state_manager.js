@@ -1,4 +1,4 @@
-var matchmaker = require('./server/matchmaker');
+var matchmaker = require('./matchmaker');
 
 function GameStateManager() {
     this.game_sessions = [undefined];
