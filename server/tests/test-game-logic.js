@@ -91,6 +91,12 @@ describe('GameSession', function() {
             assert.equal(result, false);
         });
     });
+    describe('remove_player_from_slot', function() {
+        describe('basic test', function() {
+            var session = new GameSession();
+            //session.assign_player_to_slot()
+        });
+    });
     describe('expand', function() {
         //
     });
@@ -130,7 +136,7 @@ describe('Matchmaker', function() {
 
 describe('GameStateManager', function() {
     // this.timeout(10000);
-    it('assign_player_to_game_existing_session', function(done) {
+    it('update_player_state_existing_session', function(done) {
         var game_state_manager = new GameStateManager();
         var fake_game_session = new GameSession([]);
         var fake_player = new Player({name: 'name', user: 'user'});
@@ -147,15 +153,15 @@ describe('GameStateManager', function() {
         
         var player = game_state_manager.create_new_player({name: 'name', user: 'user'});
         assert.equal(game_state_manager.players.length, 2);
-        game_state_manager.assign_player_to_game(player, function(game_session) {
-            assert.equal(game_session, fake_game_session);
-            assert.equal(game_state_manager.game_sessions.length, 1);
-            assert.equal(game_state_manager.game_sessions[0].available_slots.length, 1);
-            assert.equal(game_state_manager.game_sessions[0].available_slots[0], 2);
-            assert.equal(game_state_manager.game_sessions[0].slots.length, 3);
-            assert(game_state_manager.game_sessions[0].player_is_in_slot(player, 1));
-            done();
-        });
-        
+        game_state_manager.update_player_state(player);
+
+        var game_session = player.curr_session;
+        assert.equal(game_session, fake_game_session);
+        assert.equal(game_state_manager.game_sessions.length, 1);
+        assert.equal(game_state_manager.game_sessions[0].available_slots.length, 1);
+        assert.equal(game_state_manager.game_sessions[0].available_slots[0], 2);
+        assert.equal(game_state_manager.game_sessions[0].slots.length, 3);
+        assert(game_state_manager.game_sessions[0].player_is_in_slot(player, 1));
+        done();
     });
 });

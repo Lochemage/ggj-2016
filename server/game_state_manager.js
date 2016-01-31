@@ -4,11 +4,19 @@ var Player = require('./player');
 const assert = require('assert');
 var g_image_search = require('./g_image_search');
 
+// var DefaultState = require('./states/default_state');
+var States = {
+    DrawState: require('./states/draw_state'),
+    IdleState: require('./states/idle_state'),
+    JudgeState: require('./states/judge_state')
+};
+
 function GameStateManager() {
     this.game_sessions = [];
     this.players = [];
     this.matchmaker = new Matchmaker();
     this.handlers = {};
+    this.externalJudgesNeeded = [];
 };
 
 GameStateManager.prototype = {
@@ -19,89 +27,41 @@ GameStateManager.prototype = {
         // console.log('this.players: ', this.players);
         return player;
     },
-    // might be draw session or judge session
-    assign_player_to_game: function(player, callback) {
-        var available_judge_session = this.matchmaker.find_available_judge_session(player);
-        // console.log('available_judge_session: ' + available_judge_session);
-        if(available_judge_session.length > 0) {
-            // console.log('available_judge_session != []')
-            this.matchmaker.assign_player_to_judge(player, available_judge_session[0], available_judge_session[1]);
-            player.curr_session = available_judge_session[0];
-            var data = {};
-            console.log('calling start judge handler');
-            this.call_handler('start judge', player, data);
-            callback(available_judge_session[0]);
-            return;
-        }
-        var game_session = this.matchmaker.match_a_player_with_sessions(this.game_sessions, player);
-        if (!game_session) {
-            var self = this;
-            console.log('creating a new game session');
-            this.start_new_game_session(function(game_session) {
-                var matched = self.matchmaker.match_a_player_with_a_session(game_session, player);
-                console.log('matched: ' + matched);
-                assert(matched);
-                player.curr_session = game_session;
-                console.log('calling start game handler for new game session');
-                self.call_handler('start game', player, {image: game_session.original_images[0]});
-                callback(game_session);
-            });
-            return;
-        }
-        else{
-            console.log('calling start game handler for existing game session');
-            var player_index = game_session.get_player_slot_index(player);
-            console.log('player_index: ', player_index)
-            var parent_index = game_session.get_index_of_parent(player_index);
-            console.log('parent_index: ', parent_index)
-            var parent_image_path = game_session.slots[parent_index].image_path;
-            assert(parent_image_path != '');
-            player.curr_session = game_session;
-            this.call_handler('start game', player, {image: parent_image_path});
-            callback(game_session);
-        }
-    },
 
     // start_new_game_session: g_image_search.init(4).then(function (image_url){
     //     console.log('image url: ' + image_url)
     //     }
     // ),
-    start_new_game_session: function(callback) {
+    promise_to_start_new_game_session: function(callback) {
         var self = this;
-        g_image_search.init(4).then(function (image_urls) {
+        g_image_search.promiseImages(4).then(function (image_urls) {
             var game_session = new GameSession(image_urls);
             self.game_sessions.push(game_session);
             callback(game_session);
         }).catch(function(err) {
             console.log(err);
         });
-        
     },
-    player_submit_image: function(player, image_path) {
-        game_session = player.curr_session;
-        var player_index = game_session.get_player_slot_index(player);
-        game_session.save_image_to_slot(player_index, image_path);
 
-        //check if this player is last grand child
-        var grand_index = game_session.get_index_of_grandparent(player_index);
-        var last_child_index = game_session.get_index_of_first_grandchild(grand_index) + 3;
-        if(player_index == last_child_index) {
-            // notify grandparent
-            grandparent_player = game_session.slots[grand_index].player;
-            grandparent_player.event_queue.push({event_type: 'judge', game_session: game_session, judge_index: grand_index});
-        }
-        if(player_index != 0) {
-            //insert pick grandparent image session to player's event_queue
-            player.event_queue.splice(0, 0, {});
-        }
-        player.curr_session = null;
+    start_new_game_session: function() {
+        var image_urls = g_image_search.provideImages(4);
+        var game_session = new GameSession(image_urls);
+        this.game_sessions.push(game_session);
+        return game_session;
     },
+
+    ///////////////////////////////////////////////////////////////////
+
     add_handler: function(type, callback) {
         if (!this.handlers.hasOwnProperty(type)) {
             this.handlers[type] = [];
         }
-
         this.handlers[type].push(callback);
+    },
+    clear_handlers: function(type) {
+        if (this.handlers.hasOwnProperty(type)) {
+            this.handlers[type] = [];
+        }
     },
     call_handler: function(type, player, data) {
         if(this.handlers.hasOwnProperty(type)) {
@@ -112,11 +72,66 @@ GameStateManager.prototype = {
             }
         }
     },
-};
-// // entry point
-// module.exports.init = function() {
-//     // todo
-// };
-// module.exports.game_state_manager = new GameStateManager();
-module.exports = GameStateManager;
 
+    ///////////////////////////////////////////////////////////////////
+
+    // find_available_judge_session: function(player) {
+    //     var result = null;
+    //     var available_judge_session = player.find_available_judge_session();
+    //     // console.log('available_judge_session: ' + available_judge_session);
+    //     if (available_judge_session.length > 0) {
+    //         // console.log('available_judge_session != []')
+    //         this.matchmaker.assign_player_to_judge(player, available_judge_session[0], available_judge_session[1]);
+    //         player.curr_session = available_judge_session[0];
+    //         var data = {};
+    //         console.log('calling start judge handler');
+    //         this.call_handler('start judge', player, data);
+    //         result = available_judge_session[0];
+    //     }
+    //     return result;
+    // },
+
+    update_player_state: function(player) {
+        // var judge_session = this.find_available_judge_session(player);
+        // if (judge_session) {
+        //     // TODO
+        //     return;
+        // }
+
+        if (player.has_queued_state()) {
+            var queue = player.get_queued_state();
+            this.set_player_state(player, queue.name, queue.data);
+            return;
+        }
+
+        // Check if someone needs an external judge.
+        for (var i = 0; i < this.externalJudgesNeeded.length; ++i) {
+            var game_session = this.externalJudgesNeeded[i].game_session;
+            if (!game_session.player_is_in_slot(player)) {
+                var slot_idx = this.externalJudgesNeeded[i].slot_idx;
+                this.externalJudgesNeeded.splice(i, 1);
+                this.set_player_state(player, 'JudgeState', {game_session: game_session, slot_idx: slot_idx});
+                return;
+            }
+        }
+
+        this.set_player_state(player, 'DrawState');
+    },
+
+    set_player_state: function(player, StateClass, data) {
+        assert(States.hasOwnProperty(StateClass));
+
+        if (player.state) {
+            player.state.on_finish(this);
+        }
+
+        player.state = new States[StateClass](player);
+        player.state.on_start(this, data);
+    },
+
+    queue_external_judge: function(game_session, slot_idx) {
+        this.externalJudgesNeeded.push({game_session: game_session, slot_idx: slot_idx});
+    }
+};
+
+module.exports = GameStateManager;

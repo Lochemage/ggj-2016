@@ -26,16 +26,26 @@ GameSession.prototype = {
         //}
         //return -1;
     },
-    player_is_in_slot: function(player, slot_idx) {
-        return this.slots[slot_idx] !== undefined && this.slots[slot_idx].player == player;
+    player_is_in_slot: function(player, slotIdx) {
+        return !!(this.slots[slotIdx] && this.slots[slotIdx].player == player);
     },
-    assign_player_to_slot: function(player, slot_idx) {
-        if (slot_idx in this.slots && slot_idx in this.get_available_slots()) {
-            this.slots[slot_idx] = { player: player };
+    assign_player_to_slot: function(player, slotIdx) {
+        //if (slotIdx in this.slots && slotIdx in this.get_available_slots()) {
+        if (this.can_place_player_in_slot(player, slotIdx)) {
+        //if (this.slots.length > slotIdx && slotIdx >= 0 && this.get_available_slots().indexOf(slotIdx) > -1) {
+            this.slots[slotIdx] = { player: player };
             // remove available_slot at idx
-            this.available_slots.splice(this.available_slots.indexOf(slot_idx), 1);
+            this.available_slots.splice(this.available_slots.indexOf(slotIdx), 1);
         }
-        return this.player_is_in_slot(player, slot_idx);
+        return this.player_is_in_slot(player, slotIdx);
+    },
+    remove_player_from_slot: function(player, slotIdx) {
+        this.slots[slotIdx] = null;
+        for (var newHomeIdx = 0;
+            newHomeIdx < this.available_slots.length && this.available_slots[newHomeIdx] <  slotIdx;
+            ++newHomeIdx) {
+        }
+        this.available_slots.splice(newHomeIdx, 0, slotIdx);
     },
     // expand: function(num_new_slots) {
     //     for (var i = 0; i < num_new_slots; i++) {
@@ -49,7 +59,7 @@ GameSession.prototype = {
     expand_children: function(slotIdx) {
         var first_child_index = this.get_index_of_first_child(slotIdx);
         this.available_slots.push(first_child_index);
-        console.log('this.slots: ' + this.slots)
+        // console.log('this.slots: ' + this.slots)
         // console.log('this.slots[first_child_index]: ' + this.slots[first_child_index])
         this.slots[first_child_index] = {};
         this.slots[first_child_index] = null;
@@ -58,10 +68,10 @@ GameSession.prototype = {
         this.slots[first_child_index + 1] = null;
     },
     get_index_of_parent: function(slotIdx) {
-        return Math.ceil(slotIdx/2) - 1;
+        return slotIdx > -1 ? Math.ceil(slotIdx/2) - 1 : -1;
     },
     get_index_of_first_child: function(slotIdx) {
-        return slotIdx*2 + 1;
+        return slotIdx > -1 ? slotIdx*2 + 1 : -1;
     },
     get_index_of_grandparent: function(slotIdx) {
         parent_index = this.get_index_of_parent(slotIdx);
@@ -79,6 +89,11 @@ GameSession.prototype = {
         }
         return false;
     },
+    can_place_player_in_slot: function(player, slotIdx) {
+        //return !this.has_player_in_slot(player) && (slotIdx in this.get_available_slots());
+        //return !this.has_player_in_slot(player) && this.get_available_slots().indexOf(slotIdx) > -1;
+        return !this.has_player_in_slot(player) && this.get_available_slots().indexOf(slotIdx) > -1;
+    },
     get_player_slot_index: function(player) {
         for (var slotIdx = 0; slotIdx < this.slots.length; ++slotIdx) {
             if (this.slots[slotIdx] && this.slots[slotIdx].player == player) {
@@ -87,10 +102,34 @@ GameSession.prototype = {
         }
         return -1;
     },
-    save_image_to_slot: function(slot_idx, image_path) {
-        this.slots[slot_idx].image_path = image_path;
-        console.log('this.slots', this.slots);
-        this.expand_children(slot_idx);
+    save_image_to_slot: function(slotIdx, image_path) {
+        this.slots[slotIdx].image_path = image_path;
+        // console.log('this.slots', this.slots);
+        if (!this.can_expand()) {
+            this.expand_children(slotIdx);
+        }
+    },
+    is_finished: function() {
+        // check that all slots on the third row of this game session are done
+        for (var slotIdx = 0; slotIdx < 7; ++slotIdx) {
+            if (!this.slots[slotIdx] || !this.slots[slotIdx].image_path) {
+                return false;
+            }
+        }
+        return true;
+    },
+    can_expand: function() {
+        return this.slots.length >= 7;
+    },
+    get_player_parent_image: function(player) {
+        console.log('*** get_player_parent_image ***');
+        var playerIdx = this.get_player_slot_index(player);
+        console.log('playerIdx', playerIdx);
+        var parentIdx = this.get_index_of_parent(playerIdx);
+        console.log('parentIdx', parentIdx);
+        return parentIdx > -1 && parentIdx < this.slots.length
+            ? this.slots[parentIdx].image_path
+            : this.original_images[0];
     }
 };
 

@@ -1,0 +1,103 @@
+#summarySpace {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  margin-left: -350px;
+}
+
+#summarySpace > img.source {
+  position: absolute;
+  width: 123px;
+  height: 93px;
+}
+
+#summarySpace > img.sourceLarge {
+  position: absolute;
+  width: 267px;
+  height: 200px;
+}
+
+#summarySpace > img.original {
+  top: 20px;
+  left: 289px;
+}
+
+#summarySpace > img.tier1 {
+  top: 197px;
+  left: 289px;
+}
+
+#summarySpace > img.tier2 {
+  top: 364px;
+}
+
+#summarySpace > img.tier2.left {
+  left: 122px;
+}
+
+#summarySpace > img.tier2.right {
+  left: 456px;
+}
+
+#summarySpace > img.tier3 {
+  top: 538px;
+}
+
+#summarySpace > img.tier3.farleft {
+  left: 31px;
+}
+
+#summarySpace > img.tier3.left {
+  left: 204px;
+}
+
+#summarySpace > img.tier3.right {
+  left: 372px;
+}
+
+#summarySpace > img.tier3.farright {
+  left: 542px;
+}
+
+
+#summarySpace > img.sourceLarge.original {
+  top: 0px;
+  left: 222px;
+}
+
+#summarySpace > img.sourceLarge.tier1 {
+  top: 157px;
+  left: 222px;
+}
+
+#summarySpace > img.sourceLarge.tier2 {
+  top: 314px;
+}
+
+#summarySpace > img.sourceLarge.tier2.left {
+  left: 55px;
+}
+
+#summarySpace > img.sourceLarge.tier2.right {
+  left: 389px;
+}
+
+#summarySpace > img.sourceLarge.tier3 {
+  top: 488px;
+}
+
+#summarySpace > img.sourceLarge.tier3.farleft {
+  left: 0px;
+}
+
+#summarySpace > img.sourceLarge.tier3.left {
+  left: 137px;
+}
+
+#summarySpace > img.sourceLarge.tier3.right {
+  left: 305px;
+}
+
+#summarySpace > img.sourceLarge.tier3.farright {
+  left: 432px;
+}

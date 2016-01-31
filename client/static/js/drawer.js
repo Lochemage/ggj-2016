@@ -70,7 +70,13 @@ function resourceLoaded()
 }
 
 function retrieveCanvasImage() {
-	return canvas.toDataURL('image/jpeg');
+	var tempCanvas = document.createElement('canvas');
+	tempCanvas.setAttribute('width', 267);
+	tempCanvas.setAttribute('height', 200);
+	tempContext = tempCanvas.getContext('2d');
+	tempContext.drawImage(canvas, -111, -11);
+
+	return tempCanvas.toDataURL('image/jpeg');
 };
 
 /**
@@ -225,7 +231,13 @@ function addClick(x, y, dragging)
 */
 function clearCanvas()
 {
-	context.clearRect(0, 0, canvasWidth, canvasHeight);
+	clickX = [];
+	clickY = [];
+	clickColor = [];
+	clickTool = [];
+	clickSize = [];
+	clickDrag = [];
+	redraw();
 }
 
 /**
@@ -236,7 +248,7 @@ function redraw()
 	// Make sure required resources are loaded before redrawing
 	if(curLoadResNum < totalLoadResources){ return; }
 	
-	clearCanvas();
+	context.clearRect(0, 0, canvasWidth, canvasHeight);
 	
 	var locX;
 	var locY;

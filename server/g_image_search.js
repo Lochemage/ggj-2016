@@ -1,14 +1,17 @@
+var image_urls = require('./data/image_urls.json');
+
 // google-images: https://github.com/vdemedes/google-images
 var googleImages = require('google-images');
 
-var client = googleImages('004302857253127136025:rq6bsxpxewk', 'AIzaSyDflroT2mavSH8VC_0MWfR091gm0-H3ycM');
+var client = googleImages('004302857253127136025:rq6bsxpxewk', 'AIzaSyDGrB3OONBeCe7vkyUzXSWOXf5ZsG0L_2o');
 // first argument CSE ID, find at https://cse.google.com/cse/setup/basic?cx=004302857253127136025%3Arq6bsxpxewk
 // second argument API key, find at https://console.developers.google.com/apis/credentials?project=ggj-jjd
 
-var keyword_lib = ['face', 'horse', 'flower']
+var google_keyword_lib = ['face', 'horse', 'flower'];
+var file_keyword_lib = ['face', 'animal', 'flower', 'food'];
 
-module.exports.init = function fetch_google_image(image_count) {
-    return client.search(getRandomKeyword(), {size: 'medium'})
+function fetch_google_image(image_count) {
+    return client.search(getRandomKeyword(google_keyword_lib), {size: 'medium'})
         .then(function (images) {
             /*
             [{
@@ -26,16 +29,44 @@ module.exports.init = function fetch_google_image(image_count) {
              */
             // console.log(images)
             // console.log('images.length: ' + images.length)
-            image_urls = []
+            var out_image_urls = []
             for (var i=0; i < image_count && images.length; i++) {
                 var index = getRandomInt(0, images.length - 1);
                 var picked_image = images[index];
-                image_urls.push(picked_image['url'])
+                out_image_urls.push(picked_image['url']);
                 images.splice(index, 1);
             }
-            return image_urls;
+            return out_image_urls;
     })
 }
+
+function fetch_image_url_from_file(image_count) {
+    var key = getRandomKeyword(file_keyword_lib)
+    var images = image_urls[key].slice();
+    var out_image_urls = []
+    for (var i = 0; i < image_count && images.length; i++) {
+        var index = getRandomInt(0, images.length - 1);
+        var picked_image = images[index];
+        out_image_urls.push(picked_image);
+        images.splice(index, 1);
+        console.log('key', key, 'index', index);
+    }
+    console.log('**********');
+    return out_image_urls;
+}
+
+function promise_to_fetch_image_url_from_file(image_count) {
+    return new Promise(function (resolve, reject) {
+        var out_image_urls = fetch_image_url_from_file(image_count);
+        resolve(out_image_urls);
+    });
+    //return Promise.resolve(fetch_image_url_from_file(image_count));
+}
+
+//module.exports.init = fetch_google_image;
+module.exports.promiseImages = promise_to_fetch_image_url_from_file;
+module.exports.provideImages = fetch_image_url_from_file;
+
 //http://stackoverflow.com/questions/1527803/generating-random-numbers-in-javascript-in-a-specific-range
 /**
  * Returns a random integer between min (inclusive) and max (inclusive)
@@ -45,7 +76,7 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getRandomKeyword() {
+function getRandomKeyword(keyword_lib) {
     var index = getRandomInt(0, keyword_lib.length - 1)
     var picked_keyword = keyword_lib[index];
     // console.log('picked_keyword: ' + picked_keyword)
