@@ -41,24 +41,31 @@ function fetch_google_image(image_count) {
 }
 
 function fetch_image_url_from_file(image_count) {
+    var key = getRandomKeyword(file_keyword_lib)
+    var images = image_urls[key].slice();
+    var out_image_urls = []
+    for (var i = 0; i < image_count && images.length; i++) {
+        var index = getRandomInt(0, images.length - 1);
+        var picked_image = images[index];
+        out_image_urls.push(picked_image);
+        images.splice(index, 1);
+        console.log('key', key, 'index', index);
+    }
+    console.log('**********');
+    return out_image_urls;
+}
+
+function promise_to_fetch_image_url_from_file(image_count) {
     return new Promise(function (resolve, reject) {
-        var key = getRandomKeyword(file_keyword_lib)
-        var images = image_urls[key].slice();
-        var out_image_urls = []
-        for (var i=0; i < image_count && images.length; i++) {
-            var index = getRandomInt(0, images.length - 1);
-            var picked_image = images[index];
-            out_image_urls.push(picked_image);
-            images.splice(index, 1);
-            console.log('key', key, 'index', index);
-        }
-        console.log('**********');
+        var out_image_urls = fetch_image_url_from_file(image_count);
         resolve(out_image_urls);
     });
+    //return Promise.resolve(fetch_image_url_from_file(image_count));
 }
 
 //module.exports.init = fetch_google_image;
-module.exports.init = fetch_image_url_from_file;
+module.exports.promiseImages = promise_to_fetch_image_url_from_file;
+module.exports.provideImages = fetch_image_url_from_file;
 
 //http://stackoverflow.com/questions/1527803/generating-random-numbers-in-javascript-in-a-specific-range
 /**

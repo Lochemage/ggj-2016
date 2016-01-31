@@ -112,6 +112,16 @@ GameSession.prototype = {
     },
     can_expand: function() {
         return this.slots.length >= 7;
+    },
+    get_player_parent_image: function(player) {
+        console.log('*** get_player_parent_image ***');
+        var playerIdx = this.get_player_slot_index(player);
+        console.log('playerIdx', playerIdx);
+        var parentIdx = this.get_index_of_parent(playerIdx);
+        console.log('parentIdx', parentIdx);
+        return parentIdx > -1 && parentIdx < this.slots.length
+            ? this.slots[parentIdx].image_path
+            : this.original_images[0];
     }
 };
 

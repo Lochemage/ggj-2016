@@ -10,6 +10,7 @@ function Player(data) {
     this.user = data.user;
     this.event_queue = [];
     this.curr_session = null;
+    this.state = null;
 };
 
 Player.prototype = {
