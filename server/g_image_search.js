@@ -1,7 +1,7 @@
 // google-images: https://github.com/vdemedes/google-images
 var googleImages = require('google-images');
 
-var client = googleImages('004302857253127136025:rq6bsxpxewk', 'AIzaSyDflroT2mavSH8VC_0MWfR091gm0-H3ycM');
+var client = googleImages('004302857253127136025:rq6bsxpxewk', 'AIzaSyDGrB3OONBeCe7vkyUzXSWOXf5ZsG0L_2o');
 // first argument CSE ID, find at https://cse.google.com/cse/setup/basic?cx=004302857253127136025%3Arq6bsxpxewk
 // second argument API key, find at https://console.developers.google.com/apis/credentials?project=ggj-jjd
 
