@@ -70,7 +70,7 @@ if (testing) {
     /*/
     game_state_manager.processPlayerEvent(user.player, {
         phase: 'FINISH',
-        image_path: image_path
+        image_path: imgData
     });
     //*/
   });
