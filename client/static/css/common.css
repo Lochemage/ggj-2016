@@ -40,13 +40,13 @@ body {
   border-radius: 100% 0 0 100% / 50% 0 0 50%;
   z-index: 200;
   border-right: none;
-  animation: rota 5s linear infinite;
+  /*animation: rota 5s linear infinite;*/
 }
 
 .wrapper:hover .spinner,
 .wrapper:hover .filler,
 .wrapper:hover .mask {
-  animation-play-state: running;
+  /*animation-play-state: running;*/
 }
 
 .wrapper .filler {
@@ -54,7 +54,7 @@ body {
   left: 50%;
   opacity: 0;
   z-index: 100;
-  animation: opa 5s steps(1, end) infinite reverse;
+  /*animation: opa 5s steps(1, end) infinite reverse;*/
   border-left: none;
 }
 
@@ -65,7 +65,7 @@ body {
   background: lightblue;
   opacity: 1;
   z-index: 300;
-  animation: opa 5s steps(1, end) infinite;
+  /*animation: opa 5s steps(1, end) infinite;*/
 }
 
 @keyframes rota {
