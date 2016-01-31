@@ -26,7 +26,7 @@ GameStateManager.prototype = {
             this.matchmaker.assign_player_to_judge(player, available_judge_session[0], available_judge_session[1]);
             var data = {};
             console.log('calling start judge handler');
-            this.call_handler('start judge', data);
+            this.call_handler('start judge', player, data);
             callback(available_judge_session[0]);
         }
         var game_session = this.matchmaker.match_a_player_with_sessions(this.game_sessions, player);
@@ -37,14 +37,14 @@ GameStateManager.prototype = {
                 console.log('matched: ' + matched)
                 assert(matched);
                 console.log('calling start game handler for new game session');
-                self.call_handler('start game', {image: game_session.original_images[0]});
+                self.call_handler('start game', player, {image: game_session.original_images[0]});
                 callback(game_session);
             });
            
         }
         else{
             console.log('calling start game handler for existing game session');
-            this.call_handler('start game', {});//{image: game_session.slots[0]})
+            this.call_handler('start game', player, {});//{image: game_session.slots[0]})
             callback(game_session);
         }
     },
@@ -85,10 +85,12 @@ GameStateManager.prototype = {
 
         this.handlers[type].push(callback);
     },
-    call_handler: function(type, data) {
+    call_handler: function(type, player, data) {
         if(this.handlers.hasOwnProperty(type)) {
+            console.log('found', type, 'handler');
             for (var i = 0; i < this.handlers[type].length; ++i) {
-                this.handlers[type][i](data);
+                console.log('calling function');
+                this.handlers[type][i](player, data);
             }
         }
     },
