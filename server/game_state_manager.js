@@ -91,6 +91,7 @@ GameStateManager.prototype = {
             grandparent_player.event_queue.push({event_type: 'judge', game_session: game_session, judge_index: grand_index});
         }
         if(player_index != 0) {
+            //insert pick grandparent image session to player's event_queue
             player.event_queue.splice(0, 0, {});
         }
         player.curr_session = null;
