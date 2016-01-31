@@ -152,6 +152,10 @@ GameStateManager.prototype = {
         }
         // console.log('score_data: ', score_data)
         return score_data;
+    },
+    add_points_to_player: function(points, player) {
+        player.addPoints(points);
+        this.call_handler('update points', player, player.points);
     }
 };
 

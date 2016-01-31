@@ -69,6 +69,11 @@ $(document).ready(function() {
       __hideSpaces();
     });
   });
+  
+  socket.on('update points', function(data) {
+    new_points = data;
+    // to do
+  });
 
   socket.on('start idle', function(data) {
     __hideSpaces();
