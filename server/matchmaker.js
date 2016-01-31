@@ -63,8 +63,9 @@ Matchmaker.prototype = {
         // var player = assignable_players[playerIdx];
         var available_slots = game_session.get_available_slots();
         for (var slotIdx = 0; slotIdx < available_slots.length; ++slotIdx) {
-            if (this.can_assign_player(assignable_player, game_session, slotIdx)) {
-                game_session.assign_player_to_slot(assignable_player, slotIdx);
+            ava_sloat = available_slots[slotIdx];
+            if (this.can_assign_player(assignable_player, game_session, ava_sloat)) {
+                game_session.assign_player_to_slot(assignable_player, ava_sloat);
                 return true;
                 // continue forPlayers;
             }

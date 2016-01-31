@@ -9,6 +9,7 @@ function Player(data) {
     this.name = data.name;
     this.user = data.user;
     this.event_queue = [];
+    this.curr_session = null;
 };
 
 Player.prototype = {

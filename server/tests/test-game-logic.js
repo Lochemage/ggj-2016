@@ -24,19 +24,19 @@ describe('GameSession', function() {
         });
         it('after assigned', function() {
             var session = new GameSession();
-            session.assign_player_to_slot(new Player(), 0);
+            session.assign_player_to_slot(new Player({name: 'name', user: 'user'}), 0);
             assert.equal(session.get_next_available_slot(), -1);
         });
     });
     describe('player_is_in_slot', function() {
         it('slot empty', function() {
             var session = new GameSession();
-            var player = new Player();
+            var player = new Player({name: 'name', user: 'user'});
             assert.equal(session.player_is_in_slot(player, 0), false);
         });
         it('bad slot', function() {
             var session = new GameSession();
-            var player = new Player();
+            var player = new Player({name: 'name', user: 'user'});
             assert.equal(session.player_is_in_slot(player, -1), false);
         });
         it('bad player', function() {
@@ -45,14 +45,14 @@ describe('GameSession', function() {
         });
         it('player in slot', function() {
             var session = new GameSession();
-            var player = new Player();
+            var player = new Player({name: 'name', user: 'user'});
             session.assign_player_to_slot(player, 0);
             assert.equal(session.player_is_in_slot(player, 0), true);
         });
         it('different player in slot', function() {
             var session = new GameSession();
-            var player1 = new Player();
-            var player2 = new Player();
+            var player1 = new Player({name: 'name', user: 'user'});
+            var player2 = new Player({name: 'name', user: 'user'});
             session.assign_player_to_slot(player1, 0);
             assert.equal(session.player_is_in_slot(player2, 0), false);
         });
@@ -60,22 +60,22 @@ describe('GameSession', function() {
     describe('assign_player_to_slot', function() {
         it('assign in first spot okay', function() {
             var session = new GameSession();
-            var result = session.assign_player_to_slot(new Player(), 0);
+            var result = session.assign_player_to_slot(new Player({name: 'name', user: 'user'}), 0);
             assert.equal(result, true);
         });
         it('assign negative spot', function() {
             var session = new GameSession();
-            var result = session.assign_player_to_slot(new Player(), -1);
+            var result = session.assign_player_to_slot(new Player({name: 'name', user: 'user'}), -1);
             assert.equal(result, false);
         });
         it('assign spot off end', function() {
             var session = new GameSession();
-            var result = session.assign_player_to_slot(new Player(), 1);
+            var result = session.assign_player_to_slot(new Player({name: 'name', user: 'user'}), 1);
             assert.equal(result, false);
         });
         it('try assign same player twice', function() {
             var session = new GameSession();
-            var player = new Player();
+            var player = new Player({name: 'name', user: 'user'});
             var result = session.assign_player_to_slot(player, 0);
             assert.equal(result, true);
             result = session.assign_player_to_slot(player, 0);
@@ -83,8 +83,8 @@ describe('GameSession', function() {
         });
         it('try assign different players same spot', function() {
             var session = new GameSession();
-            var player1 = new Player();
-            var player2 = new Player();
+            var player1 = new Player({name: 'name', user: 'user'});
+            var player2 = new Player({name: 'name', user: 'user'});
             var result = session.assign_player_to_slot(player1, 0);
             assert.equal(result, true);
             result = session.assign_player_to_slot(player2, 0);
@@ -114,7 +114,7 @@ describe('Player', function() {
 
 describe('Matchmaker', function() {
     var game_session = new GameSession();
-    var assignable_players = [new Player('tom'), new Player('dick'), new Player('harry')]
+    var assignable_players = [new Player({name: 'tom', user: 'user'}), new Player({name: 'dick', user: 'user'}), new Player({name: 'harry', user: 'user'})]
     before('initialization', function() {
         // add code if needed
     });
@@ -133,8 +133,10 @@ describe('GameStateManager', function() {
     it('assign_player_to_game_existing_session', function(done) {
         var game_state_manager = new GameStateManager();
         var fake_game_session = new GameSession([]);
-        var fake_player = new Player({});
-        fake_game_session.slots[0] = {player: fake_player};
+        var fake_player = new Player({name: 'name', user: 'user'});
+        var success = fake_game_session.assign_player_to_slot(fake_player, 0);
+        assert(success);
+        console.log('fake_game_session', fake_game_session)
         fake_game_session.save_image_to_slot(0, 'image_path');
         game_state_manager.game_sessions.push(fake_game_session);
         assert.equal(game_state_manager.game_sessions[0].slots[0].image_path, 'image_path');
@@ -142,7 +144,7 @@ describe('GameStateManager', function() {
         assert.equal(game_state_manager.game_sessions.length, 1);
 
         
-        var player = game_state_manager.create_new_player({});
+        var player = game_state_manager.create_new_player({name: 'name', user: 'user'});
         game_state_manager.assign_player_to_game(player, function(game_session) {
             assert.equal(game_session, fake_game_session);
             assert.equal(game_state_manager.players.length, 2);

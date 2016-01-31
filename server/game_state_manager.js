@@ -24,6 +24,7 @@ GameStateManager.prototype = {
         if(available_judge_session.length > 0) {
             // console.log('available_judge_session != []')
             this.matchmaker.assign_player_to_judge(player, available_judge_session[0], available_judge_session[1]);
+            player.curr_session = available_judge_session[0];
             var data = {};
             console.log('calling start judge handler');
             this.call_handler('start judge', player, data);
@@ -36,6 +37,7 @@ GameStateManager.prototype = {
                 var matched = self.matchmaker.match_a_player_with_a_session(game_session, player);
                 console.log('matched: ' + matched)
                 assert(matched);
+                player.curr_session = game_session;
                 console.log('calling start game handler for new game session');
                 self.call_handler('start game', player, {image: game_session.original_images[0]});
                 callback(game_session);
@@ -50,6 +52,7 @@ GameStateManager.prototype = {
             console.log('parent_index: ', parent_index)
             var parent_image_path = game_session.slots[parent_index].image_path;
             assert(parent_image_path != '');
+            player.curr_session = game_session;
             this.call_handler('start game', player, {image: parent_image_path});
             callback(game_session);
         }
@@ -68,7 +71,8 @@ GameStateManager.prototype = {
         });
         
     },
-    player_submit_image: function(player, image_path, game_session) {
+    player_submit_image: function(player, image_path) {
+        game_session = player.curr_session;
         var player_index = game_session.get_player_slot_index(player);
         game_session.save_image_to_slot(player_index, image_path);
 
@@ -83,6 +87,7 @@ GameStateManager.prototype = {
         if(player_index != 0) {
             player.event_queue.splice(0, 0, {});
         }
+        player.curr_session = null;
     },
     add_handler: function(type, callback) {
         if (!this.handlers.hasOwnProperty(type)) {
