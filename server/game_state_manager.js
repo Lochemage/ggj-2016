@@ -99,12 +99,6 @@ GameStateManager.prototype = {
 
     ///////////////////////////////////////////////////////////////////
 
-    player_submit_image: function(player, image_path) {
-        player.state.on_finish({image_path: image_path});
-    },
-
-    ///////////////////////////////////////////////////////////////////
-
     processPlayerEvent: function (player, eventData) {
         player.state[DefaultState.eventDataPhaseToStateMethod[eventData.phase]](eventData);
     }

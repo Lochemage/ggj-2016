@@ -16,6 +16,9 @@ describe('GameSimulation', function() {
         players.push(player);
         return player;
     };
+    function player_submit_image(player, image_path) {
+        game_state_manager.processPlayerEvent(player, {phase: 'FINISH', image_path: image_path});
+    }
     beforeEach('clear handlers', function() {
         game_state_manager.clear_handlers("start game");
     });
@@ -43,7 +46,7 @@ describe('GameSimulation', function() {
     });
     var first_image = 'first image';
     it('first player submits image', function() {
-        game_state_manager.player_submit_image(players[0], first_image);
+        player_submit_image(players[0], first_image);
         assert.equal(game_state_manager.game_sessions.length, 2);
         assert.equal(game_state_manager.game_sessions[0].slots.length, 3);
         assert.equal(game_state_manager.game_sessions[1].slots.length, 1);
@@ -63,7 +66,7 @@ describe('GameSimulation', function() {
     });
     var second_image = 'second image';
     it('second player submits image', function() {
-        game_state_manager.player_submit_image(players[1], second_image);
+        player_submit_image(players[1], second_image);
         assert.equal(game_state_manager.game_sessions.length, 2);
         assert.equal(game_state_manager.game_sessions[0].slots.length, 3);
         assert.equal(game_state_manager.game_sessions[1].slots.length, 3);
@@ -81,7 +84,7 @@ describe('GameSimulation', function() {
     });
     var third_image = 'third image';
     it('third player submits image', function() {
-        game_state_manager.player_submit_image(players[2], third_image);
+        player_submit_image(players[2], third_image);
         assert.equal(game_state_manager.game_sessions.length, 2);
         assert.equal(game_state_manager.game_sessions[0].slots.length, 5);
         assert.equal(game_state_manager.game_sessions[1].slots.length, 3);
@@ -130,14 +133,14 @@ describe('GameSimulation', function() {
     });
     var fourth_image = "fourth_image";
     it('player 2 submits image', function() {
-        game_state_manager.player_submit_image(players[1], fourth_image);
+        player_submit_image(players[1], fourth_image);
         assert.equal(game_state_manager.game_sessions.length, 2);
         assert.equal(game_state_manager.game_sessions[0].slots.length, 7);
         assert.equal(game_state_manager.game_sessions[1].slots.length, 3);
     });
     var fifth_image = 'fifth_image';
     it('player 4 submits image', function() {
-        game_state_manager.player_submit_image(players[3], fifth_image);
+        player_submit_image(players[3], fifth_image);
         assert.equal(game_state_manager.game_sessions.length, 2);
         assert.equal(game_state_manager.game_sessions[0].slots.length, 7); // getting 9
         assert.equal(game_state_manager.game_sessions[1].slots.length, 3);
