@@ -49,7 +49,7 @@ GameSession.prototype = {
     expand_children: function(slotIdx) {
         var first_child_index = this.get_index_of_first_child(slotIdx);
         this.available_slots.push(first_child_index);
-        console.log('this.slots: ' + this.slots)
+        // console.log('this.slots: ' + this.slots)
         // console.log('this.slots[first_child_index]: ' + this.slots[first_child_index])
         this.slots[first_child_index] = {};
         this.slots[first_child_index] = null;
@@ -89,7 +89,7 @@ GameSession.prototype = {
     },
     save_image_to_slot: function(slot_idx, image_path) {
         this.slots[slot_idx].image_path = image_path;
-        console.log('this.slots', this.slots);
+        // console.log('this.slots', this.slots);
         this.expand_children(slot_idx);
     }
 };
