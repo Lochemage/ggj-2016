@@ -1,5 +1,6 @@
 $(document).ready(function() {
   var socket = io();
+  var makingJudgement = false;
 
   // Initialize the drawing canvas once.
   prepareCanvas();
@@ -41,6 +42,18 @@ $(document).ready(function() {
     $(this).addClass('not_shown');
   });
 
+  $('#judgeSpace > img.choiceLarge').click(function() {
+    if (makingJudgement) {
+      var url = $(this).attr('src');
+      var className = this.className.replace('choiceLarge', 'choice').replace(/ /g, '.');
+      $('#judgeSpace > img.' + className).addClass('selected');
+      $(this).addClass('not_shown');
+      console.log('choice', url, 'made');
+      socket.emit('game event', {name: 'judgement made', image_path: url});
+      makingJudgement = false;
+    }
+  });
+
   // User is now starting a game session.
   socket.on('start game', function(data) {
     __hideSpaces();
@@ -56,6 +69,19 @@ $(document).ready(function() {
       __hideSpaces();
       $('#continueSpace').removeClass('not_shown');
     });
+  });
+
+  socket.on('start judging', function(data) {
+    __hideSpaces();
+    
+    $('#judgeSpace').removeClass('not_shown').removeClass('selected');
+    $('#judgeSpace > img.source').attr('src', data.source);
+    $('#judgeSpace > img.upper.left').attr('src', data.choices[0]);
+    $('#judgeSpace > img.upper.right').attr('src', data.choices[1]);
+    $('#judgeSpace > img.lower.left').attr('src', data.choices[2]);
+    $('#judgeSpace > img.lower.right').attr('src', data.choices[3]);
+
+    makingJudgement = true;
   });
 
   function __hideSpaces() {

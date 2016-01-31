@@ -61,6 +61,56 @@ function getJudgeImageSet(gameSession, judgeIdx) {
 
 ////////////////////////////////////////////////////////////////////////
 
+// returns a list of new events sessions to queue
+function onJudgment(judgeState, pickedURL) {
+    newEvents = [];
+    var gameSession = judgeState.player.curr_session;
+    var srcIdx = gameSession.original_images.indexOf(pickedURL);
+    if (srcIdx < 0) {
+        // on the board
+        // we're the grandparent judging our grandchildren
+        // find the picked grandchild and parent slot index
+        var grandchildIdx = gameSession.find_slot_with_image(pickedURL);
+        var parentIdx = gameSession.get_index_of_parent(grandchildIdx);
+        // need to assign points to winners (selected grandchild and their parent)
+        gameSession.slots[grandchildIdx].player.addPoints(1);
+        gameSession.slots[parentIdx].player.addPoints(1);
+        // queue up a judge session for grandchild's picture
+        newEvents.push({
+            event: 'judgeNeeded',
+            gameSession: gameSession,
+            slotIdx: grandchildIdx
+        });
+    }
+    else {
+        // off the board (source image)
+        // we're judging grandchild against the four source images
+        // we need to decide if we chose the correct one -- if so, award points to the grandchild and ancestors
+        var correctChoice = (srcIdx == 0);
+        if (correctChoice) {
+            var grandchildIdx = gameSession.find_slot_with_image(judgeState.source);
+            var parentIdx = gameSession.get_index_of_parent(grandchildIdx);
+            gameSession.slots[grandchildIdx].player.addPoints(1);
+            gameSession.slots[parentIdx].player.addPoints(1);
+            // also give point(s) to the judge if they get it right
+            judgeState.player.addPoints(1);
+        }
+        // queue up the summary for all players in the game (include the judge)
+        for (var slotIdx = 0; slotIdx < 7; ++slotIdx) {
+            newEvents.push({
+                event: 'summary',
+                gameSession: gameSession,
+                player: gameSession.slots[slotIdx].player
+            });
+        }
+        // add to front of queue for judge, back of queue for others
+        // ...
+    }
+    return newEvents;
+}
+
+////////////////////////////////////////////////////////////////////////
+
 function JudgeState(player) {
     this.player = player;
 };
@@ -68,7 +118,7 @@ function JudgeState(player) {
 JudgeState.prototype = {
     on_event: function(gsm, event) {
         switch (event.name) {
-            case 'decided':
+            case 'judgement made':
                 switch (event.slot_idx) {
                     //
                 }
@@ -106,8 +156,7 @@ JudgeState.prototype = {
         var game_session = data.game_session;
         var slot_idx = data.slot_idx;
         
-
-        gsm.call_handler('start judging', this.player, {image: parent_image_path});
+        gsm.call_handler('start judging', this.player, getJudgeImageSet(game_session, slot_idx));
     },
     on_finish: function(gsm) {
     }

@@ -12,6 +12,7 @@ function Player(data) {
     this.curr_session = null;
     this.state = null;
     this.is_dead = false;
+    this.points = 0;
 };
 
 Player.prototype = {
@@ -19,7 +20,7 @@ Player.prototype = {
         return this.state_queue.length > 0;
     },
     get_queued_state: function() {
-        return this.state_queue.unshift();
+        return this.state_queue.shift();
     },
     // find_available_judge_session: function() {
     //     for (var event_index = 0; event_index < this.state_queue.length; ++event_index) {
@@ -38,8 +39,10 @@ Player.prototype = {
             this.is_dead = true;
         }
     },
+    die: function() { this.is_dead = true; },
     isDead: function() { return this.is_dead; },
-    isAlive: function() { return !this.isDead(); }
+    isAlive: function() { return !this.isDead(); },
+    addPoints: function(numPoints) { this.points += numPoints; }
 };
 
 module.exports = Player;

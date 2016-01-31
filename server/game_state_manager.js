@@ -111,7 +111,7 @@ GameStateManager.prototype = {
             if (!game_session.player_is_in_slot(player)) {
                 var slot_idx = this.externalJudgesNeeded[i].slot_idx;
                 this.externalJudgesNeeded.splice(i, 1);
-                this.set_player_state(player, 'JudgeState', {game_session: game_session, slot_idx: slot_idx});
+                this.addJudgeState(game_session, slot_idx);
                 return;
             }
         }
@@ -119,7 +119,12 @@ GameStateManager.prototype = {
         this.set_player_state(player, 'DrawState');
     },
 
+    addJudgeState: function(player, game_session, slot_idx) {
+        this.set_player_state(player, 'JudgeState', {game_session: game_session, slot_idx: slot_idx});
+    },
+
     set_player_state: function(player, StateClass, data) {
+        console.log('StateClass', StateClass);
         assert(States.hasOwnProperty(StateClass));
 
         if (player.state) {
