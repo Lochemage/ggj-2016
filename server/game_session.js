@@ -58,6 +58,17 @@ GameSession.prototype = {
         }
         return false;
     }
+    get_player_slot_index: function(player) {
+        for (var slotIdx = 0; slotIdx < this.slots.length; ++slotIdx) {
+            if (this.slots[slotIdx] && this.slots[slotIdx].player == player) {
+                return slotIdx;
+            }
+        }
+        return -1;
+    }
+    save_image_to_slot: function(slot_idx, image_path) {
+        this.slots[sloat_index][image_path] = image_path
+    }
 };
 
 module.exports = GameSession;

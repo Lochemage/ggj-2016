@@ -10,7 +10,7 @@ Gameplay or art changes depending on the player's geographical location (GPS, IP
 Anyone who is watching it can play along! - Design
 - Open your browser and point to the server, you are now an instant player grouped with everyone else.
 
-**Gandhi’s Game8*  
+**Gandhi’s Game**  
 This game must have zero violence in its game play. Conflicts must have resolutions based on logic  - Design, Theme
 - Drawing game. No violence here.
 
