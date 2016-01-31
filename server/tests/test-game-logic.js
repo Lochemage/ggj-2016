@@ -91,6 +91,12 @@ describe('GameSession', function() {
             assert.equal(result, false);
         });
     });
+    describe('remove_player_from_slot', function() {
+        describe('basic test', function() {
+            var session = new GameSession();
+            //session.assign_player_to_slot()
+        });
+    });
     describe('expand', function() {
         //
     });

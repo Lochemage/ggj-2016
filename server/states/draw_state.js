@@ -13,10 +13,10 @@ function DrawState(player) {
 
 DrawState.prototype = {
     on_event: function(gsm, event) {
+        var game_session = this.player.curr_session;
+        var player_index = game_session.get_player_slot_index(this.player);
         switch (event.name) {
             case 'submit drawing':
-                var game_session = this.player.curr_session;
-                var player_index = game_session.get_player_slot_index(this.player);
                 game_session.save_image_to_slot(player_index, event.image_path);
 
                 if (game_session.is_finished()) {
@@ -39,6 +39,9 @@ DrawState.prototype = {
                 gsm.set_player_state(this.player, 'IdleState');
                 break;
 
+            case 'disconnect':
+                game_session.remove_player_from_slot(this.player, player_index);
+                break;
             default:
                 break;
         }

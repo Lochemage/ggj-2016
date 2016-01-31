@@ -11,6 +11,11 @@ function User() {
 };
 
 User.prototype = {
+    disconnect: function(gsm) {
+        if (this.player) {
+            this.player.disconnect(gsm);
+        }
+    }
 };
 
 module.exports = User;

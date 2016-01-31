@@ -11,6 +11,7 @@ function Player(data) {
     this.state_queue = [];
     this.curr_session = null;
     this.state = null;
+    this.is_dead = false;
 };
 
 Player.prototype = {
@@ -31,6 +32,14 @@ Player.prototype = {
     //     }
     //     return [];
     // },
+    disconnect: function(gsm) {
+        if (this.state) {
+            this.state.on_event(gsm, {name: 'disconnect'});
+            this.is_dead = true;
+        }
+    },
+    isDead: function() { return this.is_dead; },
+    isAlive: function() { return !this.isDead(); }
 };
 
 module.exports = Player;

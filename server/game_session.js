@@ -39,6 +39,14 @@ GameSession.prototype = {
         }
         return this.player_is_in_slot(player, slotIdx);
     },
+    remove_player_from_slot: function(player, slotIdx) {
+        this.slots[slotIdx] = null;
+        for (var newHomeIdx = 0;
+            newHomeIdx < this.available_slots.length && this.available_slots[newHomeIdx] <  slotIdx;
+            ++newHomeIdx) {
+        }
+        this.available_slots.splice(newHomeIdx, 0, slotIdx);
+    },
     // expand: function(num_new_slots) {
     //     for (var i = 0; i < num_new_slots; i++) {
     //         this.available_slots.push(this.slots.length + i);

@@ -65,6 +65,11 @@ if (testing) {
   connect.on('game event', function(user, event) {
     user.player.state.on_event(game_state_manager, event);
   });
+  
+  connect.on('disconnect', function(user, event) {
+      user.disconnect(game_state_manager);
+      //user.player.state.on_event(game_state_manager, {name: 'disconnect'});
+  });
 
   /////////////////////////////////////////////////////////////////////
 
