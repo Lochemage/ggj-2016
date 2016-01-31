@@ -24,4 +24,8 @@ module.exports.init = function(app) {
   app.get('/drawer', function(req, res) {
     res.render('drawer');
   });
+
+  app.get('/judge', function(req, res) {
+    res.render('judging');
+  });
 }
