@@ -1,6 +1,7 @@
 $(document).ready(function() {
   var socket = io();
   var makingJudgement = false;
+  var seconds = 40;
 
   // Initialize the drawing canvas once.
   prepareCanvas();
@@ -15,6 +16,10 @@ $(document).ready(function() {
   });
 
   // User submits to play another round.
+  $('form.interim').submit(function() {
+    socket.emit('game event', {name: 'play again'});
+    return false;
+  });
   $('form.interim').submit(function() {
     socket.emit('game event', {name: 'play again'});
     return false;
@@ -78,7 +83,8 @@ $(document).ready(function() {
   socket.on('start judging', function(data) {
     __hideSpaces();
     
-    $('#judgeSpace').removeClass('not_shown').removeClass('selected');
+    $('#judgeSpace').removeClass('not_shown');
+    $('#judgeSpace > img.choice').removeClass('selected');
     $('#judgeSpace > img.source').attr('src', data.source);
     $('#judgeSpace > img.upper.left').attr('src', data.choices[0]);
     $('#judgeSpace > img.upper.right').attr('src', data.choices[1]);
@@ -95,6 +101,7 @@ $(document).ready(function() {
 
     for (var i = 0; i < data.length; ++i) {
       $('#summarySpace > img.order' + i).attr('src', data[i].image);
+      $('#summarySpace > label.nametag.order' + i).text(data[i].player);
     }
   });
 
@@ -107,8 +114,6 @@ $(document).ready(function() {
   };
 
   function __startTimer($timer, done) {
-    var seconds = 40;
-
     var startTime = new Date().getTime();
     var lastTime = startTime;
     var intervalId = setInterval(function() {

@@ -19,7 +19,7 @@ process.argv.forEach(function(val, index, array) {
   }
 });
 
-var listener = http.listen(process.env.PORT || 5555, function() {
+var listener = http.listen(process.env.PORT || 4444, function() {
   var host = listener.address().address;
   var port = listener.address().port;
 

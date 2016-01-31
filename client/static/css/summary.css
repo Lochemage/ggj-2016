@@ -15,12 +15,29 @@
   position: absolute;
   width: 267px;
   height: 200px;
+  z-index: 1;
 }
 
 #summarySpace > form {
   position: absolute;
   top: 20px;
   left: 500px;
+}
+#summarySpace > form > button {
+  line-height: 20px;
+  font-size: 20px;
+  font-family: 'Indie Flower', cursive;
+  border: 2px solid #56A;
+  border-radius: 4px;
+  background: rgba(230,220,237,1);
+  height: 35px;
+  cursor: pointer;
+}
+#summarySpace > form > button:hover {
+  background: rgba(159,200,217,1);
+}
+#summarySpace > form > button:active {
+  background: rgba(139,180,197,1);;
 }
 
 #summarySpace > img.original {
@@ -106,4 +123,51 @@
 
 #summarySpace > img.sourceLarge.tier3.farright {
   left: 432px;
+}
+
+#summarySpace > label.nametag {
+  position: absolute;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+#summarySpace > label.nametag.order1 {
+  top: 200px;
+  left: 420px;
+}
+
+#summarySpace > label.nametag.order2 {
+  top: 370px;
+  left: -185px;
+  text-align: right;
+  width: 300px;
+}
+
+#summarySpace > label.nametag.order3 {
+  top: 370px;
+  left: 588px;
+}
+
+#summarySpace > label.nametag.order4 {
+  top: 545px;
+  left: -280px;
+  text-align: right;
+  width: 300px;
+}
+
+#summarySpace > label.nametag.order5 {
+  top: 635px;
+  left: 20px;
+  text-align: right;
+  width: 300px;
+}
+
+#summarySpace > label.nametag.order6 {
+  top: 635px;
+  left: 380px;
+}
+
+#summarySpace > label.nametag.order7 {
+  top: 545px;
+  left: 675px;
 }

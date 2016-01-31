@@ -14,6 +14,9 @@ function SummaryState(player) {
 SummaryState.prototype = {
     on_event: function(gsm, event) {
         switch (event.name) {
+            case 'play again':
+                gsm.update_player_state(this.player);
+                break;
             default:
                 break;
         }
