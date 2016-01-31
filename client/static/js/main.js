@@ -71,8 +71,9 @@ $(document).ready(function() {
   });
   
   socket.on('update points', function(data) {
-    new_points = data;
+    var new_points = data;
     // to do
+    $('#score_point').text(new_points.toString());
   });
 
   socket.on('start idle', function(data) {
