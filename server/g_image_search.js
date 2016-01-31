@@ -7,7 +7,7 @@ var client = googleImages('004302857253127136025:rq6bsxpxewk', 'AIzaSyDflroT2mav
 
 var keyword_lib = ['face', 'horse', 'flower']
 
-module.exports.init = function fetch_google_image() {
+module.exports.init = function fetch_google_image(image_count) {
     return client.search(getRandomKeyword(), {size: 'medium'})
         .then(function (images) {
             /*
@@ -26,11 +26,14 @@ module.exports.init = function fetch_google_image() {
              */
             // console.log(images)
             // console.log('images.length: ' + images.length)
-            index = getRandomInt(0, 9)
-            // console.log('random index ' + index)
-            picked_image = images[index]
-            // console.log(picked_image['size'])
-            return picked_image['url']
+            image_urls = []
+            for (var i=0; i < image_count && images.length; i++) {
+                var index = getRandomInt(0, images.length - 1);
+                var picked_image = images[index];
+                image_urls.push(picked_image['url'])
+                images.splice(index, 1);
+            }
+            return image_urls;
     })
 }
 //http://stackoverflow.com/questions/1527803/generating-random-numbers-in-javascript-in-a-specific-range
@@ -43,10 +46,10 @@ function getRandomInt(min, max) {
 }
 
 function getRandomKeyword() {
-    index = getRandomInt(0, keyword_lib.length - 1)
-    picked_keyword = keyword_lib[index]
+    var index = getRandomInt(0, keyword_lib.length - 1)
+    var picked_keyword = keyword_lib[index];
     // console.log('picked_keyword: ' + picked_keyword)
-    return picked_keyword
+    return picked_keyword;
 }
 
 
@@ -56,7 +59,7 @@ function getRandomKeyword() {
 // ***********************************
 // var g_image_search = require('./server/g_image_search');
 
-// g_image_search.init().then(function (image_url)
+// g_image_search.init(4).then(function (image_url)
 //     {
 //         console.log('image url: ' + image_url)
 //     }
