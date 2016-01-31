@@ -20,10 +20,13 @@ GameStateManager.prototype = {
     // might be draw session or judge session
     assign_player_to_game: function(player, callback) {
         var available_judge_session = this.matchmaker.find_available_judge_session(player);
-        if(available_judge_session != []) {
+        // console.log('available_judge_session: ' + available_judge_session);
+        if(available_judge_session.length > 0) {
+            // console.log('available_judge_session != []')
             this.matchmaker.assign_player_to_judge(player, available_judge_session[0], available_judge_session[1]);
             var data = {};
-            self.call_handler('start judge', data);
+            console.log('calling start judge handler');
+            this.call_handler('start judge', data);
             callback(available_judge_session[0]);
         }
         var game_session = this.matchmaker.match_a_player_with_sessions(this.game_sessions, player);
@@ -31,14 +34,17 @@ GameStateManager.prototype = {
             var self = this;
             var game_session = this.start_new_game_session(function(game_session){
                 var matched = self.matchmaker.match_a_player_with_a_session(game_session, player);
+                console.log('matched: ' + matched)
                 assert(matched);
+                console.log('calling start game handler for new game session');
                 self.call_handler('start game', {image: game_session.original_images[0]});
                 callback(game_session);
             });
            
         }
         else{
-            self.call_handler('start game', {});//{image: game_session.slots[0]})
+            console.log('calling start game handler for existing game session');
+            this.call_handler('start game', {});//{image: game_session.slots[0]})
             callback(game_session);
         }
     },

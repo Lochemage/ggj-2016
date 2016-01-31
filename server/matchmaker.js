@@ -93,10 +93,10 @@ Matchmaker.prototype = {
             if(curr_event.event_type == 'judge') {
                 var judge_game_session = curr_event.game_session;
                 var judge_slot_index = curr_event.judge_index;
-                return [judge_game_session, judge_slot_index]
+                return [judge_game_session, judge_slot_index];
             }
         }
-        return []
+        return [];
     },
     assign_player_to_judge: function(player, judge_session, judge_slot_index) {
 

@@ -12,10 +12,11 @@ describe('GameSimulation', function() {
         var user_data = {};
         var player = game_state_manager.create_new_player(user_data);
         game_state_manager.assign_player_to_game(player, function(game_session) {
-            assert(game_state_manager.players.length, 1);
-            assert(game_state_manager.game_sessions.length, 1);
-            assert(game_state_manager.game_sessions[0].slots.length, 1);
-            assert(game_state_manager.game_sessions[0].original_images.length, 4);
+            assert.equal(game_state_manager.players.length, 1);
+            console.log('game_state_manager.game_sessions.length: ' + game_state_manager.game_sessions.length)
+            assert.equal(game_state_manager.game_sessions.length, 1);
+            assert.equal(game_state_manager.game_sessions[0].slots.length, 1);
+            assert.equal(game_state_manager.game_sessions[0].original_images.length, 4);
             assert(game_state_manager.game_sessions[0].player_is_in_slot(player, 0));
             done();
         });
