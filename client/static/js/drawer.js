@@ -69,6 +69,10 @@ function resourceLoaded()
 	}
 }
 
+function retrieveCanvasImage() {
+	return canvas.toDataURL('image/jpeg');
+};
+
 /**
 * Creates a canvas element, loads images, adds events, and draws the canvas for the first time.
 */
