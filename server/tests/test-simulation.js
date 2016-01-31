@@ -128,4 +128,39 @@ describe('GameSimulation', function() {
             done();
         });
     });
+    var fourth_image = "fourth_image";
+    it('player 2 submits image', function() {
+        game_state_manager.player_submit_image(players[1], fourth_image);
+        assert.equal(game_state_manager.game_sessions.length, 2);
+        assert.equal(game_state_manager.game_sessions[0].slots.length, 7);
+        assert.equal(game_state_manager.game_sessions[1].slots.length, 3);
+    });
+    var fifth_image = 'fifth_image';
+    it('player 4 submits image', function() {
+        game_state_manager.player_submit_image(players[3], fifth_image);
+        assert.equal(game_state_manager.game_sessions.length, 2);
+        assert.equal(game_state_manager.game_sessions[0].slots.length, 7); // getting 9
+        assert.equal(game_state_manager.game_sessions[1].slots.length, 3);
+        assert.equal(players[3].event_queue.length, 0);
+    });
+    it('players 7 and 8 join', function(done) {
+        var player = __add_player();
+        game_state_manager.add_handler("start game", function (player, data) {
+            assert.equal(data.image, fourth_image);
+        });
+        game_state_manager.assign_player_to_game(player, function(game_session) {
+            assert.equal(game_state_manager.game_sessions.length, 2);
+            assert.equal(game_state_manager.game_sessions[0].slots.length, 7);
+            assert.equal(game_state_manager.game_sessions[1].slots.length, 3);
+            assert.equal(player.curr_session, game_state_manager.game_sessions[0]);
+            assert.equal(game_state_manager.game_sessions[0].get_player_slot_index(player), 5);
+
+            player = __add_player();
+            game_state_manager.assign_player_to_game(player, function(game_session) {
+                assert.equal(player.curr_session, game_state_manager.game_sessions[0]);
+                assert.equal(game_state_manager.game_sessions[0].get_player_slot_index(player), 6);
+                done();
+            });
+        });
+    });
 });

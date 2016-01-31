@@ -90,17 +90,6 @@ Matchmaker.prototype = {
         }
         return null;
     },
-    find_available_judge_session: function(player) {
-        for(var event_index = 0; event_index < player.event_queue.length; ++event_index) {
-            var curr_event = player.event_queue[event_index];
-            if(curr_event.event_type == 'judge') {
-                var judge_game_session = curr_event.game_session;
-                var judge_slot_index = curr_event.judge_index;
-                return [judge_game_session, judge_slot_index];
-            }
-        }
-        return [];
-    },
     assign_player_to_judge: function(player, judge_session, judge_slot_index) {
 
     }

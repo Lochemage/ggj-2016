@@ -60,10 +60,10 @@ GameSession.prototype = {
         this.slots[first_child_index + 1] = null;
     },
     get_index_of_parent: function(slotIdx) {
-        return Math.ceil(slotIdx/2) - 1;
+        return slotIdx > -1 ? Math.ceil(slotIdx/2) - 1 : -1;
     },
     get_index_of_first_child: function(slotIdx) {
-        return slotIdx*2 + 1;
+        return slotIdx > -1 ? slotIdx*2 + 1 : -1;
     },
     get_index_of_grandparent: function(slotIdx) {
         parent_index = this.get_index_of_parent(slotIdx);
@@ -97,7 +97,21 @@ GameSession.prototype = {
     save_image_to_slot: function(slotIdx, image_path) {
         this.slots[slotIdx].image_path = image_path;
         // console.log('this.slots', this.slots);
-        this.expand_children(slotIdx);
+        if (!this.can_expand()) {
+            this.expand_children(slotIdx);
+        }
+    },
+    is_finished: function() {
+        // check that all slots on the third row of this game session are done
+        for (var slotIdx = 0; slotIdx < 7; ++slotIdx) {
+            if (!this.slots[slotIdx] || !this.slots[slotIdx].image_path) {
+                return false;
+            }
+        }
+        return true;
+    },
+    can_expand: function() {
+        return this.slots.length >= 7;
     }
 };
 

@@ -21,7 +21,9 @@ GameStateManager.prototype = {
     },
     // might be draw session or judge session
     assign_player_to_game: function(player, callback) {
-        var available_judge_session = this.matchmaker.find_available_judge_session(player);
+        //
+        //
+        var available_judge_session = player.find_available_judge_session(player);
         // console.log('available_judge_session: ' + available_judge_session);
         if (available_judge_session.length > 0) {
             // console.log('available_judge_session != []')
@@ -82,16 +84,19 @@ GameStateManager.prototype = {
         var player_index = game_session.get_player_slot_index(player);
         game_session.save_image_to_slot(player_index, image_path);
 
-        //check if this player is last grand child
-        var grand_index = game_session.get_index_of_grandparent(player_index);
-        var last_child_index = game_session.get_index_of_first_grandchild(grand_index) + 3;
-        if(player_index == last_child_index) {
-            // notify grandparent
-            grandparent_player = game_session.slots[grand_index].player;
-            grandparent_player.event_queue.push({event_type: 'judge', game_session: game_session, judge_index: grand_index});
-        }
-        if(player_index != 0) {
-            player.event_queue.splice(0, 0, {});
+        if (game_session.is_finished()) {
+            for (var slotIdx = 3; slotIdx < 7; ++slotIdx) {
+                game_session.slots[slotIdx].player.event_queue.push({
+                    event_type: 'judge grandparent',
+                    game_session: game_session,
+                    judge_index: slotIdx
+                });
+            }
+            game_session.slots[0].player.event_queue.push({
+                event_type: 'judge grandchildren',
+                game_session: game_session,
+                judge_index: slotIdx
+            });
         }
         player.curr_session = null;
     },
