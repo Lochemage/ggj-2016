@@ -64,7 +64,7 @@ $(document).ready(function() {
     __hideWindows();
 
     $('#drawSpace').removeClass('not_shown');
-    $('#drawSpace > .previewContainer > img.preview').attr('src', data.image);
+    $('#drawSpace > img.preview').attr('src', data.image);
     clearCanvas();
     __startTimer($('#drawSpace > .timer'), function() {
       var imgData = retrieveCanvasImage();

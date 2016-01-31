@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Summary example screen</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+    <link href='/static/css/common.css' rel='stylesheet' type='text/css'/>
+    <link href='/static/css/summary.css' rel='stylesheet' type='text/css'/>
+  </head>
+  <body>
+    <div id='summarySpace'>
+      <img class='outline' src="/static/images/summary-outline.png">
+      <img class='source original' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='source tier1' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='source tier2 left' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='source tier2 right' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='source tier3 farleft' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='source tier3 left' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='source tier3 right' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='source tier3 farright' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+
+      <img class='sourceLarge not_shown original' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='sourceLarge not_shown tier1' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='sourceLarge not_shown tier2 left' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='sourceLarge not_shown tier2 right' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='sourceLarge not_shown tier3 farleft' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='sourceLarge not_shown tier3 left' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='sourceLarge not_shown tier3 right' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='sourceLarge not_shown tier3 farright' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+    </div>
+    <script>
+      $('#summarySpace > img.source').hover(function() {
+        var classes = this.className.replace('source', 'sourceLarge').replace('not_shown', '').replace(/ /g, '.');
+
+        $('#summarySpace > img.sourceLarge').addClass('not_shown');
+        $('#summarySpace > img.sourceLarge.' + classes).removeClass('not_shown');
+      });
+
+      $('#summarySpace > img.sourceLarge').mouseleave(function() {
+        $(this).addClass('not_shown');
+      });
+    </script>
+  </body>
+</html>

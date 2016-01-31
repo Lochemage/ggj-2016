@@ -22,7 +22,11 @@ module.exports.init = function(app) {
     res.render('index');
   });
 
-  app.get('/judge', function(req, res) {
+  app.get('/summary', function(req, res) {
+    res.render('summary');
+  });
+
+  app.get('/judging', function(req, res) {
     res.render('judging');
   });
 
