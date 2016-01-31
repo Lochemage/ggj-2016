@@ -67,7 +67,7 @@ $(document).ready(function() {
   };
 
   function __startTimer($timer, done) {
-    var seconds = 40;
+    var seconds = 10;
 
     var startTime = new Date().getTime();
     var lastTime = startTime;

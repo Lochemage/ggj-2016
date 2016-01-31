@@ -7,7 +7,8 @@ var g_image_search = require('./g_image_search');
 // var DefaultState = require('./states/default_state');
 var States = {
     DrawState: require('./states/draw_state'),
-    IdleState: require('./states/idle_state')
+    IdleState: require('./states/idle_state'),
+    JudgeState: require('./states/judge_state')
 };
 
 function GameStateManager() {
@@ -73,26 +74,32 @@ GameStateManager.prototype = {
 
     ///////////////////////////////////////////////////////////////////
 
-    find_available_judge_session: function(player) {
-        var result = null;
-        var available_judge_session = player.find_available_judge_session();
-        // console.log('available_judge_session: ' + available_judge_session);
-        if (available_judge_session.length > 0) {
-            // console.log('available_judge_session != []')
-            this.matchmaker.assign_player_to_judge(player, available_judge_session[0], available_judge_session[1]);
-            player.curr_session = available_judge_session[0];
-            var data = {};
-            console.log('calling start judge handler');
-            this.call_handler('start judge', player, data);
-            result = available_judge_session[0];
-        }
-        return result;
-    },
+    // find_available_judge_session: function(player) {
+    //     var result = null;
+    //     var available_judge_session = player.find_available_judge_session();
+    //     // console.log('available_judge_session: ' + available_judge_session);
+    //     if (available_judge_session.length > 0) {
+    //         // console.log('available_judge_session != []')
+    //         this.matchmaker.assign_player_to_judge(player, available_judge_session[0], available_judge_session[1]);
+    //         player.curr_session = available_judge_session[0];
+    //         var data = {};
+    //         console.log('calling start judge handler');
+    //         this.call_handler('start judge', player, data);
+    //         result = available_judge_session[0];
+    //     }
+    //     return result;
+    // },
 
     update_player_state: function(player) {
-        var judge_session = this.find_available_judge_session(player);
-        if (judge_session) {
-            // TODO
+        // var judge_session = this.find_available_judge_session(player);
+        // if (judge_session) {
+        //     // TODO
+        //     return;
+        // }
+
+        if (player.has_queued_state()) {
+            var queue = player.get_queued_state();
+            this.set_player_state(player, queue.name, queue.data);
             return;
         }
 

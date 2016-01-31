@@ -21,16 +21,17 @@ DrawState.prototype = {
 
                 if (game_session.is_finished()) {
                     // for (var slotIdx = 3; slotIdx < 7; ++slotIdx) {
-                    //     game_session.slots[slotIdx].player.event_queue.push({
+                    //     game_session.slots[slotIdx].player.state_queue.push({
                     //         event_type: 'judge grandparent',
                     //         game_session: game_session,
                     //         judge_index: slotIdx
                     //     });
                     // }
-                    game_session.slots[0].player.event_queue.push({
-                        event_type: 'judge grandchildren',
-                        game_session: game_session,
-                        judge_index: slotIdx
+                    game_session.slots[0].player.state_queue.push({
+                        name: 'JudgeState',
+                        data: {
+                            game_session: game_session
+                        }
                     });
                     // TODO: Find some way to queue an outside player to for judging.
                 }
