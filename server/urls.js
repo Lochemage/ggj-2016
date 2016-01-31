@@ -3,6 +3,7 @@ var favicon = require('serve-favicon');
 var path    = require('path');
 var hbs     = require('handlebars');
 var cons    = require('consolidate');
+var g_image_search = require('./g_image_search');
 
 module.exports.init = function(app) {
 
@@ -35,5 +36,11 @@ module.exports.init = function(app) {
 
   app.get('/interim', function(req, res) {
     res.render('interim');
+  });
+
+  app.get('/imagesearch', function(req, res) {
+    g_image_search.init(4).then(function (list_of_urls) {
+        res.render('imagesearch', {imageurl: list_of_urls[0]});
+    });
   });
 }
