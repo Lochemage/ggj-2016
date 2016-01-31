@@ -134,10 +134,10 @@ describe('GameStateManager', function() {
         var game_state_manager = new GameStateManager();
         var fake_game_session = new GameSession([]);
         var fake_player = new Player({name: 'name', user: 'user'});
-        fake_game_session.create_new_player(fake_player);
+        game_state_manager.create_new_player({name: 'name', user: 'user'});
         var success = fake_game_session.assign_player_to_slot(fake_player, 0);
         assert(success);
-        console.log('fake_game_session', fake_game_session)
+        // console.log('fake_game_session', fake_game_session)
         fake_game_session.save_image_to_slot(0, 'image_path');
         game_state_manager.game_sessions.push(fake_game_session);
         assert.equal(game_state_manager.game_sessions[0].slots[0].image_path, 'image_path');
@@ -150,7 +150,8 @@ describe('GameStateManager', function() {
         game_state_manager.assign_player_to_game(player, function(game_session) {
             assert.equal(game_session, fake_game_session);
             assert.equal(game_state_manager.game_sessions.length, 1);
-            assert.equal(game_state_manager.game_sessions[0].available_slots, [2]);
+            assert.equal(game_state_manager.game_sessions[0].available_slots.length, 1);
+            assert.equal(game_state_manager.game_sessions[0].available_slots[0], 2);
             assert.equal(game_state_manager.game_sessions[0].slots.length, 3);
             assert(game_state_manager.game_sessions[0].player_is_in_slot(player, 1));
             done();

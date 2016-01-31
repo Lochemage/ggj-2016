@@ -14,9 +14,9 @@ function GameStateManager() {
 GameStateManager.prototype = {
     create_new_player: function(user_data) {
         var player = new Player(user_data);
-        console.log('create player', player);
+        // console.log('create player', player);
         this.players.push(player);
-        console.log('this.players: ', this.players);
+        // console.log('this.players: ', this.players);
         return player;
     },
     // might be draw session or judge session

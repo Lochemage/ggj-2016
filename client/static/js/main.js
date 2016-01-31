@@ -7,7 +7,7 @@ $(document).ready(function() {
   };
 
   function __startTimer($timer, done) {
-    var seconds = 60;
+    var seconds = 40;
 
     var startTime = new Date().getTime();
     var lastTime = startTime;
