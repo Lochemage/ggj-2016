@@ -137,6 +137,21 @@ GameStateManager.prototype = {
 
     queue_external_judge: function(game_session, slot_idx) {
         this.externalJudgesNeeded.push({game_session: game_session, slot_idx: slot_idx});
+    },
+    get_score_list: function() {
+        var sorted_list = this.players.slice();
+        sorted_list.sort(function(a, b) {
+            if(a.points < b.points) return 1;
+            if(a.points > b.points) return -1;
+            return 0;
+        });
+        // console.log('sorted_list: ', sorted_list)
+        var score_data = [];
+        for(var i = 0; i < sorted_list.length; ++i) {
+            score_data.push({player: sorted_list[i], score: sorted_list[i].points});
+        }
+        // console.log('score_data: ', score_data)
+        return score_data;
     }
 };
 

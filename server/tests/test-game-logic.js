@@ -164,4 +164,20 @@ describe('GameStateManager', function() {
         assert(game_state_manager.game_sessions[0].player_is_in_slot(player, 1));
         done();
     });
+    it('test_get_score_list', function() {
+        var game_state_manager = new GameStateManager();
+        var fake_game_session = new GameSession([]);
+        game_state_manager.create_new_player({name: 'name_1', user: 'user'});
+        game_state_manager.create_new_player({name: 'name_2', user: 'user'});
+        game_state_manager.players[0].points = 5;
+        game_state_manager.players[1].points = 100;
+
+        score_data = game_state_manager.get_score_list();
+        assert.equal(score_data.length, 2);
+        assert.equal(score_data[0].player.name, 'name_2');
+        assert.equal(score_data[0].score, 100);
+        assert.equal(score_data[1].player.name, 'name_1');
+        assert.equal(score_data[1].score, 5);
+
+    });
 });
