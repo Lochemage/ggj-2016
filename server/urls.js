@@ -22,20 +22,8 @@ module.exports.init = function(app) {
     res.render('index');
   });
 
-  app.get('/drawer', function(req, res) {
-    res.render('drawer');
-  });
-
   app.get('/judge', function(req, res) {
     res.render('judging');
-  });
-
-  app.get('/start', function(req, res) {
-    res.render('start');
-  });
-
-  app.get('/interim', function(req, res) {
-    res.render('interim');
   });
 
   app.get('/imagesearch', function(req, res) {
