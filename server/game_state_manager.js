@@ -16,7 +16,13 @@ GameStateManager.prototype = {
         this.players.push(player);
         return player;
     },
+    // might be draw session or judge session
     assign_player_to_game: function(player, callback) {
+        var available_judge_session = this.matchmaker.find_available_judge_session(player);
+        if(available_judge_session != []) {
+            this.matchmaker.assign_player_to_judge(player, available_judge_session[0], available_judge_session[1]);
+            callback(available_judge_session[0]);
+        }
         var game_session = this.matchmaker.match_a_player_with_sessions(this.game_sessions, player);
         if (!game_session) {
             var self = this;
@@ -31,6 +37,7 @@ GameStateManager.prototype = {
             callback(game_session);
         }
     },
+
     // start_new_game_session: g_image_search.init(4).then(function (image_url){
     //     console.log('image url: ' + image_url)
     //     }
@@ -53,7 +60,8 @@ GameStateManager.prototype = {
         var last_child_index = game_session.get_index_of_first_grandchild(grand_index) + 3;
         if(player_index == last_child_index) {
             // notify grandparent
-            // grandparent_player = game_session.
+            grandparent_player = game_session.slots[grand_index].player;
+            grandparent_player.event_queue.push({event_type: 'judge', game_session: game_session, judge_index: grand_index});
         }
     },
 };

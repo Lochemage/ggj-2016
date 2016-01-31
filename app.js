@@ -47,6 +47,8 @@ if (testing) {
 
   // Temporary, implemented chat system with the new connect register system.
   connect.on('chat message', function(user, data) {
+    var player = game_state_manager.create_new_player(user);
+    
     connect.emit('chat message', data);
   });
 
