@@ -1,9 +1,8 @@
 .inputContainer {
   position: absolute;
-  top: 50%;
+  top: 20px;
   left: 50%;
   margin-left: -200px;
-  margin-top: -100px;
   border: 3px solid #56A;
   border-radius: 20px;
   box-shadow: 10px 10px 10px #67B;
