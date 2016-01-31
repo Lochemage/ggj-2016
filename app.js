@@ -45,12 +45,17 @@ if (testing) {
   connect.init(http);
   var game_state_manager = new GameStateManager();
 
-  // Temporary, implemented chat system with the new connect register system.
-  connect.on('chat message', function(user, data) {
-    connect.emit('chat message', data);
-  });
+  // game_state_manager.on('start game', function(player, data) {
+  //   player.user.socket.emit('start game', data);
+  // });
 
-  connect.on('disconnect', function(user, data) {
-    console.log('User disconnected');
+  connect.on('start game', function(user, name) {
+    // TODO: Interface with the game state machine to generate a player and assign them to a session.
+    console.log('game started! Welcome', name);
+
+    // game_state_manager();
+
+    // TEMP: Start a game immediately.
+    user.socket.emit('start game');
   });
 }

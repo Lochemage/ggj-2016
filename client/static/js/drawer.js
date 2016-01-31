@@ -75,12 +75,12 @@ function resourceLoaded()
 function prepareCanvas()
 {
 	// Create the canvas (Neccessary for IE because it doesn't know what a canvas element is)
-	var canvasDiv = document.getElementById('canvasDiv');
+	var drawCanvas = document.getElementById('drawCanvas');
 	canvas = document.createElement('canvas');
 	canvas.setAttribute('width', canvasWidth);
 	canvas.setAttribute('height', canvasHeight);
 	canvas.setAttribute('id', 'canvas');
-	canvasDiv.appendChild(canvas);
+	drawCanvas.appendChild(canvas);
 	if(typeof G_vmlCanvasManager != 'undefined') {
 		canvas = G_vmlCanvasManager.initElement(canvas);
 	}
@@ -124,8 +124,8 @@ function prepareCanvas()
 	$('#canvas').mousedown(function(e)
 	{
 		// Mouse down location
-		var mouseX = e.pageX - this.offsetLeft;
-		var mouseY = e.pageY - this.offsetTop;
+		var mouseX = e.pageX - $(this).offset().left;
+		var mouseY = e.pageY - $(this).offset().top;
 		
 		if(mouseX < drawingAreaX) // Left of the drawing area
 		{
@@ -185,7 +185,7 @@ function prepareCanvas()
 	
 	$('#canvas').mousemove(function(e){
 		if(paint==true){
-			addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true);
+			addClick(e.pageX - $(this).offset().left, e.pageY - $(this).offset().top, true);
 			redraw();
 		}
 	});
@@ -492,7 +492,7 @@ function redraw()
 	// Overlay a crayon texture (if the current tool is crayon)
 	if(curTool == "crayon"){
 		context.globalAlpha = 0.4; // No IE support
-		context.drawImage(crayonTextureImage, 0, 0, canvasWidth, canvasHeight);
+		context.drawImage(crayonTextureImage, 110, 10, 267, 200);
 	}
 	context.globalAlpha = 1; // No IE support
 }
