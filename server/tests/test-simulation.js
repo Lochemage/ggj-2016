@@ -15,6 +15,7 @@ describe('GameSimulation', function() {
             assert(game_state_manager.players.length, 1);
             assert(game_state_manager.game_sessions.length, 1);
             assert(game_state_manager.game_sessions[0].slots.length, 1);
+            assert(game_state_manager.game_sessions[0].original_images.length, 4);
             assert(game_state_manager.game_sessions[0].player_is_in_slot(player, 0));
             done();
         });
