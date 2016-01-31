@@ -70,7 +70,13 @@ function resourceLoaded()
 }
 
 function retrieveCanvasImage() {
-	return canvas.toDataURL('image/jpeg');
+	var tempCanvas = document.createElement('canvas');
+	tempCanvas.setAttribute('width', 267);
+	tempCanvas.setAttribute('height', 200);
+	tempContext = tempCanvas.getContext('2d');
+	tempContext.drawImage(canvas, -111, -11);
+
+	return tempCanvas.toDataURL('image/jpeg');
 };
 
 /**
