@@ -49,7 +49,12 @@ if (testing) {
     console.log('game starting');
     player.user.socket.emit('start game', data);
   });
-
+  
+  game_state_manager.add_handler('update points', function(player, data) {
+    console.log('update points');
+    player.user.socket.emit('update points', data);
+  });
+  
   game_state_manager.add_handler('start idle', function(player) {
     console.log('idling...');
     player.user.socket.emit('start idle');
