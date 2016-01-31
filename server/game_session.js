@@ -9,6 +9,7 @@ a game.
 function GameSession(original_images) {
     this.slots = [undefined];
     this.available_slots = [0];
+    // let's just always use this.original_images[0] as the real original image
     this.original_images = original_images;
 };
 
