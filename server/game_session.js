@@ -27,7 +27,7 @@ GameSession.prototype = {
         //return -1;
     },
     player_is_in_slot: function(player, slot_idx) {
-        return this.slots[slot_idx] !== undefined && this.slots[slot_idx].player == player;
+        return this.slots[slot_idx] && this.slots[slot_idx].player == player;
     },
     assign_player_to_slot: function(player, slot_idx) {
         if (slot_idx in this.slots && slot_idx in this.get_available_slots()) {
