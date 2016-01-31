@@ -34,6 +34,7 @@ $(document).ready(function() {
         opacity = 0;
         ropacity = 1;
       }
+      
       $timer.children('.filler').css('opacity', opacity);
       $timer.children('.mask').css('opacity', ropacity);
       lastTime = time;
