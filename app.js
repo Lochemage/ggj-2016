@@ -65,7 +65,14 @@ if (testing) {
   });
 
   connect.on('submit drawing', function(user, imgData) {
+    /*
     game_state_manager.player_submit_image(user.player, imgData);
+    /*/
+    game_state_manager.processPlayerEvent(user.player, {
+        phase: 'FINISH',
+        image_path: image_path
+    });
+    //*/
   });
 
   connect.on('play again', function(user) {
@@ -73,4 +80,10 @@ if (testing) {
       console.log('assigned player to game');
     });
   });
+
+  /////////////////////////////////////////////////////////////////////
+
+  function processPlayerEvent(player, eventData) {
+    game_state_manager.processPlayerEvent(player, eventData);
+  }
 }

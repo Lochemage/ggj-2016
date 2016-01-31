@@ -4,6 +4,7 @@ var Player = require('./player');
 const assert = require('assert');
 var g_image_search = require('./g_image_search');
 var DrawState = require('./states/draw_state');
+var DefaultState = require('./states/default_state');
 
 function GameStateManager() {
     this.game_sessions = [];
@@ -100,6 +101,12 @@ GameStateManager.prototype = {
 
     player_submit_image: function(player, image_path) {
         player.state.on_finish({image_path: image_path});
+    },
+
+    ///////////////////////////////////////////////////////////////////
+
+    processPlayerEvent: function (player, eventData) {
+        player.state[DefaultState.eventDataPhaseToStateMethod[eventData.phase]](eventData);
     }
 };
 
