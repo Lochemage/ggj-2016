@@ -17,32 +17,32 @@ describe('GameSimulation', function() {
         return player;
     };
     function player_submit_image(player, image_path) {
-        game_state_manager.processPlayerEvent(player, {phase: 'FINISH', image_path: image_path});
+        player.state.on_event(game_state_manager, {name: 'submit drawing', image_path: image_path});
     }
     beforeEach('clear handlers', function() {
         game_state_manager.clear_handlers("start game");
     });
     it('first player joins', function(done) {
         var player = __add_player();
-        game_state_manager.assign_player_to_game(player, function(game_session) {
-            assert.equal(game_state_manager.players.length, 1);
-            console.log('game_state_manager.game_sessions.length: ' + game_state_manager.game_sessions.length)
-            assert.equal(game_state_manager.game_sessions.length, 1);
-            assert.equal(game_state_manager.game_sessions[0].slots.length, 1);
-            assert.equal(game_state_manager.game_sessions[0].original_images.length, 4);
-            assert(game_state_manager.game_sessions[0].player_is_in_slot(player, 0));
-            assert(players[0].curr_session != null);
-            done();
-        });
+        game_state_manager.update_player_state(player);
+        var game_session = player.curr_session;
+        assert.equal(game_state_manager.players.length, 1);
+        console.log('game_state_manager.game_sessions.length: ' + game_state_manager.game_sessions.length)
+        assert.equal(game_state_manager.game_sessions.length, 1);
+        assert.equal(game_state_manager.game_sessions[0].slots.length, 1);
+        assert.equal(game_state_manager.game_sessions[0].original_images.length, 4);
+        assert(game_state_manager.game_sessions[0].player_is_in_slot(player, 0));
+        assert(players[0].curr_session != null);
+        done();
     });
     it('second player soon after', function(done) {
         var player = __add_player();
-        game_state_manager.assign_player_to_game(player, function(game_session) {
-            assert.equal(game_state_manager.game_sessions.length, 2);
-            assert(players[0].curr_session != players[1].curr_session);
-            assert(players[1].curr_session != null);
-            done();
-        });
+        game_state_manager.update_player_state(player);
+        var game_session = player.curr_session;
+        assert.equal(game_state_manager.game_sessions.length, 2);
+        assert(players[0].curr_session != players[1].curr_session);
+        assert(players[1].curr_session != null);
+        done();
     });
     var first_image = 'first image';
     it('first player submits image', function() {
@@ -56,13 +56,13 @@ describe('GameSimulation', function() {
         game_state_manager.add_handler("start game", function (player, data) {
             assert.equal(data.image, first_image);
         });
-        game_state_manager.assign_player_to_game(player, function(game_session) {
-            assert.equal(game_state_manager.game_sessions.length, 2);
-            assert.equal(game_state_manager.game_sessions[0].slots.length, 3);
-            assert.equal(game_state_manager.game_sessions[1].slots.length, 1);
-            assert.equal(player.curr_session, game_state_manager.game_sessions[0]);
-            done();
-        });
+        game_state_manager.update_player_state(player);
+        var game_session = player.curr_session;
+        assert.equal(game_state_manager.game_sessions.length, 2);
+        assert.equal(game_state_manager.game_sessions[0].slots.length, 3);
+        assert.equal(game_state_manager.game_sessions[1].slots.length, 1);
+        assert.equal(player.curr_session, game_state_manager.game_sessions[0]);
+        done();
     });
     var second_image = 'second image';
     it('second player submits image', function() {
@@ -75,12 +75,12 @@ describe('GameSimulation', function() {
         game_state_manager.add_handler("start game", function (player, data) {
             assert.equal(data.image, second_image);
         });
-        game_state_manager.assign_player_to_game(players[0], function(game_session) {
-            assert.equal(game_state_manager.game_sessions.length, 2);
-            assert.equal(players[0].curr_session, game_state_manager.game_sessions[1]);
-            assert.equal(game_state_manager.game_sessions[1].get_player_slot_index(players[0]), 1);
-            done();
-        });
+        game_state_manager.update_player_state(players[0]);
+        var game_session = players[0].curr_session;
+        assert.equal(game_state_manager.game_sessions.length, 2);
+        assert.equal(players[0].curr_session, game_state_manager.game_sessions[1]);
+        assert.equal(game_state_manager.game_sessions[1].get_player_slot_index(players[0]), 1);
+        done();
     });
     var third_image = 'third image';
     it('third player submits image', function() {
@@ -93,43 +93,43 @@ describe('GameSimulation', function() {
         game_state_manager.add_handler("start game", function (player, data) {
             assert.equal(data.image, first_image);
         });
-        game_state_manager.assign_player_to_game(players[1], function(game_session) {
-            assert.equal(game_state_manager.game_sessions.length, 2);
-            assert.equal(players[1].curr_session, game_state_manager.game_sessions[0]);
-            assert.equal(game_state_manager.game_sessions[0].get_player_slot_index(players[1]), 2);
-            done();
-        });
+        game_state_manager.update_player_state(players[1]);
+        var game_session = players[1].curr_session;
+        assert.equal(game_state_manager.game_sessions.length, 2);
+        assert.equal(players[1].curr_session, game_state_manager.game_sessions[0]);
+        assert.equal(game_state_manager.game_sessions[0].get_player_slot_index(players[1]), 2);
+        done();
     });
     it('players 4 and 5 join', function(done) {
         var player = __add_player();
         game_state_manager.add_handler("start game", function (player, data) {
             assert.equal(data.image, third_image);
         });
-        game_state_manager.assign_player_to_game(player, function(game_session) {
-            assert.equal(game_state_manager.game_sessions.length, 2);
-            assert.equal(game_state_manager.game_sessions[0].slots.length, 5);
-            assert.equal(game_state_manager.game_sessions[1].slots.length, 3);
-            assert.equal(player.curr_session, game_state_manager.game_sessions[0]);
-            assert.equal(game_state_manager.game_sessions[0].get_player_slot_index(player), 3);
+        game_state_manager.update_player_state(player);
+        var game_session = player.curr_session;
+        assert.equal(game_state_manager.game_sessions.length, 2);
+        assert.equal(game_state_manager.game_sessions[0].slots.length, 5);
+        assert.equal(game_state_manager.game_sessions[1].slots.length, 3);
+        assert.equal(player.curr_session, game_state_manager.game_sessions[0]);
+        assert.equal(game_state_manager.game_sessions[0].get_player_slot_index(player), 3);
 
-            player = __add_player();
-            game_state_manager.assign_player_to_game(player, function(game_session) {
-                assert.equal(player.curr_session, game_state_manager.game_sessions[0]);
-                assert.equal(game_state_manager.game_sessions[0].get_player_slot_index(player), 4);
-                done();
-            });
-        });
+        player = __add_player();
+        game_state_manager.update_player_state(player);
+        var game_session = player.curr_session;
+        assert.equal(player.curr_session, game_state_manager.game_sessions[0]);
+        assert.equal(game_state_manager.game_sessions[0].get_player_slot_index(player), 4);
+        done();
     });
     it('player 6 joins', function(done) {
         var player = __add_player();
         game_state_manager.add_handler("start game", function (player, data) {
             assert.equal(data.image, second_image);
         });
-        game_state_manager.assign_player_to_game(player, function(game_session) {
-            assert.equal(player.curr_session, game_state_manager.game_sessions[1]);
-            assert.equal(game_state_manager.game_sessions[1].get_player_slot_index(player), 2);
-            done();
-        });
+        game_state_manager.update_player_state(player);
+        var game_session = player.curr_session;
+        assert.equal(player.curr_session, game_state_manager.game_sessions[1]);
+        assert.equal(game_state_manager.game_sessions[1].get_player_slot_index(player), 2);
+        done();
     });
     var fourth_image = "fourth_image";
     it('player 2 submits image', function() {
@@ -151,19 +151,19 @@ describe('GameSimulation', function() {
         game_state_manager.add_handler("start game", function (player, data) {
             assert.equal(data.image, fourth_image);
         });
-        game_state_manager.assign_player_to_game(player, function(game_session) {
-            assert.equal(game_state_manager.game_sessions.length, 2);
-            assert.equal(game_state_manager.game_sessions[0].slots.length, 7);
-            assert.equal(game_state_manager.game_sessions[1].slots.length, 3);
-            assert.equal(player.curr_session, game_state_manager.game_sessions[0]);
-            assert.equal(game_state_manager.game_sessions[0].get_player_slot_index(player), 5);
+        game_state_manager.update_player_state(player);
+        var game_session = player.curr_session;
+        assert.equal(game_state_manager.game_sessions.length, 2);
+        assert.equal(game_state_manager.game_sessions[0].slots.length, 7);
+        assert.equal(game_state_manager.game_sessions[1].slots.length, 3);
+        assert.equal(player.curr_session, game_state_manager.game_sessions[0]);
+        assert.equal(game_state_manager.game_sessions[0].get_player_slot_index(player), 5);
 
-            player = __add_player();
-            game_state_manager.assign_player_to_game(player, function(game_session) {
-                assert.equal(player.curr_session, game_state_manager.game_sessions[0]);
-                assert.equal(game_state_manager.game_sessions[0].get_player_slot_index(player), 6);
-                done();
-            });
-        });
+        player = __add_player();
+        game_state_manager.update_player_state(player);
+        var game_session = player.curr_session;
+        assert.equal(player.curr_session, game_state_manager.game_sessions[0]);
+        assert.equal(game_state_manager.game_sessions[0].get_player_slot_index(player), 6);
+        done();
     });
 });

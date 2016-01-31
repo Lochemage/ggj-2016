@@ -84,24 +84,31 @@ GameStateManager.prototype = {
         }
         return result;
     },
-    
-    // might be draw session or judge session
-    assign_player_to_game: function(player, callback) {
+
+    update_player_state: function(player) {
         var judge_session = this.find_available_judge_session(player);
         if (judge_session) {
-            callback(judge_session);
+            // TODO
             return;
         }
 
-        player.state = new DrawState(player);
-        player.state.on_start(this, callback);
+        this.set_player_state(player, DrawState);
     },
 
+    set_player_state: function(player, StateClass) {
+        if (player.state) {
+            player.state.on_finish(this);
+        }
+
+        player.state = new StateClass(player);
+        player.state.on_start(this);
+    },
+    
     ///////////////////////////////////////////////////////////////////
 
-    processPlayerEvent: function (player, eventData) {
-        player.state[DefaultState.eventDataPhaseToStateMethod[eventData.phase]](eventData);
-    }
+    // processPlayerEvent: function (player, eventData) {
+    //     player.state[DefaultState.eventDataPhaseToStateMethod[eventData.phase]](eventData);
+    // }
 };
 
 module.exports = GameStateManager;
