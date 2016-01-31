@@ -109,6 +109,11 @@ GameSession.prototype = {
             this.expand_children(slotIdx);
         }
     },
+    get_image_from_slot: function(slotIdx) {
+        return slotIdx < 0 || slotIdx > this.slots.length
+            ? ''
+            : this.slots[slotIdx].image_path;
+    },
     is_finished: function() {
         // check that all slots on the third row of this game session are done
         for (var slotIdx = 0; slotIdx < 7; ++slotIdx) {
