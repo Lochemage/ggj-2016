@@ -6,9 +6,10 @@ a game.
 
 //********************************************************************/
 
-function GameSession() {
+function GameSession(original_images) {
     this.slots = [undefined];
     this.available_slots = [0];
+    this.original_images = original_images;
 };
 
 GameSession.prototype = {
@@ -75,7 +76,7 @@ GameSession.prototype = {
         return -1;
     },
     save_image_to_slot: function(slot_idx, image_path) {
-        this.slots[sloat_index][image_path] = image_path
+        this.slots[slot_idx].image_path = image_path;
     }
 };
 

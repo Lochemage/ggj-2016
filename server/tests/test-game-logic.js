@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var matchmaker = require('../matchmaker');
+var Matchmaker = require('../matchmaker');
 var GameSession = require('../game_session');
 var Player = require('../player');
 
@@ -119,7 +119,8 @@ describe('Matchmaker', function() {
     });
     describe('make me a match', function() {
         it('make me a match', function(done) {
-            stillUnassignable = matchmaker.matchmaker.make_me_a_match(game_session, assignable_players)
+            var matchmaker = new Matchmaker();
+            stillUnassignable = matchmaker.make_me_a_match(game_session, assignable_players)
             done();
             // done(new Error('nope!'));
         });

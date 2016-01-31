@@ -1,7 +1,7 @@
 var express = require('express');
 var urls = require('./server/urls');
 var connect = require('./server/connect');
-var game_state_manager = require('./server/game_state_manager');
+var GameStateManager = require('./server/game_state_manager');
 var app = express();
 var http = require('http').Server(app);
 var tester = require('./server/tester');
@@ -43,7 +43,7 @@ if (testing) {
 } else {
   urls.init(app);
   connect.init(http);
-  game_state_manager.init();
+  var game_state_manager = new GameStateManager();
 
   // Temporary, implemented chat system with the new connect register system.
   connect.on('chat message', function(user, data) {

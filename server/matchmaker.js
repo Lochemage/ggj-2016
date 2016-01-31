@@ -47,6 +47,45 @@ Matchmaker.prototype = {
         //{
         //    game_session.assign_player_to_slot(assignable_players[players_to_match], i);
         //}
+    },
+    match_a_player_with_a_session: function(game_session, assignable_player) {
+        // naive implementation -- put all assignable players into the game session
+        //var next_available_slot;
+        //while ((next_available_slot = game_session.get_next_available_slot()) != -1) {
+        //    game_session.assign_player_to_slot(assignable_players[players_to_match], i);
+        //}
+        //
+        var available_slots = game_session.get_available_slots();
+        //
+        var stillAssignablePlayers = [];
+        // forPlayers:
+        // for (var playerIdx = 0; playerIdx < assignable_players.length; ++playerIdx) {
+        // var player = assignable_players[playerIdx];
+        var available_slots = game_session.get_available_slots();
+        for (var slotIdx = 0; slotIdx < available_slots.length; ++slotIdx) {
+            if (this.can_assign_player(assignable_player, game_session, slotIdx)) {
+                game_session.assign_player_to_slot(assignable_player, slotIdx);
+                return true;
+                // continue forPlayers;
+            }
+        }
+        // could not find a slot to place this player
+        return false;
+        //
+        //var players_to_match = Math.min(available_slots.length, assignable_players.length);
+        //for (var i = players_to_match; i >= 0; i--)
+        //{
+        //    game_session.assign_player_to_slot(assignable_players[players_to_match], i);
+        //}
+    },
+    match_a_player_with_sessions: function(game_sessions, assignable_player) {
+        for (var sessionIdx = 0; sessionIdx < game_sessions.length; ++sessionIdx) {
+            game_session = game_sessions[sessionIdx];
+            if (this.match_a_player_with_a_session(game_session, assignable_player)) {
+                return game_session;
+            }
+        }
+        return null;
     }
 };
 Matchmaker.prototype.make_me_a_match = Matchmaker.prototype.match_players;  // (:
@@ -55,4 +94,4 @@ Matchmaker.prototype.make_me_a_match = Matchmaker.prototype.match_players;  // (
 module.exports.init = function() {
     // todo
 };
-module.exports.matchmaker = new Matchmaker();
+module.exports = Matchmaker;
