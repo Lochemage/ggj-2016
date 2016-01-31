@@ -34,6 +34,9 @@ if (testing) {
     console.log('Passed!');
     process.exit();
   }).catch(function(count) {
+    if (typeof count === 'object') {
+      count = count.stack;
+    }
     console.log(count.toString(), 'Failed!');
     process.exit(1);
   });
