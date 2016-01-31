@@ -43,11 +43,11 @@ if (testing) {
   matchmaker.init();
 
   // Temporary, implemented chat system with the new connect register system.
-  connect.on('chat message', function(player, data) {
+  connect.on('chat message', function(user, data) {
     connect.emit('chat message', data);
   });
 
-  connect.on('disconnect', function(player, data) {
-    console.log('Player disconnected');
+  connect.on('disconnect', function(user, data) {
+    console.log('User disconnected');
   });
 }
