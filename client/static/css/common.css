@@ -17,6 +17,14 @@ body {
                                   not supported by any browser */
 }
 
+#definition {
+  position: absolute;
+  top: 230px;
+  left: 0px;
+  font-size: 30px;
+  text-align: left;
+}
+
 .wrapper {
   position: absolute;
   top: 0px;

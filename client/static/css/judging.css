@@ -1,0 +1,59 @@
+#judgeSpace {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  margin-left: -350px;
+}
+
+#judgeSpace > img.source,
+#judgeSpace > img.choiceLarge {
+  position: absolute;
+  top: 61px;
+  left: 218px;
+  width: 267px;
+  height: 200px;
+}
+
+#judgeSpace > img.choice {
+  position: absolute;
+  width: 133.5px;
+  height: 100px;
+}
+
+#judgeSpace > img.choice,
+#judgeSpace > img.choiceLarge {
+  cursor: pointer;
+}
+
+#judgeSpace > img.choice.upper {
+  top: 360px;
+}
+
+#judgeSpace > img.choice.lower {
+  top: 509px;
+}
+
+#judgeSpace > img.choice.left {
+  left: 194px;
+}
+
+#judgeSpace > img.choice.right {
+  left: 382px;
+}
+
+#judgeSpace > img.choiceLarge.upper {
+  top: 260px;
+}
+
+#judgeSpace > img.choiceLarge.lower {
+  top: 509px;
+}
+
+#judgeSpace > img.choiceLarge.left {
+  left: 61px;
+}
+
+#judgeSpace > img.choiceLarge.right {
+  left: 382px;
+}
+

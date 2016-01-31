@@ -6,19 +6,26 @@
     <link href='/static/css/common.css' rel='stylesheet' type='text/css'/>
     <link href='/static/css/interim.css' rel='stylesheet' type='text/css'/>
     <link href='/static/css/drawer.css' rel='stylesheet' type='text/css'/>
+    <link href='/static/css/judging.css' rel='stylesheet' type='text/css'/>
+    <link href='/static/css/summary.css' rel='stylesheet' type='text/css'/>
     <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js'></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/static/js/main.js"></script>
     <script type="text/javascript" src="/static/js/drawer.js"></script>
   </head>
   <body class='noselect'>
-    <div id="startPrompt" class='inputContainer'>
+    <div id="welcomeSpace" class='inputContainer'>
       <form class='nametag' action=''>
         <label>Enter your name</label><br>
-        <input type='text'/><button>Start</button>
+        <input type='text' autocomplete='off'/><button>Start</button>
       </form>
+      <label id="definition">
+        <b>rit·u·al</b> [<em>/ˈriCH(əw)əl/</em>]<br>
+        <em>noun: ritual; plural noun: rituals</em><br><br>
+        <b>a series of actions or type of behavior regularly and invariably followed by someone.</b><br>
+      </label>
     </div>
-    <div id="continuePrompt" class='inputContainer not_shown'>
+    <div id="continueSpace" class='inputContainer not_shown'>
       <form class='interim' action=''>
         <label>Times up! Pencils down!</label><br>
         <button>Play another round</button>
@@ -26,13 +33,45 @@
     </div>
     <div id='drawSpace' class='not_shown'>
       <label>Draw this image</label><br>
-      <div class='previewContainer'><img class='preview' src=''/></div>
+      <img class='preview' src=''/>
       <div class='timer wrapper'>
         <div class='pie spinner'></div>
         <div class='pie filler'></div>
         <div class='mask'></div>
       </div>
       <div id='drawCanvas'></div>
+    </div>
+    <div id='judgeSpace' class='not_shown'>
+      <img class='outline' src="/static/images/judging-outline.png"/>
+      <img class='source' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='choice upper left' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='choice upper right' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='choice lower left' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='choice lower right' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='choiceLarge upper not_shown left' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='choiceLarge upper not_shown right' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='choiceLarge lower not_shown left' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='choiceLarge lower not_shown right' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+    </div>
+    <div id='summarySpace' class='not_shown'>
+      <img class='outline' src="/static/images/summary-outline.png">
+      <img class='source original' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='source tier1' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='source tier2 left' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='source tier2 right' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='source tier3 farleft' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='source tier3 left' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='source tier3 right' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='source tier3 farright' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+
+      <img class='sourceLarge not_shown original' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='sourceLarge not_shown tier1' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='sourceLarge not_shown tier2 left' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='sourceLarge not_shown tier2 right' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='sourceLarge not_shown tier3 farleft' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='sourceLarge not_shown tier3 left' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='sourceLarge not_shown tier3 right' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
+      <img class='sourceLarge not_shown tier3 farright' src="http://images2.fanpop.com/image/photos/9200000/flower-google-9268464-1024-768.jpg"/>
     </div>
   </body>
 </html>

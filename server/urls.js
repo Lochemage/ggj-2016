@@ -22,20 +22,12 @@ module.exports.init = function(app) {
     res.render('index');
   });
 
-  app.get('/drawer', function(req, res) {
-    res.render('drawer');
+  app.get('/summary', function(req, res) {
+    res.render('summary');
   });
 
-  app.get('/judge', function(req, res) {
+  app.get('/judging', function(req, res) {
     res.render('judging');
-  });
-
-  app.get('/start', function(req, res) {
-    res.render('start');
-  });
-
-  app.get('/interim', function(req, res) {
-    res.render('interim');
   });
 
   app.get('/imagesearch', function(req, res) {
