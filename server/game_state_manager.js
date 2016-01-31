@@ -8,7 +8,8 @@ var g_image_search = require('./g_image_search');
 var States = {
     DrawState: require('./states/draw_state'),
     IdleState: require('./states/idle_state'),
-    JudgeState: require('./states/judge_state')
+    JudgeState: require('./states/judge_state'),
+    SummaryState: require('./states/summary_state'),
 };
 
 function GameStateManager() {
