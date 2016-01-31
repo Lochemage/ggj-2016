@@ -44,14 +44,17 @@ GameStateManager.prototype = {
             });
             return;
         }
-
-        console.log('calling start game handler for existing game session');
-        var player_index = game_session.get_player_slot_index(player);
-        var parent_index = game_session.get_index_of_parent(player_index);
-        var parent_image_path = game_session.slots[parent_index].image_path;
-        assert(parent_image_path != '');
-        this.call_handler('start game', player, {image: parent_image_path});
-        callback(game_session);
+        else{
+            console.log('calling start game handler for existing game session');
+            var player_index = game_session.get_player_slot_index(player);
+            console.log('player_index: ', player_index)
+            var parent_index = game_session.get_index_of_parent(player_index);
+            console.log('parent_index: ', parent_index)
+            var parent_image_path = game_session.slots[parent_index].image_path;
+            assert(parent_image_path != '');
+            this.call_handler('start game', player, {image: parent_image_path});
+            callback(game_session);
+        }
     },
 
     // start_new_game_session: g_image_search.init(4).then(function (image_url){

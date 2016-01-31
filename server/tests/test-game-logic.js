@@ -3,6 +3,7 @@ var assert = require('assert');
 var Matchmaker = require('../matchmaker');
 var GameSession = require('../game_session');
 var Player = require('../player');
+var GameStateManager = require('../game_state_manager');
 
 describe('GameRules', function() {
     //
@@ -124,5 +125,33 @@ describe('Matchmaker', function() {
             done();
             // done(new Error('nope!'));
         });
+    });
+});
+
+describe('GameStateManager', function() {
+    // this.timeout(10000);
+    it('assign_player_to_game_existing_session', function(done) {
+        var game_state_manager = new GameStateManager();
+        var fake_game_session = new GameSession([]);
+        var fake_player = new Player({});
+        fake_game_session.slots[0] = {player: fake_player};
+        fake_game_session.save_image_to_slot(0, 'image_path');
+        game_state_manager.game_sessions.push(fake_game_session);
+        assert.equal(game_state_manager.game_sessions[0].slots[0].image_path, 'image_path');
+        assert.equal(game_state_manager.game_sessions[0].slots.length, 1);
+        assert.equal(game_state_manager.game_sessions.length, 1);
+
+        
+        var player = game_state_manager.create_new_player({});
+        game_state_manager.assign_player_to_game(player, function(game_session) {
+            assert.equal(game_session, fake_game_session);
+            assert.equal(game_state_manager.players.length, 2);
+            assert.equal(game_state_manager.game_sessions.length, 1);
+            assert.equal(game_state_manager.game_sessions[0].available_slots, [2]);
+            assert.equal(game_state_manager.game_sessions[0].slots.length, 2);
+            assert(game_state_manager.game_sessions[0].player_is_in_slot(player, 1));
+            done();
+        });
+        
     });
 });
