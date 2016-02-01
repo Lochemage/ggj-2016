@@ -52,10 +52,10 @@ if (testing) {
   
   game_state_manager.add_handler('update points', function(player, data) {
     console.log('update points');
-    if (data.myPoints !== null) {
+    if (data.myPoints !== null && player && player.user) {
       player.user.socket.emit('update points', data.myPoints);
     }
-    connect.emit('update board', data.allPoints.slice(0, 10));
+    connect.emit('update board', {allPoints: data.allPoints.slice(0, 10), totalPlayers: data.allPoints.length});
   });
   
   game_state_manager.add_handler('start idle', function(player) {
@@ -73,32 +73,46 @@ if (testing) {
     player.user.socket.emit('start summary', data);
   });
 
-  connect.on('start game', function(user, name) {
-    // user.socket.emit('start judging', {source: 'url', choices: ['1', '2', '3', '4']});
-    // return;
-
-    console.log('Welcome', name);
-    var player = game_state_manager.create_new_player({name: name, user: user});
+  connect.on('connected', function(user, name) {
+    console.log('user connected');
+    var player = game_state_manager.create_new_player({name: 'Observer', user: user});
     user.player = player;
-    game_state_manager.update_player_state(player);
+  });
+
+  connect.on('start game', function(user, name) {
+    console.log('Welcome', name);
+    user.player.name = name;
+    game_state_manager.update_player_state(user.player);
   });
 
   connect.on('game event', function(user, event) {
     if (user && user.player && user.player.state) {
       console.log('game event', event.name);
       user.player.state.on_event(game_state_manager, event);
+      game_state_manager.clean_game_sessions();
     }
   });
 
   connect.on('disconnect', function(user, event) {
-      user.disconnect(game_state_manager);
       console.log('user disconnected');
+      game_state_manager.remove_player_connection(user.player);
+      user.disconnect(game_state_manager);
+      game_state_manager.clean_game_sessions();
       //user.player.state.on_event(game_state_manager, {name: 'disconnect'});
   });
 
   /////////////////////////////////////////////////////////////////////
 
-  // function processPlayerEvent(player, eventData) {
-  //   game_state_manager.processPlayerEvent(player, eventData);
-  // }
+
+  // DEBUGGING Communication
+
+  game_state_manager.add_handler('debug session count', function(player, data) {
+    console.log('debug session count');
+    connect.emit('debug session count', data);
+  });
+
+  game_state_manager.add_handler('debug session data', function(player, data) {
+    console.log('debug session data');
+    player.user.socket.emit('debug session data', data);
+  });
 }

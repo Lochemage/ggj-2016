@@ -11,6 +11,9 @@ function GameSession(original_images) {
     this.available_slots = [0];
     // let's just always use this.original_images[0] as the real original image
     this.original_images = original_images;
+    this.judge_picked = -1;
+    this.has_originator_judged = false;
+    this.has_outsider_judged = false;
 };
 
 GameSession.prototype = {
@@ -125,6 +128,7 @@ GameSession.prototype = {
     is_finished: function() {
         // check that all slots on the third row of this game session are done
         for (var slotIdx = 0; slotIdx < 7; ++slotIdx) {
+            // All slots must have a player and a submitted image.
             if (!this.slots[slotIdx] || !this.slots[slotIdx].image_path) {
                 return false;
             }

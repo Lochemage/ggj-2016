@@ -8,6 +8,7 @@ A stand-in state to apply for states that don't need specialized logic.
 const assert = require('assert');
 
 function DrawState(player) {
+    this.name = 'DrawState';
     this.player = player;
 };
 

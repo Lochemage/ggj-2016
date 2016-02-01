@@ -4,8 +4,6 @@ var handlers = {};
 module.exports.init = function(http) {
   var io = require('socket.io')(http);
   io.on('connection', function(socket) {
-    console.log('User connected');
-
     var user = new User();
     user.socket = socket;
 
@@ -18,6 +16,12 @@ module.exports.init = function(http) {
           }
         });
       })(handler);
+    }
+
+    if (handlers.hasOwnProperty('connected')) {
+      for (var i = 0; i < handlers.connected.length; ++i) {
+        handlers.connected[i](user);
+      }
     }
   });
   

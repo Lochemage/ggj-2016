@@ -21,34 +21,62 @@ function GameStateManager() {
 };
 
 GameStateManager.prototype = {
-    create_new_player: function(user_data) {
-        var player = new Player(user_data);
-        // console.log('create player', player);
-        this.players.push(player);
-        // console.log('this.players: ', this.players);
-        return player;
-    },
+    clean_game_sessions: function() {
+        console.log('running cleanup');
+        for (var i = 0; i < this.game_sessions.length; ++i) {
+            var game_session = this.game_sessions[i];
 
-    // start_new_game_session: g_image_search.init(4).then(function (image_url){
-    //     console.log('image url: ' + image_url)
-    //     }
-    // ),
-    promise_to_start_new_game_session: function(callback) {
-        var self = this;
-        g_image_search.promiseImages(4).then(function (image_urls) {
-            var game_session = new GameSession(image_urls);
-            self.game_sessions.push(game_session);
-            callback(game_session);
-        }).catch(function(err) {
-            console.log(err);
-        });
-    },
+            // A finished session may be ready for cleanup if there are no
+            // outstanding judgments or summaries to be made. 
+            if (game_session.is_finished()) {
+                console.log('session is finished, checking for cleanup...');
+                if (!game_session.has_originator_judged) {
+                    var player = game_session.slots[0].player;
+                    if (!player || player.isDead() || !player.has_queued_state('JudgeState')) {
+                        // For whatever reason, our player is gone or is
+                        // not participating in the judging, outsource it instead.
+                        console.log('outsourcing a new primary judge');
+                        this.queue_external_judge(game_session, 0);
+                    }
+                    continue;
+                }
 
-    start_new_game_session: function() {
-        var image_urls = g_image_search.provideImages(4);
-        var game_session = new GameSession(image_urls);
-        this.game_sessions.push(game_session);
-        return game_session;
+                if (!game_session.has_outsider_judged) {
+                    if (game_session.judge_picked) {
+                        // First make sure we are not in the middle of judging already.
+                        if (!game_session.judger || game_session.judger.state.name !== 'JudgeState') {
+                            // In this case, the judge for this slot is always outsourced, so make
+                            // sure we have a judge queued.
+                            if (!this.has_queued_external_judge(game_session)) {
+                                // For whatever reason, an external judge was never requested.
+                                console.log('outsourcing a new outsider judge');
+                                this.queue_external_judge(game_session, game_session.judge_picked);
+                            }
+                        }
+                    }
+                    continue;
+                }
+
+                for (var slotIdx = 0; slotIdx < 7; ++slotIdx) {
+                    // Players who have yet to view this session's summary need to be invited.
+                    if (!game_session.slots[slotIdx].summary_viewed) {
+                        var player = game_session.slots[slotIdx].player;
+                        if (!player || player.isDead() || !player.has_queued_state('SummaryState')) {
+                            // If our player is gone, we don't need to bother showing them the summary view.
+                            game_session.slots[slotIdx].summary_viewed = true;
+                        }
+                    }
+                    continue;
+                }
+
+                // If we reach this point, there is nothing left to do, we can scrap this session.
+                this.game_sessions.splice(i, 1);
+                i--;
+            }
+        }
+
+        // Notify all about the session count.
+        this.call_handler('debug session count', null, this.game_sessions.length);
     },
 
     ///////////////////////////////////////////////////////////////////
@@ -76,29 +104,27 @@ GameStateManager.prototype = {
 
     ///////////////////////////////////////////////////////////////////
 
-    // find_available_judge_session: function(player) {
-    //     var result = null;
-    //     var available_judge_session = player.find_available_judge_session();
-    //     // console.log('available_judge_session: ' + available_judge_session);
-    //     if (available_judge_session.length > 0) {
-    //         // console.log('available_judge_session != []')
-    //         this.matchmaker.assign_player_to_judge(player, available_judge_session[0], available_judge_session[1]);
-    //         player.curr_session = available_judge_session[0];
-    //         var data = {};
-    //         console.log('calling start judge handler');
-    //         this.call_handler('start judge', player, data);
-    //         result = available_judge_session[0];
-    //     }
-    //     return result;
-    // },
+    create_new_player: function(user_data) {
+        var player = new Player(user_data);
+        // console.log('create player', player);
+        this.players.push(player);
+        // console.log('this.players: ', this.players);
+        return player;
+    },
+
+    start_new_game_session: function() {
+        var image_urls = g_image_search.provideImages(4);
+        var game_session = new GameSession(image_urls);
+        this.game_sessions.push(game_session);
+
+        console.log('creating session');
+        this.call_handler('debug session count', null, this.game_sessions.length);
+
+        return game_session;
+    },
 
     update_player_state: function(player) {
-        // var judge_session = this.find_available_judge_session(player);
-        // if (judge_session) {
-        //     // TODO
-        //     return;
-        // }
-
+        // Process any queued states applied for this player.
         if (player.has_queued_state()) {
             var queue = player.get_queued_state();
             this.set_player_state(player, queue.name, queue.data);
@@ -139,6 +165,18 @@ GameStateManager.prototype = {
     queue_external_judge: function(game_session, slot_idx) {
         this.externalJudgesNeeded.push({game_session: game_session, slot_idx: slot_idx});
     },
+
+    has_queued_external_judge: function(game_session) {
+        for (var i = 0; i < this.externalJudgesNeeded.length; ++i) {
+            if (this.externalJudgesNeeded[i].game_session === game_session) {
+                return true;
+            }
+        }
+        return false;
+    },
+
+    ///////////////////////////////////////////////////////////////////
+
     get_score_list: function() {
         var sorted_list = this.players.slice();
         sorted_list.sort(function(a, b) {
@@ -154,12 +192,21 @@ GameStateManager.prototype = {
         // console.log('score_data: ', score_data)
         return score_data;
     },
+
     add_points_to_player: function(points, player) {
         player.addPoints(points);
         this.call_handler('update points', player, {myPoints: player.points, allPoints: this.get_score_list()});
     },
+
     update_score_board: function(player) {
         this.call_handler('update points', player, {myPoints: null, allPoints: this.get_score_list()});
+    },
+
+    remove_player_connection: function(player) {
+        var index = this.players.indexOf(player);
+        if (index > -1) {
+            this.players.splice(index, 1);
+        }
     }
 };
 

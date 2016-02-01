@@ -8,6 +8,7 @@ A stand-in state to apply for states that don't need specialized logic.
 const assert = require('assert');
 
 function SummaryState(player) {
+    this.name = 'SummaryState';
     this.player = player;
 };
 
@@ -29,6 +30,9 @@ SummaryState.prototype = {
             curr_slot_data = game_session.slots[i];
             var selected = event_data.selected.indexOf(i) > -1;
             summary_data.push({player: curr_slot_data.player.name, image: curr_slot_data.image_path, selected: selected});
+            if (curr_slot_data.player === this.player) {
+                curr_slot_data.summary_viewed = true;
+            }
         }
         gsm.call_handler('start summary', this.player, summary_data);
     },

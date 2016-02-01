@@ -77,13 +77,20 @@ $(document).ready(function() {
   });
 
   socket.on('update board', function(data) {
-    var all_points = data;
+    var all_points = data.allPoints;
+    var total_players = data.totalPlayers;
 
     var $board = $('#scoreBoard');
     $board.children().remove();
+
+    $board.append('<li><b>TOTAL PLAYERS: ' + total_players + '</li>');
     for (var i = 0; i < all_points.length; ++i) {
       $board.append('<li>' + all_points[i].player + ': ' + all_points[i].score + '</li>');
     }
+  });
+
+  socket.on('debug session count', function(data) {
+    $('#debug > label.sessionCount > span').text(data);
   });
 
   socket.on('start idle', function(data) {

@@ -79,6 +79,8 @@ function onJudgment(gsm, player, gameSession, source, pickedURL) {
             game_session: gameSession,
             slot_idx: grandchildIdx
         });
+        gameSession.judge_picked = grandchildIdx;
+        gameSession.has_originator_judged = true;
     }
     else {
         // off the board (source image)
@@ -112,16 +114,8 @@ function onJudgment(gsm, player, gameSession, source, pickedURL) {
         }
         // add to front of queue for judge, back of queue for others
         gsm.set_player_state(player, 'SummaryState', {game_session: gameSession, slot_idx: -1, selected: [grandchildIdx, parentIdx, rootIdx]});
-        // queue.push({
-        //     state: {
-        //         name: 'SummaryState',
-        //         data: {
-        //             game_session: gameSession,
-        //             slot_idx: -1
-        //         }
-        //     },
-        //     player: player
-        // });
+
+        gameSession.has_outsider_judged = true;
     }
     return queue;
 }
@@ -129,6 +123,7 @@ function onJudgment(gsm, player, gameSession, source, pickedURL) {
 ////////////////////////////////////////////////////////////////////////
 
 function JudgeState(player) {
+    this.name = 'JudgeState';
     this.player = player;
     this.source = null;
     this.game_session = null;
@@ -151,6 +146,8 @@ JudgeState.prototype = {
                 break;
 
             case 'disconnect':
+                // Our judge has left, but someone must judge this work,
+                // outsource it to an external participant instead.
                 gsm.queue_external_judge(this.game_session, this.game_session.get_player_slot_index(this.player));
                 break;
 
@@ -165,6 +162,7 @@ JudgeState.prototype = {
         var judgementData = getJudgeImageSet(game_session, slot_idx);
         this.source = judgementData.source;
         this.game_session = game_session;
+        game_session.judger = this.player;
 
         gsm.call_handler('start judging', this.player, judgementData);
     },
