@@ -1,2 +1,11 @@
 node_modules/
 project.sublime-workspace
+
+
+# Elastic Beanstalk Files
+
+.elasticbeanstalk/
+
+!.elasticbeanstalk/*.cfg.yml
+
+!.elasticbeanstalk/*.global.yml
