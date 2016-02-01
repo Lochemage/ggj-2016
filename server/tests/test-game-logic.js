@@ -174,9 +174,9 @@ describe('GameStateManager', function() {
 
         score_data = game_state_manager.get_score_list();
         assert.equal(score_data.length, 2);
-        assert.equal(score_data[0].player.name, 'name_2');
+        assert.equal(score_data[0].player, 'name_2');
         assert.equal(score_data[0].score, 100);
-        assert.equal(score_data[1].player.name, 'name_1');
+        assert.equal(score_data[1].player, 'name_1');
         assert.equal(score_data[1].score, 5);
 
     });
