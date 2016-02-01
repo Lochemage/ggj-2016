@@ -52,7 +52,8 @@ if (testing) {
   
   game_state_manager.add_handler('update points', function(player, data) {
     console.log('update points');
-    player.user.socket.emit('update points', data);
+    player.user.socket.emit('update points', data.myPoints);
+    connect.emit('update board', data.allPoints.slice(0, 10));
   });
   
   game_state_manager.add_handler('start idle', function(player) {

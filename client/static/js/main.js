@@ -73,8 +73,17 @@ $(document).ready(function() {
   
   socket.on('update points', function(data) {
     var new_points = data;
-    // to do
     $('#score_point').text(new_points.toString());
+  });
+
+  socket.on('update board', function(data) {
+    var all_points = data;
+
+    var $board = $('#scoreBoard');
+    $board.children().remove();
+    for (var i = 0; i < all_points.length; ++i) {
+      $board.append('<li>' + all_points[i].player + ': ' + all_points[i].score + '</li>');
+    }
   });
 
   socket.on('start idle', function(data) {

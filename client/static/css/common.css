@@ -25,8 +25,15 @@ body {
   text-align: left;
 }
 
+#scoreBoard {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  font-size: 20px;
+}
+
 #score_label {
-  position: absolute;
+  position: fixed;
   top: 30px;
   right: 100px;
   font-size: 30px;
@@ -34,7 +41,7 @@ body {
 }
 
 #score_point {
-  position: absolute;
+  position: fixed;
   top: 30px;
   right: 50px;
   font-size: 30px;

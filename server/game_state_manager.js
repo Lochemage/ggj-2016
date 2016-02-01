@@ -148,14 +148,14 @@ GameStateManager.prototype = {
         // console.log('sorted_list: ', sorted_list)
         var score_data = [];
         for(var i = 0; i < sorted_list.length; ++i) {
-            score_data.push({player: sorted_list[i], score: sorted_list[i].points});
+            score_data.push({player: sorted_list[i].name, score: sorted_list[i].points});
         }
         // console.log('score_data: ', score_data)
         return score_data;
     },
     add_points_to_player: function(points, player) {
         player.addPoints(points);
-        this.call_handler('update points', player, player.points);
+        this.call_handler('update points', player, {myPoints: player.points, allPoints: this.get_score_list()});
     }
 };
 
