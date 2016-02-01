@@ -30,6 +30,7 @@ DrawState.prototype = {
                     });
                 }
                 this.player.curr_session = null;
+                gsm.add_points_to_player(1, this.player);
                 gsm.set_player_state(this.player, 'IdleState');
                 break;
 

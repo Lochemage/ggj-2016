@@ -72,8 +72,8 @@ function onJudgment(gsm, player, gameSession, source, pickedURL) {
         var grandchildIdx = gameSession.find_slot_with_image(pickedURL);
         var parentIdx = gameSession.get_index_of_parent(grandchildIdx);
         // need to assign points to winners (selected grandchild and their parent)
-        gsm.add_points_to_player(1, gameSession.slots[grandchildIdx].player);
-        gsm.add_points_to_player(1, gameSession.slots[parentIdx].player);
+        gsm.add_points_to_player(20, gameSession.slots[grandchildIdx].player);
+        gsm.add_points_to_player(20, gameSession.slots[parentIdx].player);
         // queue up a judge session for grandchild's picture
         queue.push({
             game_session: gameSession,
@@ -90,11 +90,11 @@ function onJudgment(gsm, player, gameSession, source, pickedURL) {
         var rootIdx = gameSession.get_index_of_parent(parentIdx);
 
         if (correctChoice) {
-            gsm.add_points_to_player(1, gameSession.slots[grandchildIdx].player);
-            gsm.add_points_to_player(1, gameSession.slots[parentIdx].player);
-            gsm.add_points_to_player(1, gameSession.slots[rootIdx].player);
+            gsm.add_points_to_player(20, gameSession.slots[grandchildIdx].player);
+            gsm.add_points_to_player(20, gameSession.slots[parentIdx].player);
+            gsm.add_points_to_player(20, gameSession.slots[rootIdx].player);
             // also give point(s) to the judge if they get it right
-            gsm.add_points_to_player(1, player);
+            gsm.add_points_to_player(20, player);
         }
         // queue up the summary for all players in the game (include the judge)
         for (var slotIdx = 0; slotIdx < 7; ++slotIdx) {

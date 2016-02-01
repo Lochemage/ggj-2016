@@ -19,7 +19,7 @@ process.argv.forEach(function(val, index, array) {
   }
 });
 
-var listener = http.listen(process.env.PORT || 4444, function() {
+var listener = http.listen(process.env.PORT || 80, function() {
   var host = listener.address().address;
   var port = listener.address().port;
 
@@ -52,7 +52,9 @@ if (testing) {
   
   game_state_manager.add_handler('update points', function(player, data) {
     console.log('update points');
-    player.user.socket.emit('update points', data.myPoints);
+    if (data.myPoints !== null) {
+      player.user.socket.emit('update points', data.myPoints);
+    }
     connect.emit('update board', data.allPoints.slice(0, 10));
   });
   

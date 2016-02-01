@@ -133,6 +133,7 @@ GameStateManager.prototype = {
 
         player.state = new States[StateClass](player);
         player.state.on_start(this, data);
+        // this.update_score_board(player);
     },
 
     queue_external_judge: function(game_session, slot_idx) {
@@ -156,6 +157,9 @@ GameStateManager.prototype = {
     add_points_to_player: function(points, player) {
         player.addPoints(points);
         this.call_handler('update points', player, {myPoints: player.points, allPoints: this.get_score_list()});
+    },
+    update_score_board: function(player) {
+        this.call_handler('update points', player, {myPoints: null, allPoints: this.get_score_list()});
     }
 };
 
