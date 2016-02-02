@@ -8,7 +8,8 @@ a game.
 
 function GameSession(original_images) {
     this.judger_list = [];
-    this.judger = null;
+    this.first_judger = null;
+    this.last_judger = null;
 
     this.slots = [undefined];
     this.available_slots = [0];

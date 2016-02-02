@@ -72,6 +72,7 @@ function onJudgment(gsm, player, gameSession, source, pickedURL) {
         // find the picked grandchild and parent slot index
         var grandchildIdx = gameSession.find_slot_with_image(pickedURL);
         var parentIdx = gameSession.get_index_of_parent(grandchildIdx);
+        var rootIdx = gameSession.get_index_of_parent(parentIdx);
         // need to assign points to winners (selected grandchild and their parent)
         if (gameSession.slots[grandchildIdx]) {
             gsm.add_points_to_player(20, gameSession.slots[grandchildIdx].player);
@@ -86,6 +87,8 @@ function onJudgment(gsm, player, gameSession, source, pickedURL) {
         });
         gameSession.judge_picked = grandchildIdx;
         gameSession.has_originator_judged = true;
+
+        gsm.set_player_state(player, 'SummaryState', {game_session: gameSession, slot_idx: -1, selected: [grandchildIdx, parentIdx, rootIdx]});
     }
     else {
         // off the board (source image)
@@ -110,7 +113,7 @@ function onJudgment(gsm, player, gameSession, source, pickedURL) {
             gsm.add_points_to_player(20, player);
         }
         // queue up the summary for all players in the game (include the judge)
-        for (var slotIdx = 0; slotIdx < 7; ++slotIdx) {
+        for (var slotIdx = 1; slotIdx < 7; ++slotIdx) {
             queue.push({
                 state: {
                     name: 'SummaryState',
@@ -152,7 +155,6 @@ JudgeState.prototype = {
                         queue.player.queue_state(queue.state);
                     } else {
                         gsm.queue_external_judge(queue.game_session, queue.slot_idx);
-                        gsm.set_player_state(this.player, 'IdleState');
                     }
                 }
                 break;
@@ -176,7 +178,12 @@ JudgeState.prototype = {
         
         var judgementData = getJudgeImageSet(game_session, slot_idx);
         this.source = judgementData.source;
-        game_session.judger = this.player;
+
+        if (slot_idx === 0) {
+            game_session.first_judger = this.player;
+        } else {
+            game_session.last_judger = this.player;
+        }
         game_session.judger_list.push(this.player);
 
         gsm.call_handler('start judging', this.player, judgementData);

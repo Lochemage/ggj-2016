@@ -36,7 +36,7 @@ GameStateManager.prototype = {
                         // For whatever reason, our player is gone or is
                         // not participating in the judging, outsource it instead.
 
-                        if (!game_session.judger || !game_session.judger.state || game_session.judger.state.name !== 'JudgeState') {
+                        if (!game_session.first_judger || !game_session.first_judger.state || game_session.first_judger.state.name !== 'JudgeState') {
                             console.log('outsourcing a new primary judge');
                             this.queue_external_judge(game_session, 0);
                         }
@@ -47,7 +47,7 @@ GameStateManager.prototype = {
                 if (!game_session.has_outsider_judged) {
                     if (game_session.judge_picked) {
                         // First make sure we are not in the middle of judging already.
-                        if (!game_session.judger || !game_session.judger.state || game_session.judger.state.name !== 'JudgeState') {
+                        if (!game_session.last_judger || !game_session.last_judger.state || game_session.last_judger.state.name !== 'JudgeState') {
                             // In this case, the judge for this slot is always outsourced, so make
                             // sure we have a judge queued.
                             if (!this.has_queued_external_judge(game_session)) {
