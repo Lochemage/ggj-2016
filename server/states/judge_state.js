@@ -53,6 +53,7 @@ function getJudgeImageSet(gameSession, judgeIdx) {
     for (var i = 0; i < judgeThese.judged.length; ++i) {
         imagesToJudge.push(getImageFromSlotIdx(gameSession, judgeThese.judged[i]));
     }
+
     return {
         source: getImageFromSlotIdx(gameSession, judgeThese.prompt),
         choices: shuffle(imagesToJudge)
@@ -72,8 +73,12 @@ function onJudgment(gsm, player, gameSession, source, pickedURL) {
         var grandchildIdx = gameSession.find_slot_with_image(pickedURL);
         var parentIdx = gameSession.get_index_of_parent(grandchildIdx);
         // need to assign points to winners (selected grandchild and their parent)
-        gsm.add_points_to_player(20, gameSession.slots[grandchildIdx].player);
-        gsm.add_points_to_player(20, gameSession.slots[parentIdx].player);
+        if (gameSession.slots[grandchildIdx]) {
+            gsm.add_points_to_player(20, gameSession.slots[grandchildIdx].player);
+        }
+        if (gameSession.slots[parentIdx]) {
+            gsm.add_points_to_player(20, gameSession.slots[parentIdx].player);
+        }
         // queue up a judge session for grandchild's picture
         queue.push({
             game_session: gameSession,
@@ -92,9 +97,15 @@ function onJudgment(gsm, player, gameSession, source, pickedURL) {
         var rootIdx = gameSession.get_index_of_parent(parentIdx);
 
         if (correctChoice) {
-            gsm.add_points_to_player(20, gameSession.slots[grandchildIdx].player);
-            gsm.add_points_to_player(20, gameSession.slots[parentIdx].player);
-            gsm.add_points_to_player(20, gameSession.slots[rootIdx].player);
+            if (gameSession.slots[grandchildIdx]) {
+                gsm.add_points_to_player(20, gameSession.slots[grandchildIdx].player);
+            }
+            if (gameSession.slots[parentIdx]) {
+                gsm.add_points_to_player(20, gameSession.slots[parentIdx].player);
+            }
+            if (gameSession.slots[rootIdx]) {
+                gsm.add_points_to_player(20, gameSession.slots[rootIdx].player);
+            }
             // also give point(s) to the judge if they get it right
             gsm.add_points_to_player(20, player);
         }
@@ -127,6 +138,7 @@ function JudgeState(player) {
     this.player = player;
     this.source = null;
     this.game_session = null;
+    this.slot_idx = null;
 };
 
 JudgeState.prototype = {
@@ -148,7 +160,7 @@ JudgeState.prototype = {
             case 'disconnect':
                 // Our judge has left, but someone must judge this work,
                 // outsource it to an external participant instead.
-                gsm.queue_external_judge(this.game_session, this.game_session.get_player_slot_index(this.player));
+                // gsm.queue_external_judge(this.game_session, this.slot_idx);
                 break;
 
             default:
@@ -159,10 +171,13 @@ JudgeState.prototype = {
         var game_session = data.game_session;
         var slot_idx = data.slot_idx;
         
+        this.game_session = game_session;
+        this.slot_idx = slot_idx;
+        
         var judgementData = getJudgeImageSet(game_session, slot_idx);
         this.source = judgementData.source;
-        this.game_session = game_session;
         game_session.judger = this.player;
+        game_session.judger_list.push(this.player);
 
         gsm.call_handler('start judging', this.player, judgementData);
     },

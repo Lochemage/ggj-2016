@@ -7,11 +7,14 @@ a game.
 //********************************************************************/
 
 function GameSession(original_images) {
+    this.judger_list = [];
+    this.judger = null;
+
     this.slots = [undefined];
     this.available_slots = [0];
     // let's just always use this.original_images[0] as the real original image
     this.original_images = original_images;
-    this.judge_picked = -1;
+    this.judge_picked = false;
     this.has_originator_judged = false;
     this.has_outsider_judged = false;
 };
@@ -86,7 +89,15 @@ GameSession.prototype = {
     },
     has_player_in_slot: function(player) {
         for (var slotIdx = 0; slotIdx < this.slots.length; ++slotIdx) {
-            if (this.slots[slotIdx] && this.slots[slotIdx].player == player) {
+            if (this.slots[slotIdx] && this.slots[slotIdx].player === player) {
+                return true;
+            }
+        }
+        return false;
+    },
+    has_player_been_judger: function(player) {
+        for (var i = 0; i < this.judger_list.length; ++i) {
+            if (this.judger_list[i] === player) {
                 return true;
             }
         }
