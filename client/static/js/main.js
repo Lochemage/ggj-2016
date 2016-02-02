@@ -1,6 +1,7 @@
 $(document).ready(function() {
   var socket = io();
   var makingJudgement = false;
+  var drawTimeoutId = 0;
   var seconds = 40;
 
   // Initialize the drawing canvas once.
@@ -21,33 +22,33 @@ $(document).ready(function() {
     return false;
   });
 
-  $('#judgeSpace > img.choice').hover(function() {
+  $('#judgeSpace > div.choice').hover(function() {
     var classes = this.className.replace('choice', 'choiceLarge').replace('not_shown', '').replace(/ /g, '.');
 
-    $('#judgeSpace > img.choiceLarge').addClass('not_shown');
-    $('#judgeSpace > img.choiceLarge.' + classes).removeClass('not_shown');
+    $('#judgeSpace > div.choiceLarge').addClass('not_shown');
+    $('#judgeSpace > div.choiceLarge.' + classes).removeClass('not_shown');
   });
 
-  $('#judgeSpace > img.choiceLarge').mouseleave(function() {
+  $('#judgeSpace > div.choiceLarge').mouseleave(function() {
     $(this).addClass('not_shown');
   });
 
-  $('#summarySpace > img.source').hover(function() {
+  $('#summarySpace > div.source').hover(function() {
     var classes = this.className.replace('source', 'sourceLarge').replace('not_shown', '').replace(/ /g, '.');
 
-    $('#summarySpace > img.sourceLarge').addClass('not_shown');
-    $('#summarySpace > img.sourceLarge.' + classes).removeClass('not_shown');
+    $('#summarySpace > div.sourceLarge').addClass('not_shown');
+    $('#summarySpace > div.sourceLarge.' + classes).removeClass('not_shown');
   });
 
-  $('#summarySpace > img.sourceLarge').mouseleave(function() {
+  $('#summarySpace > div.sourceLarge').mouseleave(function() {
     $(this).addClass('not_shown');
   });
 
-  $('#judgeSpace > img.choiceLarge').click(function() {
+  $('#judgeSpace > div.choiceLarge').click(function() {
     if (makingJudgement) {
-      var url = $(this).attr('src');
+      var url = $(this).css('background-image').replace('url("', '').replace('")', '');
       var className = this.className.replace('choiceLarge', 'choice').replace(/ /g, '.');
-      $('#judgeSpace > img.' + className).addClass('selected');
+      $('#judgeSpace > div.' + className).addClass('selected');
       $(this).addClass('not_shown');
       console.log('choice', url, 'made');
       socket.emit('game event', {name: 'judgement made', image_path: url});
@@ -58,6 +59,7 @@ $(document).ready(function() {
   socket.on('new connection', function(data) {
     __hideSpaces();
     $('#welcomeSpace').removeClass('not_shown');
+    clearInterval(drawTimeoutId);
   });
 
   // User is now starting a game session.
@@ -65,7 +67,7 @@ $(document).ready(function() {
     __hideSpaces();
 
     $('#drawSpace').removeClass('not_shown');
-    $('#drawSpace > img.preview').attr('src', data.image);
+    $('#drawSpace > div.preview').css('background-image', 'url("' + data.image.replace(/(\r\n|\n|\r)/gm, "") + '")');
     clearCanvas();
     __startTimer($('#drawSpace > .timer'), function() {
       var imgData = retrieveCanvasImage();
@@ -107,12 +109,12 @@ $(document).ready(function() {
     __hideSpaces();
     
     $('#judgeSpace').removeClass('not_shown');
-    $('#judgeSpace > img.choice').removeClass('selected');
-    $('#judgeSpace > img.source').attr('src', data.source);
-    $('#judgeSpace > img.upper.left').attr('src', data.choices[0]);
-    $('#judgeSpace > img.upper.right').attr('src', data.choices[1]);
-    $('#judgeSpace > img.lower.left').attr('src', data.choices[2]);
-    $('#judgeSpace > img.lower.right').attr('src', data.choices[3]);
+    $('#judgeSpace > div.choice').removeClass('selected');
+    $('#judgeSpace > div.source').css('background-image', 'url("' + data.source + '")');
+    $('#judgeSpace > div.upper.left').css('background-image', 'url("' + data.choices[0] + '")');
+    $('#judgeSpace > div.upper.right').css('background-image', 'url("' + data.choices[1] + '")');
+    $('#judgeSpace > div.lower.left').css('background-image', 'url("' + data.choices[2] + '")');
+    $('#judgeSpace > div.lower.right').css('background-image', 'url("' + data.choices[3] + '")');
 
     makingJudgement = true;
   });
@@ -121,13 +123,13 @@ $(document).ready(function() {
     __hideSpaces();
 
     $('#summarySpace').removeClass('not_shown');
-    $('#summarySpace > img').removeClass('selected');
+    $('#summarySpace > div').removeClass('selected');
 
     for (var i = 0; i < data.length; ++i) {
-      $('#summarySpace > img.order' + i).attr('src', data[i].image);
+      $('#summarySpace > div.order' + i).css('background-image', 'url("' + data[i].image + '")');
       $('#summarySpace > label.nametag.order' + i).text(data[i].player);
       if (data[i].selected) {
-        $('#summarySpace > img.order' + i).addClass('selected');
+        $('#summarySpace > div.order' + i).addClass('selected');
       }
     }
   });
@@ -143,12 +145,12 @@ $(document).ready(function() {
   function __startTimer($timer, done) {
     var startTime = new Date().getTime();
     var lastTime = startTime;
-    var intervalId = setInterval(function() {
+    drawTimeoutId = setInterval(function() {
       var time = new Date().getTime();
       var elapsed = time - startTime;
 
       if (elapsed/1000 >= seconds) {
-        clearInterval(intervalId);
+        clearInterval(drawTimeoutId);
         elapsed = seconds * 1000;
         done();
       }

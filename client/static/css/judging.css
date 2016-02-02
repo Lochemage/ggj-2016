@@ -12,64 +12,70 @@
   font-size: 30px;
 }
 
-#judgeSpace > img.source,
-#judgeSpace > img.choiceLarge {
+#judgeSpace > div.source,
+#judgeSpace > div.choiceLarge {
   position: absolute;
   top: 61px;
   left: 218px;
   width: 267px;
   height: 200px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
 }
 
-#judgeSpace > img.choice:hover,
-#judgeSpace > img.choiceLarge:hover {
+#judgeSpace > div.choice:hover,
+#judgeSpace > div.choiceLarge:hover {
   outline: 3px solid yellow;
 }
 
-#judgeSpace > img.choice.selected {
+#judgeSpace > div.choice.selected {
   outline: 3px solid red;
 }
 
-#judgeSpace > img.choice {
+#judgeSpace > div.choice {
   position: absolute;
   width: 133.5px;
   height: 100px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
 }
 
-#judgeSpace > img.choice,
-#judgeSpace > img.choiceLarge {
+#judgeSpace > div.choice,
+#judgeSpace > div.choiceLarge {
   cursor: pointer;
 }
 
-#judgeSpace > img.choice.upper {
+#judgeSpace > div.choice.upper {
   top: 360px;
 }
 
-#judgeSpace > img.choice.lower {
+#judgeSpace > div.choice.lower {
   top: 509px;
 }
 
-#judgeSpace > img.choice.left {
+#judgeSpace > div.choice.left {
   left: 194px;
 }
 
-#judgeSpace > img.choice.right {
+#judgeSpace > div.choice.right {
   left: 382px;
 }
 
-#judgeSpace > img.choiceLarge.upper {
+#judgeSpace > div.choiceLarge.upper {
   top: 260px;
 }
 
-#judgeSpace > img.choiceLarge.lower {
+#judgeSpace > div.choiceLarge.lower {
   top: 509px;
 }
 
-#judgeSpace > img.choiceLarge.left {
+#judgeSpace > div.choiceLarge.left {
   left: 61px;
 }
 
-#judgeSpace > img.choiceLarge.right {
+#judgeSpace > div.choiceLarge.right {
   left: 382px;
 }
 

@@ -8,13 +8,16 @@
   text-align: left;
 }
 
-#drawSpace > img.preview {
+#drawSpace > div.preview {
   position: relative;
   top: 0px;
   left: 50%;
   margin-left: -135px;
   width: 267px;
   height: 200px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
 }
 
 #drawSpace > label {
