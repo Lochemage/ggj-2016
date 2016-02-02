@@ -35,8 +35,11 @@ GameStateManager.prototype = {
                     if (!player || player.isDead() || !player.has_queued_state('JudgeState')) {
                         // For whatever reason, our player is gone or is
                         // not participating in the judging, outsource it instead.
-                        console.log('outsourcing a new primary judge');
-                        this.queue_external_judge(game_session, 0);
+
+                        if (!game_session.judger || !game_session.judger.state || game_session.judger.state.name !== 'JudgeState') {
+                            console.log('outsourcing a new primary judge');
+                            this.queue_external_judge(game_session, 0);
+                        }
                     }
                     continue;
                 }

@@ -78,6 +78,8 @@ if (testing) {
     var player = game_state_manager.create_new_player({name: 'Observer', user: user});
     user.player = player;
     user.socket.emit('new connection');
+
+    game_state_manager.update_score_board(player);
   });
 
   connect.on('start game', function(user, name) {
