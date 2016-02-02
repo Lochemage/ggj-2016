@@ -55,6 +55,11 @@ $(document).ready(function() {
     }
   });
 
+  socket.on('new connection', function(data) {
+    __hideSpaces();
+    $('#welcomeSpace').removeClass('not_shown');
+  });
+
   // User is now starting a game session.
   socket.on('start game', function(data) {
     __hideSpaces();

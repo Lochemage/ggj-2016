@@ -19,7 +19,7 @@ process.argv.forEach(function(val, index, array) {
   }
 });
 
-var listener = http.listen(process.env.PORT || 80, function() {
+var listener = http.listen(process.env.PORT || 5555, function() {
   var host = listener.address().address;
   var port = listener.address().port;
 
@@ -77,6 +77,7 @@ if (testing) {
     console.log('user connected');
     var player = game_state_manager.create_new_player({name: 'Observer', user: user});
     user.player = player;
+    user.socket.emit('new connection');
   });
 
   connect.on('start game', function(user, name) {
