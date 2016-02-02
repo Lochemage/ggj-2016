@@ -79,6 +79,7 @@ if (testing) {
     user.player = player;
     user.socket.emit('new connection');
 
+    game_state_manager.clean_game_sessions();
     game_state_manager.update_score_board(player);
   });
 

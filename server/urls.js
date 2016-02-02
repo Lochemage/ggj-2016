@@ -22,17 +22,21 @@ module.exports.init = function(app) {
     res.render('index');
   });
 
-  app.get('/summary', function(req, res) {
-    res.render('summary');
+  app.get('/debug', function(req, res) {
+    res.render('index', {debugMode: true});
   });
 
-  app.get('/judging', function(req, res) {
-    res.render('judging');
-  });
+  // app.get('/summary', function(req, res) {
+  //   res.render('summary');
+  // });
 
-  app.get('/imagesearch', function(req, res) {
-    g_image_search.init(4).then(function (list_of_urls) {
-        res.render('imagesearch', {imageurl: list_of_urls[0]});
-    });
-  });
+  // app.get('/judging', function(req, res) {
+  //   res.render('judging');
+  // });
+
+  // app.get('/imagesearch', function(req, res) {
+  //   g_image_search.init(4).then(function (list_of_urls) {
+  //       res.render('imagesearch', {imageurl: list_of_urls[0]});
+  //   });
+  // });
 }
