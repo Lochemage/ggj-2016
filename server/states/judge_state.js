@@ -42,6 +42,7 @@ function getImageFromSlotIdx(gameSession, slotIdx) {
         : gameSession.get_image_from_slot(slotIdx);
 }
 
+// shuffle algorithm taken from: http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript/6274381#6274381
 function shuffle(o){
     for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
     return o;
