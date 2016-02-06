@@ -2,7 +2,7 @@ $(document).ready(function() {
   var socket = io();
   var makingJudgement = false;
   var drawTimeoutId = 0;
-  var seconds = 40;
+  var seconds = 4;
 
   // Initialize the drawing canvas once.
   prepareCanvas();

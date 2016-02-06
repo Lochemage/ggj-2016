@@ -3,7 +3,7 @@ var favicon = require('serve-favicon');
 var path    = require('path');
 var hbs     = require('handlebars');
 var cons    = require('consolidate');
-var g_image_search = require('./g_image_search');
+// var g_image_search = require('./g_image_search');
 
 module.exports.init = function(app) {
 

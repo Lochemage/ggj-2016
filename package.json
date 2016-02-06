@@ -5,7 +5,9 @@
   "description": "Product Demonstration Site",
   "main": "app.js",
   "dependencies": {
+    "aws-sdk": "^2.2.33",
     "consolidate": "^0.14.0",
+    "crypto": "0.0.3",
     "express": "^4.11.2",
     "fs-extra": "^0.26.0",
     "google-images": "^1.0.0",
