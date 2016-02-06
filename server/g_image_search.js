@@ -122,7 +122,7 @@ function fetchNewImages() {
     console.log('Attempting to fetch new google images for type:', type);
     client.search(type, {
         size: 'medium',
-        page: getRandomInt(0, 10)
+        page: getRandomInt(0, 25)
     }).then(function (images) {
         if (!image_urls.hasOwnProperty(type)) {
             image_urls[type] = [];
