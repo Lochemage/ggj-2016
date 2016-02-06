@@ -6,7 +6,8 @@ var url = require('url');
 // google-images: https://github.com/vdemedes/google-images
 var googleImages = require('google-images');
 
-var client = googleImages('004302857253127136025:rq6bsxpxewk', 'AIzaSyDGrB3OONBeCe7vkyUzXSWOXf5ZsG0L_2o');
+var APIKey = process.env.GOOGLE_API_KEY || 'AIzaSyDGrB3OONBeCe7vkyUzXSWOXf5ZsG0L_2o';
+var client = googleImages('004302857253127136025:rq6bsxpxewk', APIKey);
 // first argument CSE ID, find at https://cse.google.com/cse/setup/basic?cx=004302857253127136025%3Arq6bsxpxewk
 // second argument API key, find at https://console.developers.google.com/apis/credentials?project=ggj-jjd
 
@@ -133,9 +134,6 @@ function fetchNewImages() {
                 image_urls[type].push(images[i].url);
             }
         }
-    }).catch(function(err) {
-        // Likely if we reach this point, our API key ran its quota.
-        console.log('Failed to fetch images');
     }).then(function() {
         // Check the urls we have just fetched.
         return checkUrlsOfType(type).catch(function(err) {
@@ -155,6 +153,9 @@ function fetchNewImages() {
             console.log(err);
             console.log('Upload failed, skipping...');
         });
+    }).catch(function(err) {
+        // Likely if we reach this point, our API key ran its quota.
+        console.log('Failed to fetch images');
     });
 };
 
@@ -183,7 +184,7 @@ function checkUrlsOfType(type) {
 function checkUrl(type, index) {
     return new Promise(function(resolve, reject) {
         if (!image_urls[type] || index >= image_urls[type].length) {
-            console.log('Finished checking type', type);
+            console.log('Finished checking type', type, '[count ' + image_urls[type].length + ']');
             resolve();
         }
 
