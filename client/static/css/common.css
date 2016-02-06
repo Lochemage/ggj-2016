@@ -131,9 +131,9 @@ body {
 
 #debug {
   position: fixed;
+  top: 80px;
   bottom: 30px;
   right: 30px;
   width: 200px;
-  height: 100px;
   background: cyan;
 }

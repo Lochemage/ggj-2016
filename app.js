@@ -83,6 +83,7 @@ if (testing) {
 
       game_state_manager.clean_game_sessions();
       game_state_manager.update_score_board(player);
+      connect.emit('debug image counts', g_image_search.getImageCounts());
     });
 
     connect.on('start game', function(user, name) {
@@ -120,6 +121,11 @@ if (testing) {
     game_state_manager.add_handler('debug session data', function(player, data) {
       console.log('debug session data');
       player.user.socket.emit('debug session data', data);
+    });
+
+    g_image_search.on_library_changed(function(data) {
+      console.log('debug image counts');
+      connect.emit('debug image counts', data);
     });
   });
 }

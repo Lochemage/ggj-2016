@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  var socket = io();
+  window.socket = io();
   var makingJudgement = false;
   var drawTimeoutId = 0;
   var seconds = 40;
@@ -94,10 +94,6 @@ $(document).ready(function() {
     for (var i = 0; i < all_points.length; ++i) {
       $board.append('<li>' + all_points[i].player + ': ' + all_points[i].score + '</li>');
     }
-  });
-
-  socket.on('debug session count', function(data) {
-    $('#debug > label.sessionCount > span').text(data);
   });
 
   socket.on('start idle', function(data) {

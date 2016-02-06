@@ -13,6 +13,8 @@ var client = googleImages('004302857253127136025:rq6bsxpxewk', 'AIzaSyDGrB3OONBe
 // var google_keyword_lib = ['face', 'horse', 'flower'];
 var file_keyword_lib = ['face', 'animal', 'flower', 'food', 'table', 'sofa', 'chair'];
 
+var libraryCalledFunc = null;
+
 function fetch_google_image(image_count) {
     return client.search(getRandomKeyword(google_keyword_lib), {size: 'medium'})
         .then(function (images) {
@@ -140,6 +142,10 @@ function fetchNewImages() {
             console.log(err);
         });
     }).then(function() {
+        if (typeof libraryCalledFunc === 'function') {
+            libraryCalledFunc(module.exports.getImageCounts());
+        }
+
         console.log('Uploading a new image url set.');
         storage.upload('image_urls.json', JSON.stringify(image_urls)).then(function() {
             // Try fetching new images again later.
@@ -206,31 +212,30 @@ function checkUrl(type, index) {
             port: 80,
             path: urlData.path
         };
-        try {
-            var req = http.request(options, function(res) {
-                // console.log(res);
-                // If we get a valid URL, increment the index.
-                if (res.statusCode === 200) {
-                    index += 1;
-                } else {
-                    // This URL failed, remove it.
-                    image_urls[type].splice(index, 1);
-                    // console.log('-- removing');
-                }
+        var req = http.request(options, function(res) {
+            // console.log(res);
+            // If we get a valid URL, increment the index.
+            if (res.statusCode === 200) {
+                index += 1;
+            } else {
+                // This URL failed, remove it.
+                image_urls[type].splice(index, 1);
+                // console.log('-- removing');
+            }
 
-                // Now attempt to check the next URL index from the same type.
-                checkUrl(type, index).then(function() {
-                    resolve();
-                }).catch(function(err) {
-                    console.log(err);
-                    resolve();
-                });
+            // Now attempt to check the next URL index from the same type.
+            checkUrl(type, index).then(function() {
+                resolve();
+            }).catch(function(err) {
+                console.log(err);
+                resolve();
             });
-            req.end();
-        } catch(err) {
+        });
+        req.on('error', function(err) {
             console.log(err);
             resolve();
-        }
+        });
+        req.end();
     });
 };
 
@@ -258,8 +263,20 @@ module.exports.init = function() {
             });
         });
     });
-// If the fetch fails, we can assume our API token has ran out of fetches for now, and will stop.
+};
+
+module.exports.on_library_changed = function(callback) {
+    libraryCalledFunc = callback;
+};
+
+module.exports.getImageCounts = function() {
+    var imageCounts = {};
+    for (var type in image_urls) {
+        imageCounts[type] = image_urls[type].length;
+    }
+    return imageCounts;
 }
+
 
 // ***********************************
 // * insturctions:
