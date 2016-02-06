@@ -6,8 +6,9 @@ var url = require('url');
 // google-images: https://github.com/vdemedes/google-images
 var googleImages = require('google-images');
 
-var APIKey = process.env.GOOGLE_API_KEY || 'AIzaSyDGrB3OONBeCe7vkyUzXSWOXf5ZsG0L_2o';
-var client = googleImages('004302857253127136025:rq6bsxpxewk', APIKey);
+var CSEKey = process.env.SEARCH_ENGINE_KEY || '004302857253127136025:rq6bsxpxewk';
+var APIKey = process.env.GOOGLE_API_KEY || 'AIzaSyD3v2i6B8Uwg83YFv3EdimnT5iLo7VQTwE';
+var client = googleImages(CSEKey, APIKey);
 // first argument CSE ID, find at https://cse.google.com/cse/setup/basic?cx=004302857253127136025%3Arq6bsxpxewk
 // second argument API key, find at https://console.developers.google.com/apis/credentials?project=ggj-jjd
 
@@ -122,7 +123,7 @@ function fetchNewImages() {
     console.log('Attempting to fetch new google images for type:', type);
     client.search(type, {
         size: 'medium',
-        page: getRandomInt(0, 25)
+        page: getRandomInt(1, 25)
     }).then(function (images) {
         if (!image_urls.hasOwnProperty(type)) {
             image_urls[type] = [];
