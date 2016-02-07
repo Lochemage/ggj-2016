@@ -18,6 +18,9 @@ $(document).ready(function() {
 
   // User submits their drawing early.
   $('#drawSpace > form.submit').submit(function() {
+    clearInterval(drawTimeoutId);
+    drawTimeoutId = 0;
+
     var imgData = retrieveCanvasImage();
     console.log('drawing submitted!');
     socket.emit('game event', {name: 'submit drawing', image_path: imgData});
@@ -162,6 +165,7 @@ $(document).ready(function() {
 
       if (elapsed/1000 >= seconds) {
         clearInterval(drawTimeoutId);
+        drawTimeoutId = 0;
         elapsed = seconds * 1000;
         done();
       }
