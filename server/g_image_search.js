@@ -152,11 +152,12 @@ function fetchNewImages() {
             setTimeout(fetchNewImages, 30000);
         }).catch(function(err) {
             console.log(err);
-            console.log('Upload failed, skipping...');
+            console.log('Upload failed, aborting image search process.');
         });
     }).catch(function(err) {
         // Likely if we reach this point, our API key ran its quota.
         console.log('Failed to fetch images');
+        setTimeout(fetchNewImages, 30000);
     });
 };
 
@@ -192,7 +193,7 @@ function checkUrl(type, index) {
         var testUrl = image_urls[type][index];
 
         // Skip urls that are binary
-        if (testUrl.indexOf('data:image') > -1) {
+        if (testUrl.indexOf('data:image') > -1 || testUrl.indexOf('.gif') > -1) {
             // console.log('url type:', type + '[' + index + '] - is binary');
             // Now attempt to check the next URL index from the same type.
             checkUrl(type, index+1).then(function() {
@@ -260,7 +261,7 @@ module.exports.init = function() {
         }).then(function() {
             // We'll watch to check and make sure the image url's are still valid, then
             // attempt to fetch new images continuously.
-            return checkUrls().then(function() {
+            checkUrls().then(function() {
                 fetchNewImages();
             });
         });

@@ -17,7 +17,12 @@ $(document).ready(function() {
   });
 
   // User submits to play another round.
-  $('form.interim').submit(function() {
+  $('#continueSpace > form.interim').submit(function() {
+    socket.emit('game event', {name: 'play again'});
+    return false;
+  });
+
+  $('#summarySpace > form.interim').submit(function() {
     socket.emit('game event', {name: 'play again'});
     return false;
   });

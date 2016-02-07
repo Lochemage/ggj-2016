@@ -1,0 +1,202 @@
+#debug {
+  position: fixed;
+  top: 80px;
+  bottom: 30px;
+  right: 30px;
+  width: 200px;
+  background: cyan;
+}
+
+#debugSummarySpace {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: lightblue;
+  z-index: 500;
+}
+
+#debugSummarySpace > div.inner {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  margin-left: -350px;
+}
+
+#debugSummarySpace > div.inner > div.source {
+  position: absolute;
+  width: 124px;
+  height: 93px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+
+#debugSummarySpace > div.inner > div.sourceLarge {
+  position: absolute;
+  width: 267px;
+  height: 200px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  z-index: 1;
+}
+
+#debugSummarySpace > div.inner > form {
+  position: absolute;
+  top: 20px;
+  left: 500px;
+}
+#debugSummarySpace > div.inner > form > button {
+  line-height: 20px;
+  font-size: 20px;
+  font-family: 'Indie Flower', cursive;
+  border: 2px solid #56A;
+  border-radius: 4px;
+  background: rgba(230,220,237,1);
+  height: 35px;
+  cursor: pointer;
+}
+#debugSummarySpace > div.inner > form > button:hover {
+  background: rgba(159,200,217,1);
+}
+#debugSummarySpace > div.inner > form > button:active {
+  background: rgba(139,180,197,1);;
+}
+
+#debugSummarySpace > div.inner > div.original {
+  top: 20px;
+  left: 289px;
+}
+
+#debugSummarySpace > div.inner > div.tier1 {
+  top: 197px;
+  left: 289px;
+}
+
+#debugSummarySpace > div.inner > div.tier2 {
+  top: 364px;
+}
+
+#debugSummarySpace > div.inner > div.tier2.left {
+  left: 122px;
+}
+
+#debugSummarySpace > div.inner > div.tier2.right {
+  left: 456px;
+}
+
+#debugSummarySpace > div.inner > div.tier3 {
+  top: 538px;
+}
+
+#debugSummarySpace > div.inner > div.tier3.farleft {
+  left: 31px;
+}
+
+#debugSummarySpace > div.inner > div.tier3.left {
+  left: 204px;
+}
+
+#debugSummarySpace > div.inner > div.tier3.right {
+  left: 372px;
+}
+
+#debugSummarySpace > div.inner > div.tier3.farright {
+  left: 542px;
+}
+
+
+#debugSummarySpace > div.inner > div.sourceLarge.original {
+  top: 0px;
+  left: 222px;
+}
+
+#debugSummarySpace > div.inner > div.sourceLarge.tier1 {
+  top: 157px;
+  left: 222px;
+}
+
+#debugSummarySpace > div.inner > div.sourceLarge.tier2 {
+  top: 314px;
+}
+
+#debugSummarySpace > div.inner > div.sourceLarge.tier2.left {
+  left: 55px;
+}
+
+#debugSummarySpace > div.inner > div.sourceLarge.tier2.right {
+  left: 389px;
+}
+
+#debugSummarySpace > div.inner > div.sourceLarge.tier3 {
+  top: 488px;
+}
+
+#debugSummarySpace > div.inner > div.sourceLarge.tier3.farleft {
+  left: 0px;
+}
+
+#debugSummarySpace > div.inner > div.sourceLarge.tier3.left {
+  left: 137px;
+}
+
+#debugSummarySpace > div.inner > div.sourceLarge.tier3.right {
+  left: 305px;
+}
+
+#debugSummarySpace > div.inner > div.sourceLarge.tier3.farright {
+  left: 432px;
+}
+
+#debugSummarySpace > div.inner > div.selected {
+  outline: 3px solid red;
+}
+
+#debugSummarySpace > div.inner > label.nametag {
+  position: absolute;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+#debugSummarySpace > div.inner > label.nametag.order1 {
+  top: 200px;
+  left: 420px;
+}
+
+#debugSummarySpace > div.inner > label.nametag.order2 {
+  top: 370px;
+  left: -185px;
+  text-align: right;
+  width: 300px;
+}
+
+#debugSummarySpace > div.inner > label.nametag.order3 {
+  top: 370px;
+  left: 588px;
+}
+
+#debugSummarySpace > div.inner > label.nametag.order4 {
+  top: 545px;
+  left: -280px;
+  text-align: right;
+  width: 300px;
+}
+
+#debugSummarySpace > div.inner > label.nametag.order5 {
+  top: 635px;
+  left: 20px;
+  text-align: right;
+  width: 300px;
+}
+
+#debugSummarySpace > div.inner > label.nametag.order6 {
+  top: 635px;
+  left: 380px;
+}
+
+#debugSummarySpace > div.inner > label.nametag.order7 {
+  top: 545px;
+  left: 675px;
+}

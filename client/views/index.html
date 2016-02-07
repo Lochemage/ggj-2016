@@ -13,6 +13,7 @@
     <script src="/static/js/jquery-2.1.3.min.js"></script>
     <script src="/static/js/main.js"></script>
     {{#if debugMode}}
+    <link href='/static/css/debug.css' rel='stylesheet' type='text/css'/>
     <script src="/static/js/debug.js"></script>
     {{/if}}
     <script type="text/javascript" src="/static/js/drawer.js"></script>
@@ -31,9 +32,11 @@
     {{#if debugMode}}
     <div id='debug'>
       <label>~~ DEBUG ~~</label><br>
-      <label class='sessionCount'><b>Active games</b> = <span>NA</span></label><br><br>
+      <label class='sessionCount'><b>Active games</b> = <span>NA</span></label><br>
+      <button disabled>View Games</button><br><br>
       <label><b>Image Library:</b></label>
       <ul class='imageCounts'><li>NA</li></ul>
+      <label id='imagesUpdated' class='not_shown'>Images Updated!</label>
     </div>
     {{/if}}
     <div id="welcomeSpace" class='inputContainer'>
@@ -109,5 +112,45 @@
         <button>Play another round</button>
       </form>
     </div>
+    {{#if debugMode}}
+    <div id='debugSummarySpace' class='not_shown'>
+      <div class='inner'>
+        <img class='outline' src="/static/images/summary-outline.png">
+        <div class='source original order0'/></div>
+        <div class='source tier1 order1'/></div>
+        <div class='source tier2 order2 left'/></div>
+        <div class='source tier2 order3 right'/></div>
+        <div class='source tier3 order4 farleft'/></div>
+        <div class='source tier3 order5 left'/></div>
+        <div class='source tier3 order6 right'/></div>
+        <div class='source tier3 order7 farright'/></div>
+
+        <div class='sourceLarge not_shown original order0'/></div>
+        <div class='sourceLarge not_shown order1 tier1'/></div>
+        <div class='sourceLarge not_shown order2 tier2 left'/></div>
+        <div class='sourceLarge not_shown order3 tier2 right'/></div>
+        <div class='sourceLarge not_shown order4 tier3 farleft'/></div>
+        <div class='sourceLarge not_shown order5 tier3 left'/></div>
+        <div class='sourceLarge not_shown order6 tier3 right'/></div>
+        <div class='sourceLarge not_shown order7 tier3 farright'/></div>
+
+        <label class='nametag order1'>Name1</label>
+        <label class='nametag order2'>Name2</label>
+        <label class='nametag order3'>Name3</label>
+        <label class='nametag order4'>Name4</label>
+        <label class='nametag order5'>Name5</label>
+        <label class='nametag order6'>Name6</label>
+        <label class='nametag order7'>Name7</label>
+
+        <form class='interim' action=''>
+          <label>Game <span class='sessionIndex'>0</span><br>Debug Summary</label><br>
+          <button type='button' class='prev'>&lt;- Prev</button>
+          <button type='button' class='next'>Next -&gt;</button>
+          <button type='button' class='refresh'>Refresh</button>
+          <button type='submit' class='close'>Close</button>
+        </form>
+      </div>
+    </div>
+    {{/if}}
   </body>
 </html>
