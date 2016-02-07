@@ -48,6 +48,12 @@ body {
   text-align: right;
 }
 
+#drawSpace > form.submit {
+  position: absolute;
+  top: 60px;
+  right: 0px;
+}
+
 .wrapper {
   position: absolute;
   top: 0px;

@@ -16,6 +16,16 @@ $(document).ready(function() {
     }
   });
 
+  // User submits their drawing early.
+  $('#drawSpace > form.submit').submit(function() {
+    var imgData = retrieveCanvasImage();
+    console.log('drawing submitted!');
+    socket.emit('game event', {name: 'submit drawing', image_path: imgData});
+
+    __hideSpaces();
+    return false;
+  });
+
   // User submits to play another round.
   $('#continueSpace > form.interim').submit(function() {
     socket.emit('game event', {name: 'play again'});
